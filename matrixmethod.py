@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # hardcode in the sequence for now
-hp_sequence = "PHHPHHPPHP"
+hp_sequence = "HHPHHHPH"
 
 # convert letters to integer values
 int_sequence = []
@@ -25,40 +25,48 @@ moveslist = []
 # track which tiles are occupied
 tilelist = []
 
+# set up a recursion switch for makemove
+switch = []
+
 def makemove(from_x_pos, from_y_pos):
     """defines how to move"""
 
+    if len(switch) > 50:
+        return None
+
     # keeps on trying a random move until a valid one is chosen
-    while True:
-
-        # the move is just a random choice from the list
-        move = random.choice(moves)
-
-        # if the move would move the amino acid onto an occupied tile, try again
-        if move == "up":
-            new_x_pos = from_x_pos
-            new_y_pos = from_y_pos - 1
-
-        elif move == "down":
-            new_x_pos = from_x_pos
-            new_y_pos = from_y_pos + 1
+    #while True:
         
-        elif move == "left":
-            new_x_pos = from_x_pos - 1
-            new_y_pos = from_y_pos
-            
-        elif move == "right":
-            new_x_pos = from_x_pos + 1
-            new_y_pos = from_y_pos
+    # the move is just a random choice from the list
+    move = random.choice(moves)
 
-        if (new_x_pos, new_y_pos) in tilelist:
-            # print("old coords", from_x_pos, from_y_pos)
-            # print("new coords", new_x_pos, new_y_pos)
-            # print(tilelist)
-            makemove(from_x_pos, from_y_pos)
+    # if the move would move the amino acid onto an occupied tile, try again
+    if move == "up":
+        new_x_pos = from_x_pos
+        new_y_pos = from_y_pos - 1
+
+    elif move == "down":
+        new_x_pos = from_x_pos
+        new_y_pos = from_y_pos + 1
+    
+    elif move == "left":
+        new_x_pos = from_x_pos - 1
+        new_y_pos = from_y_pos
         
-        else:
-            break
+    elif move == "right":
+        new_x_pos = from_x_pos + 1
+        new_y_pos = from_y_pos
+
+    print(new_x_pos, new_y_pos, tilelist)
+    if (new_x_pos, new_y_pos) in tilelist:
+        # print("old coords", from_x_pos, from_y_pos)
+        # print("new coords", new_x_pos, new_y_pos)
+        # print(tilelist)
+        switch.append(1)
+        makemove(from_x_pos, from_y_pos)
+        
+        # else:
+        #     break
 
     return move, new_x_pos, new_y_pos
     
@@ -82,15 +90,27 @@ def foldingmatrix(dimensions, sequence):
     # fill in the rest
     for amino in sequence[1:]:
         move = makemove(x_current, y_current)
+        # print(tilelist)
+        # print(move)
 
-        # update x and y pos, add move and tile to their lists
-        x_current = move[1]
-        y_current = move[2]
-        moveslist.append(move[0])
-        tilelist.append((x_current, y_current))
+        if (move == None) and (len(moveslist) > 1) and (len(tilelist) > 1):
+            moveslist.pop()
+            
+            
+            second_last_move = tilelist.pop()
+            x_current = second_last_move[0]
+            y_current = second_last_move[1]
 
-        # add the value to the matrix
-        mat[x_current][y_current] = amino
+        else:
+            #print(move)
+            # update x and y pos, add move and tile to their lists
+            x_current = move[1]
+            y_current = move[2]
+            moveslist.append(move[0])
+            tilelist.append((x_current, y_current))
+
+            # add the value to the matrix
+            mat[x_current][y_current] = amino
         
     # count the score
     score = 0
@@ -119,24 +139,25 @@ def foldingmatrix(dimensions, sequence):
 
 # for i in range(10):
 #     print("Score is:", foldingmatrix((int(dim*2.5), int(dim*2.5)), int_sequence)[1])
-for i in range(100000):
+for i in range(1):
     try: 
         # reset moves/tiles list after every iteration
         moveslist = []
         tilelist = []
-        score = foldingmatrix((int(dim*2.5), int(dim*2.5)), int_sequence)[1]
+        switch = []
+        # score = foldingmatrix((int(dim*2.5), int(dim*2.5)), int_sequence)[1]
         
-        if i % 1000 == 0:
+        if i % 10000 == 0:
             print(i)
 
-        if score < 0:
-            print(f"Score is: {score}")
-            break 
+        # if score < 0:
+        #     print(f"Score is: {score}")
+            
 
         # moveslist = []
         # tilelist = []
-        # plt.matshow(foldingmatrix((int(dim*2.5), int(dim*2.5)), int_sequence)[0])
-        # plt.show()
-    except RecursionError:
+        plt.matshow(foldingmatrix((int(dim*2.5), int(dim*2.5)), int_sequence)[0])
+        plt.show()
+    except KeyError:
         pass
     
