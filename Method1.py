@@ -13,12 +13,14 @@ def listify(string):
     return protein_list
 
 def randomify():
+    """Creates random number used for a random direction"""
     random_nr = 0
     while random_nr == 0:
         random_nr = random.randint(-2, 2)
     return random_nr
 
 def coordinates(x_coord, y_coord, direction):
+    """Uses old coordinates and direction to create new coordinates"""
     if direction == 1:
         new_x_coord = x_coord + 1
         new_y_coord = y_coord
@@ -34,6 +36,7 @@ def coordinates(x_coord, y_coord, direction):
     return new_x_coord, new_y_coord
 
 def plot(dict, stability):
+    """Plots the data"""
     length = len(dict["positions"])
     x_list = []
     y_list = []
@@ -47,11 +50,12 @@ def plot(dict, stability):
             plt.scatter(x_coord, y_coord, color="blue")
         else:
             plt.scatter(x_coord, y_coord, color="red")
-    plt.plot(x_list, y_list)
-    plt.title(f"stability = {stability}", fontsize=7)
+    plt.plot(x_list, y_list, color="black")
+    plt.title(f"stability = {stability}")
     plt.show()
 
 def H_bridge(dict, list, coords):
+    """determines if a H-bridge is present"""
     for j in range(len(list)):
         if dict["positions"][j] == coords:
             element = j
@@ -64,10 +68,12 @@ def main():
         dict = {"positions": []}
         protein_list = listify(protein_string)
         for i in range(len(protein_list)):
-            if counter != 15:
+            if counter != 25:
                 counter = 0
             else:
                 break
+
+            # at first iteration set the coordinates as (0,0)
             if i == 0:
                 x_coord = 0
                 y_coord = 0
@@ -76,6 +82,8 @@ def main():
                 x_coord = dict[i][2]
                 y_coord = dict[i][3]
             switch = True
+
+            # Loops untill a valid position has been found
             while switch == True:
 
                 # Make new direction
@@ -91,11 +99,12 @@ def main():
                     dict["positions"].append(f"{x_coord},{y_coord}")
                     switch = False
                 counter += 1
-                if counter == 15:
+                if counter == 25:
                     print("stuck")
                     break
 
-        if counter != 15:
+        # Skips this part if protein folding is invalid/overlaps
+        if counter != 25:
             stability = 0
             for i in range(len(protein_list)):
                 if dict[i][1] == "P":
@@ -131,6 +140,8 @@ def main():
                         if dict[element][1] == "P":
                             stability -= 1
         print(x)
+
+        # Prints graph if stability is lower than 0
         if stability != 0:
             stability = stability / 2
             plot(dict, stability)
