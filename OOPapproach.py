@@ -1,5 +1,5 @@
 """
-OOP based approach 
+OOP based approach
 """
 
 class Element:
@@ -9,7 +9,9 @@ class Element:
         self.letter = letter
         self.x_coord = 0
         self.y_coord = 0
-    
+        self.z_coord = 0
+        self.direction = 0
+
     def __str__(self):
         print(f"this is {self.letter} at {self.x_coord}, {self.y_coord}")
 
@@ -24,3 +26,6 @@ class Element:
 
     def get_location(self):
         return self.x_coord, self.y_coord
+
+    def get_direction(self):
+        return self.direction
