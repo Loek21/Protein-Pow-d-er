@@ -3,7 +3,7 @@ import matplotlib
 matplotlib.use('tkagg')
 import matplotlib.pyplot as plt
 
-protein_string = "HPHHHPPHPPH"
+protein_string = "HPHHPHHHHPH"
 
 def listify(string):
     """Creates list from string"""
@@ -63,15 +63,14 @@ def H_bridge(dict, list, coords):
     return element
 
 def main():
-    for x in range(100):
+    for x in range(1000):
         counter = 0
         dict = {"positions": []}
         protein_list = listify(protein_string)
-        for i in range(len(protein_list)):
-            if counter != 25:
-                counter = 0
-            else:
-                break
+        i = 0
+        while i < len(protein_list):
+            counter = 0
+            switch = True
 
             # at first iteration set the coordinates as (0,0)
             if i == 0:
@@ -81,7 +80,6 @@ def main():
             else:
                 x_coord = dict[i][2]
                 y_coord = dict[i][3]
-            switch = True
 
             # Loops untill a valid position has been found
             while switch == True:
@@ -100,46 +98,50 @@ def main():
                     switch = False
                 counter += 1
                 if counter == 25:
-                    print("stuck")
-                    break
+                    switch = False
+                    dict["positions"].pop(i - 1)
+                    dict["positions"].pop(i - 2)
+                    i -= 3
+            i += 1
 
         # Skips this part if protein folding is invalid/overlaps
-        if counter != 25:
-            stability = 0
-            for i in range(len(protein_list)):
-                if dict[i][1] == "P":
-                    x_coord = dict[i][2]
-                    y_coord = dict[i][3]
-                    coords = f"{x_coord},{y_coord}"
-                    coords_left = f"{x_coord - 1},{y_coord}"
-                    coords_right = f"{x_coord + 1},{y_coord}"
-                    coords_up = f"{x_coord},{y_coord + 1}"
-                    coords_down = f"{x_coord},{y_coord - 1}"
-                    if i != 0:
-                        coords_prev = dict["positions"][i - 1]
-                    else:
-                        coords_prev = None
-                    if i != len(protein_list) - 1:
-                        coords_next = dict["positions"][i + 1]
-                    else:
-                        coords_next = None
-                    if coords_left != coords_next and coords_left != coords_prev and coords_left in dict["positions"]:
-                        element = H_bridge(dict, protein_list, coords_left)
-                        if dict[element][1] == "P":
-                            stability -= 1
-                    if coords_right != coords_next and coords_right != coords_prev and coords_right in dict["positions"]:
-                        element = H_bridge(dict, protein_list, coords_right)
-                        if dict[element][1] == "P":
-                            stability -= 1
-                    if coords_up != coords_next and coords_up != coords_prev and coords_up in dict["positions"]:
-                        element = H_bridge(dict, protein_list, coords_up)
-                        if dict[element][1] == "P":
-                            stability -= 1
-                    if coords_down != coords_next and coords_down != coords_prev and coords_down in dict["positions"]:
-                        element = H_bridge(dict, protein_list, coords_down)
-                        if dict[element][1] == "P":
-                            stability -= 1
-        print(x)
+        stability = 0
+        for i in range(len(protein_list)):
+            if dict[i][1] == "P":
+                x_coord = dict[i][2]
+                y_coord = dict[i][3]
+                coords = f"{x_coord},{y_coord}"
+                coords_left = f"{x_coord - 1},{y_coord}"
+                coords_right = f"{x_coord + 1},{y_coord}"
+                coords_up = f"{x_coord},{y_coord + 1}"
+                coords_down = f"{x_coord},{y_coord - 1}"
+                if i != 0:
+                    coords_prev = dict["positions"][i - 1]
+                else:
+                    coords_prev = None
+                if i != len(protein_list) - 1:
+                    coords_next = dict["positions"][i + 1]
+                else:
+                    coords_next = None
+                if coords_left != coords_next and coords_left != coords_prev and coords_left in dict["positions"]:
+                    element = H_bridge(dict, protein_list, coords_left)
+                    if dict[element][1] == "P":
+                        stability -= 1
+                if coords_right != coords_next and coords_right != coords_prev and coords_right in dict["positions"]:
+                    element = H_bridge(dict, protein_list, coords_right)
+                    if dict[element][1] == "P":
+                        stability -= 1
+                if coords_up != coords_next and coords_up != coords_prev and coords_up in dict["positions"]:
+                    element = H_bridge(dict, protein_list, coords_up)
+                    if dict[element][1] == "P":
+                        stability -= 1
+                if coords_down != coords_next and coords_down != coords_prev and coords_down in dict["positions"]:
+                    element = H_bridge(dict, protein_list, coords_down)
+                    if dict[element][1] == "P":
+                        stability -= 1
+
+        if x % 100 == 0:
+            print(f"iteration: {x}")
 
         # Prints graph if stability is lower than 0
         if stability != 0:
