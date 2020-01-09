@@ -60,15 +60,15 @@ def move_no_backtrack(list, dict, positions, index, moves):
 
     return positions
 
-def H_bridge(positions, coords_next, coords_prev, coords):
+def H_bridge(dict, positions, coords_next, coords_prev, coords):
     """determines if a H-bridge is present"""
     if coords != coords_next and coords != coords_prev and coords in positions:
-        for position in positions:
+        for i in range(len(positions)):
             element = 0
-            if position == coords:
-                element = j
+            if positions[i] == coords:
+                element = i
                 break
-        if dict[element].get_type == "H":
+        if dict[element].get_type() == "H":
             return True
     return False
 
@@ -78,8 +78,8 @@ def stability(dict, index, positions):
     stability = 0
 
     # Determines the neighbouring elements if element is able to form a H-bridge
-    if dict[index].get_type == "H":
-        x_coord, y_coord, z_coord = dict[index].get_location
+    if dict[index].get_type() == "H":
+        x_coord, y_coord, z_coord = dict[index].get_location()
         coords = f"{x_coord},{y_coord},{z_coord}"
         coords_x_plus = f"{x_coord + 1},{y_coord},{z_coord}"
         coords_x_min = f"{x_coord - 1},{y_coord},{z_coord}"
@@ -98,17 +98,17 @@ def stability(dict, index, positions):
             coords_next = None
 
         # Checks if H-bridges have been formed
-        if H_bridge(positions, coords_next, coords_prev, coords_x_plus) == True:
+        if H_bridge(dict, positions, coords_next, coords_prev, coords_x_plus) == True:
             stability -= 1
-        if H_bridge(positions, coords_next, coords_prev, coords_x_min) == True:
+        if H_bridge(dict, positions, coords_next, coords_prev, coords_x_min) == True:
             stability -= 1
-        if H_bridge(positions, coords_next, coords_prev, coords_y_plus) == True:
+        if H_bridge(dict, positions, coords_next, coords_prev, coords_y_plus) == True:
             stability -= 1
-        if H_bridge(positions, coords_next, coords_prev, coords_y_min) == True:
+        if H_bridge(dict, positions, coords_next, coords_prev, coords_y_min) == True:
             stability -= 1
-        if H_bridge(positions, coords_next, coords_prev, coords_z_plus) == True:
+        if H_bridge(dict, positions, coords_next, coords_prev, coords_z_plus) == True:
             stability -= 1
-        if H_bridge(positions, coords_next, coords_prev, coords_z_min) == True:
+        if H_bridge(dict, positions, coords_next, coords_prev, coords_z_min) == True:
             stability -= 1
 
     return stability
@@ -131,7 +131,7 @@ def sarw_dict(lattice, moves):
     # Counts the stability per element of the protein
     for i in range(len(list)):
         stability_element = stability(dict, i, positions)
-        stability_count -= stability_element
+        stability_count += stability_element
 
     stability_count = stability_count / 2
     return dict, stability_count

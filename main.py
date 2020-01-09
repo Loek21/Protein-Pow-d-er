@@ -6,6 +6,7 @@ Made by Team Shire Peasants 3
 
 import csv
 import sys
+import copy
 import numpy as np
 from code.algorithms import randomizematrix, randomizedict
 from code.classes import lattice, element
@@ -26,7 +27,7 @@ from code.visualisation import visualise
 if __name__ == '__main__':
     TwoD_moves = [1, -1, 2, -2]
     ThreeD_moves = [1, -1, 2, -2, 3, -3]
-    test_lattice = lattice.Lattice('HPPPPH')
+    test_lattice = lattice.Lattice('HHPHHHPHPHHHPH')
     test_lattice.load_dict()
     test_lattice.load_matrix()
     test_lattice.load_list()
@@ -66,12 +67,12 @@ if __name__ == '__main__':
 
     if data_structure == "dict":
         best_stability = 1
-        best_dict = None
+        best_dict = {}
         for i in range(iterations):
             random_dict, stability = randomizedict.sarw_dict(test_lattice, TwoD_moves)
             if stability < best_stability:
                 best_stability = stability
-                best_dict = random_dict
+                best_dict = copy.deepcopy(random_dict)
 
         # Gets data from best folded protein and plots it
         x_list = []
