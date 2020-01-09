@@ -29,7 +29,6 @@ if __name__ == '__main__':
     test_lattice.load_list()
 
     random_matrix = randomizematrix.matrixrandomizer(test_lattice, moves)
-    print(random_matrix)
 
     for row in range(len(random_matrix)):
         for element in range(len(random_matrix)):
@@ -48,7 +47,5 @@ if __name__ == '__main__':
             new_matrix[row][element] = random_matrix[row][element]
 
     
-    
-    print(type(new_matrix))
     plt.matshow(new_matrix)
     plt.show()

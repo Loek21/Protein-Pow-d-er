@@ -47,11 +47,11 @@ def matrixrandomizer(lattice, moves):
 
             # if coordinate is not yet taken, place element there and update its coords
             if matrix[future_x][future_y] == None:
-                
+                print(current_x, current_y, move)
                 # update current x and y
                 current_x = future_x
                 current_y = future_y
-    
+                print(current_x, current_y)
                 # set element
                 matrix[current_x][current_y] = lattice.lattice_list[set_elements]
                 lattice.lattice_list[set_elements].set_coordinates(current_x, current_y, None)
@@ -59,7 +59,14 @@ def matrixrandomizer(lattice, moves):
                 break
             
             else:
+                # reset 'future' coords for next loop
+                future_x = current_x
+                future_y = current_y
+                print("FAIL")
                 moves_tried += 1
+                if moves_tried == 49:
+                    print("BREAKING")
+            
     
     lattice.matrix = matrix
 
