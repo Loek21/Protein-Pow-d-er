@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # hardcode in the sequence for now
-hp_sequence = "HHPHHPHPP"
+hp_sequence = "HHPHHHPH"
 
 # convert letters to integer values
 int_sequence = []
@@ -42,9 +42,8 @@ def makemove(from_x_pos, from_y_pos):
     # keeps on trying a random move until a valid one is chosen
     while True:
 
-        print(switch)
-        if len(switch) > 3:
-            print("HEYHEYYYYY")
+        if len(switch) > 10:
+            
             return None
         
         # the move is just a random choice from the list
@@ -128,22 +127,22 @@ def foldingmatrix(dimensions, sequence):
     score = 0
 
     # check for all neighbours in the matrix if H-bridges are formed
-    for i in range(dimensions[0]):
-        for j in range(dimensions[0]):
-            if mat[i][j] == 10:
-                if mat[i-1][j] == 10:
+    for i in range(dimensions[0] - 1):
+        for j in range(dimensions[0] - 1):
+            if mat[i][j] == 5:
+                if mat[i-1][j] == 5:
                     score -= 1
-                if mat[i+1][j] == 10:
+                if mat[i+1][j] == 5:
                     score -= 1
-                if mat[i][j-1] == 10:
+                if mat[i][j-1] == 5:
                     score -= 1
-                if mat[i][j+1] == 10:
+                if mat[i][j+1] == 5:
                     score -= 1
     
     # score needs to be reduced by the number of successive P's in the chain * 2 (since every coordinate pair is counted twice in the matrix)
     score_reduction = 0
     for amino in range(len(sequence) - 1):
-        if (sequence[amino] == 10) and (sequence[amino + 1] == 10):
+        if (sequence[amino] == 5) and (sequence[amino + 1] == 5):
             score_reduction += 2
 
     # half the score (for reason see above)
@@ -151,7 +150,10 @@ def foldingmatrix(dimensions, sequence):
     
     return mat, score
 
-for i in range(1):
+scores_set = set()
+scores_set.add(0)
+
+for i in range(10000):
     
     # reset moves/tiles/switch lists after every iteration
     moveslist = []
@@ -159,12 +161,19 @@ for i in range(1):
     switch = []
     random_matrix = foldingmatrix((int(dim*2.5), int(dim*2.5)), int_sequence)
     score = random_matrix[1]
-    
-    if i % 10000 == 0:
-        print(i)
 
-    if score <= 0:
-        print(f"Score is: {score}")
+    # if score < 0:
+    #     scores_set.add(score)
 
-    plt.matshow(random_matrix[0])
-    plt.show()
+    if score < min(scores_set):
+        scores_set.add(score)
+        print(score)
+        plt.matshow(random_matrix[0])
+        plt.show()
+
+    print(score, min(scores_set))
+
+    #plt.matshow(random_matrix[0])
+    #plt.show()
+
+print(f'Most stable fold: stability {min(scores_set)}')
