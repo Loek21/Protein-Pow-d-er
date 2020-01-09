@@ -5,10 +5,11 @@ Made by Team Shire Peasants 3
 """
 
 import csv
-import matplotlib.pyplot as plt
+import sys
 import numpy as np
-from code.algorithms import randomizematrix
+from code.algorithms import randomizematrix, randomizedict
 from code.classes import lattice, element
+from code.visualisation import visualise
 
 
 # Step 1, Import string of amino-acid
@@ -23,29 +24,60 @@ from code.classes import lattice, element
 
 
 if __name__ == '__main__':
-    moves = [1, -1, 2, -2]
+    TwoD_moves = [1, -1, 2, -2]
+    ThreeD_moves = [1, -1, 2, -2, 3, -3]
     test_lattice = lattice.Lattice('HPPPPH')
+    test_lattice.load_dict()
     test_lattice.load_matrix()
     test_lattice.load_list()
 
-    random_matrix = randomizematrix.matrixrandomizer(test_lattice, moves)
+    if len(sys.argv) != 3:
+        print("usage: python main.py datastructure iterations")
+        sys.exit(0)
+    data_structure = sys.argv[1]
+    iterations = int(sys.argv[2])
+    data_structures = ["dict", "matrix"]
+    if data_structure not in data_structures:
+        print("You must choose either 'dict' or 'matrix'")
+        sys.exit(0)
+    if iterations <= 0:
+        print("You must choose a positive number")
 
-    for row in range(len(random_matrix)):
-        for element in range(len(random_matrix)):
-            if random_matrix[row][element] == None:
-                random_matrix[row][element] = 0.0
+    if data_structure == "matrix":
+        random_matrix = randomizematrix.matrixrandomizer(test_lattice, TwoD_moves)
 
-            elif random_matrix[row][element].type == 'H':
-                random_matrix[row][element] = 5.0
-            
-            else:
-                random_matrix[row][element] = 10.0
+        for row in range(len(random_matrix)):
+            for element in range(len(random_matrix)):
+                if random_matrix[row][element] == None:
+                    random_matrix[row][element] = 0.0
 
-    new_matrix = np.zeros((len(random_matrix), len(random_matrix)))
-    for row in range(len(random_matrix)):
-        for element in range(len(random_matrix)):
-            new_matrix[row][element] = random_matrix[row][element]
+                elif random_matrix[row][element].type == 'H':
+                    random_matrix[row][element] = 5.0
 
-    
-    plt.matshow(new_matrix)
-    plt.show()
+                else:
+                    random_matrix[row][element] = 10.0
+
+        new_matrix = np.zeros((len(random_matrix), len(random_matrix)))
+        for row in range(len(random_matrix)):
+            for element in range(len(random_matrix)):
+                new_matrix[row][element] = random_matrix[row][element]
+
+        visualise.matrix_plot(new_matrix)
+
+    if data_structure == "dict":
+        best_stability = 1
+        best_dict = None
+        for i in range(iterations):
+            random_dict, stability = randomizedict.sarw_dict(test_lattice, TwoD_moves)
+            if stability < best_stability:
+                best_stability = stability
+                best_dict = random_dict
+
+        # Gets data from best folded protein and plots it
+        x_list = []
+        y_list = []
+        for i in range(len(test_lattice.get_list())):
+            x_coord, y_coord, z_coord = best_dict[i].get_location()
+            x_list.append(x_coord)
+            y_list.append(y_coord)
+        visualise.dict_plot(test_lattice.elements, x_list, y_list, best_stability)
