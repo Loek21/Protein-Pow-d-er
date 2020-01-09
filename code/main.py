@@ -14,3 +14,7 @@ import csv
 # Step 4, Calculate 'stability'. More negative = more better
 
 # Step 5, Output result in CSV format
+
+
+if __name__ == '__main__':
+    pass
