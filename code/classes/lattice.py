@@ -8,6 +8,7 @@ class Lattice:
         self.elements = element_string
         self.lattice_list = []
         self.lattice_dict = {}
+        self.matrix = None
 
     def load_list(self):
         """Takes string and adds element objects to a list"""
@@ -22,8 +23,7 @@ class Lattice:
     def load_matrix(self):
         """Loads a 2D empty matrix which can be filled with objects, big enough so straight chains don't hit borders"""
         dimension = int(len(self.elements)*2.5)
-        matrix = np.empty((dimension, dimension), dtype=object)
-        return matrix
+        self.matrix = np.empty((dimension, dimension), dtype=object)
 
     def get_list(self):
         """Returns list of elements"""
@@ -32,6 +32,10 @@ class Lattice:
     def get_dict(self):
         """Returns dictionary of elements"""
         return self.lattice_dict
+
+    def get_matrix(self):
+        """Returns matrix of elements"""
+        return self.matrix
 
     def __str__(self):
         return self.lattice_list
