@@ -3,7 +3,7 @@ import matplotlib
 matplotlib.use('tkagg')
 import matplotlib.pyplot as plt
 
-protein_string = "HPHHPHHHHPH"
+protein_string = "HHPHHHPHPHHHPH"
 
 def listify(string):
     """Creates list from string"""
@@ -38,6 +38,10 @@ def coordinates(x_coord, y_coord, direction):
 def plot(dict, stability):
     """Plots the data"""
     length = len(dict["positions"])
+    print(length)
+    print(dict["positions"])
+    for i in range(14):
+        print(dict[i])
     x_list = []
     y_list = []
     color_list = []
@@ -47,9 +51,9 @@ def plot(dict, stability):
         x_list.append(x_coord)
         y_list.append(y_coord)
         if dict[i][1] == "H":
-            plt.scatter(x_coord, y_coord, color="blue")
-        else:
             plt.scatter(x_coord, y_coord, color="red")
+        else:
+            plt.scatter(x_coord, y_coord, color="blue")
     plt.plot(x_list, y_list, color="black")
     plt.title(f"stability = {stability}")
     plt.show()
@@ -57,13 +61,14 @@ def plot(dict, stability):
 def H_bridge(dict, list, coords):
     """determines if a H-bridge is present"""
     for j in range(len(list)):
+        element = 0
         if dict["positions"][j] == coords:
             element = j
             break
     return element
 
 def main():
-    for x in range(1000):
+    for x in range(1000000):
         counter = 0
         dict = {"positions": []}
         protein_list = listify(protein_string)
@@ -99,15 +104,17 @@ def main():
                 counter += 1
                 if counter == 25:
                     switch = False
-                    dict["positions"].pop(i - 1)
-                    dict["positions"].pop(i - 2)
-                    i -= 3
+                    print(i)
+                    print(dict["positions"].pop(i - 1))
+                    print(dict["positions"].pop(i - 2))
+                    print(dict["positions"].pop(i - 3))
+                    i -= 4
             i += 1
 
         # Skips this part if protein folding is invalid/overlaps
         stability = 0
         for i in range(len(protein_list)):
-            if dict[i][1] == "P":
+            if dict[i][1] == "H":
                 x_coord = dict[i][2]
                 y_coord = dict[i][3]
                 coords = f"{x_coord},{y_coord}"
@@ -125,27 +132,27 @@ def main():
                     coords_next = None
                 if coords_left != coords_next and coords_left != coords_prev and coords_left in dict["positions"]:
                     element = H_bridge(dict, protein_list, coords_left)
-                    if dict[element][1] == "P":
+                    if dict[element][1] == "H":
                         stability -= 1
                 if coords_right != coords_next and coords_right != coords_prev and coords_right in dict["positions"]:
                     element = H_bridge(dict, protein_list, coords_right)
-                    if dict[element][1] == "P":
+                    if dict[element][1] == "H":
                         stability -= 1
                 if coords_up != coords_next and coords_up != coords_prev and coords_up in dict["positions"]:
                     element = H_bridge(dict, protein_list, coords_up)
-                    if dict[element][1] == "P":
+                    if dict[element][1] == "H":
                         stability -= 1
                 if coords_down != coords_next and coords_down != coords_prev and coords_down in dict["positions"]:
                     element = H_bridge(dict, protein_list, coords_down)
-                    if dict[element][1] == "P":
+                    if dict[element][1] == "H":
                         stability -= 1
 
-        if x % 100 == 0:
+        if x % 10000 == 0:
             print(f"iteration: {x}")
 
         # Prints graph if stability is lower than 0
-        if stability != 0:
-            stability = stability / 2
+        stability = stability / 2
+        if stability <= -6:
             plot(dict, stability)
             break
     return
