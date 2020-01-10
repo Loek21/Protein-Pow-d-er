@@ -72,4 +72,36 @@ def matrixrandomizer(lattice, moves):
 
     return lattice.matrix
 
+def matrix_stability(lattice):
+    """calculates stability of lattice with matrix"""
+    elements = lattice.elements
+    mat = lattice.matrix
+    stability = 0
+
+    # check for successive H's in chain itself and add 2 per pair found
+    # since the matrix checker checks every pair twice, so need to compensate
+    for element in range(len(elements) - 1):
+        if elements[element].type == 'H' and elements[element + 1].type == 'H':
+            stability += 2
+    
+    # check the neighbouring elements
+    for element in range(len(elements)):
+        i = element.x_coord
+        j = element.y_coord
+
+        if mat[i][j].type == 'H':
+            if mat[i-1][j].type == 'H':
+                stability -= 1
+            if mat[i+1][j].type == 'H':
+                stability -= 1
+            if mat[i][j-1].type == 'H':
+                stability -= 1
+            if mat[i][j+1].type == 'H':
+                stability -= 1
+
+    # divide stability by 2 since pairs are checked twice
+    stability /= 2
+
+    return stability
+
 
