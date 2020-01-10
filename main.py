@@ -27,22 +27,33 @@ from code.visualisation import visualise
 if __name__ == '__main__':
     TwoD_moves = [1, -1, 2, -2]
     ThreeD_moves = [1, -1, 2, -2, 3, -3]
-    test_lattice = lattice.Lattice('HHPHHHPHPHHHPH')
-    test_lattice.load_dict()
-    test_lattice.load_matrix()
-    test_lattice.load_list()
+    protein_string_list = ["HHPHHHPH", "HHPHHHPHPHHHPH", "HPHPPHHPHPPHPHHPPHPH", "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
+                            "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
+                            "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
+                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH"]
 
-    if len(sys.argv) != 3:
-        print("usage: python main.py datastructure iterations")
+    if len(sys.argv) != 4:
+        print("usage: python main.py datastructure string_nr iterations")
         sys.exit(0)
     data_structure = sys.argv[1]
-    iterations = int(sys.argv[2])
+    lattice_string = int(sys.argv[2])
+    iterations = int(sys.argv[3])
     data_structures = ["dict", "matrix"]
     if data_structure not in data_structures:
         print("You must choose either 'dict' or 'matrix'")
         sys.exit(0)
+    if lattice_string < 0 or lattice_string > 8:
+        print("Choose a string number between 0 and 8.")
+        sys.exit(0)
     if iterations <= 0:
-        print("You must choose a positive number")
+        print("You must choose a positive number.")
+        sys.exit(0)
+
+
+    test_lattice = lattice.Lattice(lattice_string)
+    test_lattice.load_dict()
+    test_lattice.load_matrix()
+    test_lattice.load_list()
 
     if data_structure == "matrix":
         random_matrix = randomizematrix.matrixrandomizer(test_lattice, TwoD_moves)
