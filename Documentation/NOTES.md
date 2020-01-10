@@ -19,6 +19,10 @@ Verwerk je algoritme in een class, en werk met OOP.
 
 Eerst de hele string uitwerken en rest folden.
 
-Grid of een dictionairy 
+Grid of een dictionairy
 
 qvdpost@gmail.com
+
+## Time test
+Matrix random 100000 tries: 6.27s
+Dict random 100000 tries: 7.63s
