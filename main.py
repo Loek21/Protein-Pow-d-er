@@ -64,37 +64,44 @@ if __name__ == '__main__':
     test_lattice.load_list()
 
     if data_structure == "matrix":
-        #good_count = 0
+        good_count = 0
+        best_stab = 1
         for i in range(iterations):
+            try:
             
-            random_matrix = randomizematrix.matrixrandomizer(test_lattice, ThreeD_moves)
-            if random_matrix[1] != False:
-                stability = randomizematrix.matrix_stability(test_lattice)
-                # print(stability)
-                # good_count += 1
-                
-                
-            test_lattice = lattice.Lattice(protein_string)
-            test_lattice.load_matrix()
-            test_lattice.load_list()
-                # for row in range(len(random_matrix)):
-                #     for element in range(len(random_matrix)):
-                #         if random_matrix[row][element] == None:
-                #             random_matrix[row][element] = 0.0
+                random_matrix = randomizematrix.matrixrandomizer(test_lattice, ThreeD_moves)
+                if random_matrix[1] != False:
+                    stability = randomizematrix.matrix_stability(test_lattice)
+                    #print(stability)
+                    if stability < best_stab:
+                        best_stab = stability
+                    good_count += 1
+                    
+                    
+                test_lattice = lattice.Lattice(protein_string)
+                test_lattice.load_matrix()
+                test_lattice.load_list()
+                    # for row in range(len(random_matrix)):
+                    #     for element in range(len(random_matrix)):
+                    #         if random_matrix[row][element] == None:
+                    #             random_matrix[row][element] = 0.0
 
-                #         elif random_matrix[row][element].type == 'H':
-                #             random_matrix[row][element] = 5.0
+                    #         elif random_matrix[row][element].type == 'H':
+                    #             random_matrix[row][element] = 5.0
 
-                #         else:
-                #             random_matrix[row][element] = 10.0
+                    #         else:
+                    #             random_matrix[row][element] = 10.0
 
-                # new_matrix = np.zeros((len(random_matrix), len(random_matrix)))
-                # for row in range(len(random_matrix)):
-                #     for element in range(len(random_matrix)):
-                #         new_matrix[row][element] = random_matrix[row][element]
+                    # new_matrix = np.zeros((len(random_matrix), len(random_matrix)))
+                    # for row in range(len(random_matrix)):
+                    #     for element in range(len(random_matrix)):
+                    #         new_matrix[row][element] = random_matrix[row][element]
 
-                # visualise.matrix_plot(new_matrix)
-        #print(good_count)
+                    # visualise.matrix_plot(new_matrix)
+        
+            except IndexError:
+                pass
+        print(good_count, best_stab)
 
     if data_structure == "dict": 
         # best_stability = 1

@@ -22,7 +22,7 @@ class Lattice:
 
     def load_matrix(self):
         """Loads a 3D empty matrix which can be filled with objects, big enough so straight chains don't hit borders"""
-        dimension = int(len(self.elements)*2.5)
+        dimension = int(len(self.elements)*0.4)
         self.matrix = np.empty((dimension, dimension, dimension), dtype=object)
 
     def get_list(self):

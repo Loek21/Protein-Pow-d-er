@@ -55,8 +55,13 @@ def matrixrandomizer(lattice, moves):
             elif move == -3:
                 future_z = current_z + 1
 
+            boundary_switch = True
+            if (future_x == 0) or (future_y == 0) or (future_z == 0) or (future_x == len(matrix) - 1) or (future_y == len(matrix) - 1) or (future_z == len(matrix) - 1):
+                #print("HEYHEY")
+                boundary_switch = False
+
             # if coordinate is not yet taken, place element there and update its coords
-            if matrix[future_x][future_y][future_z] == None:
+            if (matrix[future_x][future_y][future_z]) == None and (boundary_switch == True):
                 #print(current_x, current_y, move)
                 # update current x, y and z
                 current_x = future_x
@@ -83,6 +88,7 @@ def matrixrandomizer(lattice, moves):
             break
                  
     lattice.matrix = matrix
+    
 
     return lattice.matrix, do_count
 
@@ -129,5 +135,3 @@ def matrix_stability(lattice):
     stability /= 2
 
     return stability
-
-
