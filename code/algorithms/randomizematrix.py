@@ -26,9 +26,11 @@ def matrixrandomizer(lattice, moves):
         future_y = current_y
 
         # to circumvent getting stuck and losing time, try a max of 50 moves
-        moves_tried = 0
-        while moves_tried < 50:
 
+        moves_tried = 0
+
+        while moves_tried < 50:
+    
             # pick a random move
             move = random.choice(moves)
 
@@ -62,14 +64,17 @@ def matrixrandomizer(lattice, moves):
                 # reset 'future' coords for next loop
                 future_x = current_x
                 future_y = current_y
-                #print("FAIL")
                 moves_tried += 1
-                
-            
-    
+
+        do_count = True
+        if moves_tried == 50:
+            do_count = False
+            #print("WHILE BROKEN")
+            break
+                 
     lattice.matrix = matrix
 
-    return lattice.matrix
+    return lattice.matrix, do_count
 
 def matrix_stability(lattice):
     """calculates stability of lattice with matrix"""
