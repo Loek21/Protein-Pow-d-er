@@ -32,25 +32,32 @@ if __name__ == '__main__':
                             "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
                             "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH"]
 
+    # Checks if the correct number of arguments have been given
     if len(sys.argv) != 4:
         print("usage: python main.py datastructure string_nr iterations")
         sys.exit(0)
     data_structure = sys.argv[1]
-    lattice_string = int(sys.argv[2])
     iterations = int(sys.argv[3])
     data_structures = ["dict", "matrix"]
+
+    # Checks if data_structure is available
     if data_structure not in data_structures:
         print("You must choose either 'dict' or 'matrix'")
         sys.exit(0)
-    if lattice_string < 0 or lattice_string > 8:
+
+    # Checks to see if given index corresponds to a protein string
+    if int(sys.argv[2]) < 0 or int(sys.argv[2]) > 8:
         print("Choose a string number between 0 and 8.")
         sys.exit(0)
+    protein_string = protein_string_list[int(sys.argv[2])]
+
+    # Checks if iterations is above 0
     if iterations <= 0:
         print("You must choose a positive number.")
         sys.exit(0)
 
-
-    test_lattice = lattice.Lattice(lattice_string)
+    # Sets up list, dictionary and matrix for given protein string
+    test_lattice = lattice.Lattice(protein_string)
     test_lattice.load_dict()
     test_lattice.load_matrix()
     test_lattice.load_list()
