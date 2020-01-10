@@ -47,11 +47,11 @@ def matrixrandomizer(lattice, moves):
 
             # if coordinate is not yet taken, place element there and update its coords
             if matrix[future_x][future_y] == None:
-                print(current_x, current_y, move)
+                #print(current_x, current_y, move)
                 # update current x and y
                 current_x = future_x
                 current_y = future_y
-                print(current_x, current_y)
+                #print(current_x, current_y)
                 # set element
                 matrix[current_x][current_y] = lattice.lattice_list[set_elements]
                 lattice.lattice_list[set_elements].set_coordinates(current_x, current_y, None)
@@ -62,10 +62,9 @@ def matrixrandomizer(lattice, moves):
                 # reset 'future' coords for next loop
                 future_x = current_x
                 future_y = current_y
-                print("FAIL")
+                #print("FAIL")
                 moves_tried += 1
-                if moves_tried == 49:
-                    print("BREAKING")
+                
             
     
     lattice.matrix = matrix
@@ -74,7 +73,8 @@ def matrixrandomizer(lattice, moves):
 
 def matrix_stability(lattice):
     """calculates stability of lattice with matrix"""
-    elements = lattice.elements
+    elements = lattice.lattice_list
+    
     mat = lattice.matrix
     stability = 0
 
@@ -86,18 +86,22 @@ def matrix_stability(lattice):
     
     # check the neighbouring elements
     for element in range(len(elements)):
-        i = element.x_coord
-        j = element.y_coord
+        i = elements[element].x_coord
+        j = elements[element].y_coord
 
         if mat[i][j].type == 'H':
-            if mat[i-1][j].type == 'H':
-                stability -= 1
-            if mat[i+1][j].type == 'H':
-                stability -= 1
-            if mat[i][j-1].type == 'H':
-                stability -= 1
-            if mat[i][j+1].type == 'H':
-                stability -= 1
+            if mat[i-1][j] != None:
+                if mat[i-1][j].type == 'H':
+                    stability -= 1
+            if mat[i+1][j] != None:
+                if mat[i+1][j].type == 'H':
+                    stability -= 1
+            if mat[i][j-1] != None:
+                if mat[i][j-1].type == 'H':
+                    stability -= 1
+            if mat[i][j+1] != None:
+                if mat[i][j+1].type == 'H':
+                    stability -= 1
 
     # divide stability by 2 since pairs are checked twice
     stability /= 2
