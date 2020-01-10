@@ -133,5 +133,6 @@ def sarw_dict(lattice, moves):
         stability_element = stability(dict, i, positions)
         stability_count += stability_element
 
-    stability_count = stability_count / 2
+    # Divided by 2 because all h-bridges are counted twice
+    stability_count /= 2
     return dict, stability_count
