@@ -64,10 +64,10 @@ if __name__ == '__main__':
     test_lattice.load_list()
 
     if data_structure == "matrix":
-        # good_count = 0
+        #good_count = 0
         for i in range(iterations):
             
-            random_matrix = randomizematrix.matrixrandomizer(test_lattice, TwoD_moves)
+            random_matrix = randomizematrix.matrixrandomizer(test_lattice, ThreeD_moves)
             if random_matrix[1] != False:
                 stability = randomizematrix.matrix_stability(test_lattice)
                 # print(stability)
@@ -100,7 +100,7 @@ if __name__ == '__main__':
         # best_stability = 1
         # best_dict = {}
         for i in range(iterations):
-            random_dict, stability = randomizedict.sarw_dict(test_lattice, TwoD_moves)
+            random_dict, stability = randomizedict.sarw_dict(test_lattice, ThreeD_moves)
             #print(stability)
             # if stability < best_stability:
             #     best_stability = stability

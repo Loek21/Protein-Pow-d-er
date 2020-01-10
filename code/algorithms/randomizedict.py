@@ -85,8 +85,8 @@ def stability(dict, index, positions):
         coords_x_min = f"{x_coord - 1},{y_coord},{z_coord}"
         coords_y_plus = f"{x_coord},{y_coord + 1},{z_coord}"
         coords_y_min = f"{x_coord },{y_coord - 1},{z_coord}"
-        # coords_z_plus = f"{x_coord},{y_coord},{z_coord + 1}"
-        # coords_z_min = f"{x_coord},{y_coord},{z_coord - 1}"
+        coords_z_plus = f"{x_coord},{y_coord},{z_coord + 1}"
+        coords_z_min = f"{x_coord},{y_coord},{z_coord - 1}"
 
         if index != 0:
             coords_prev = positions[index - 1]
@@ -106,10 +106,10 @@ def stability(dict, index, positions):
             stability -= 1
         if H_bridge(dict, positions, coords_next, coords_prev, coords_y_min) == True:
             stability -= 1
-        # if H_bridge(dict, positions, coords_next, coords_prev, coords_z_plus) == True:
-        #     stability -= 1
-        # if H_bridge(dict, positions, coords_next, coords_prev, coords_z_min) == True:
-        #     stability -= 1
+        if H_bridge(dict, positions, coords_next, coords_prev, coords_z_plus) == True:
+            stability -= 1
+        if H_bridge(dict, positions, coords_next, coords_prev, coords_z_min) == True:
+            stability -= 1
 
     return stability
 
