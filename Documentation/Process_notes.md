@@ -39,5 +39,11 @@ Grid of een dictionairy
 qvdpost@gmail.com
 
 ## Time test
-Matrix random 100000 tries: 6.27s
-Dict random 100000 tries: 7.63s
+Matrix, random, 2D, 500000 tries, chain length=8: 23s
+Dict, random, 2D, 500000 tries, chain length=8: 30s
+
+Matrix, random, 2D, 100000 tries, chain length=50: 30s
+Dict, random, 2D. 100000 tries, chain length=50: 34s
+
+Matrix, random, 3D, 10000 tries, chain length=50: 1:47m
+Dict, random, 3D, 10000 tries, chain length=50: 5s

@@ -53,7 +53,7 @@ def move_no_backtrack(list, dict, positions, index, moves):
             positions.append(f"{x_coord},{y_coord},{z_coord}")
             switch = False
 
-        # If 25 attempts have been made to move and all failed the chain is stuck
+        # If 50 attempts have been made to move and all failed the chain is stuck
         if tries_counter == 50:
             return False
         tries_counter += 1
