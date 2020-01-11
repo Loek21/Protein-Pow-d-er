@@ -130,13 +130,15 @@ if __name__ == '__main__':
         # Start iterations of greedy algorithm
         for i in range(iterations):
             # Stability = ....
+            print(test_lattice)
             
             # Modify best_stability if a higher stability was found.
             if stability > best_stability:
                 best_stability = stability
             successful_iterations += 1
+            pass
         
         # Print results
-        print(f"Completed {successful_iterations} iterations")
-        print(f"Highest found stability: {best_stability}")
+        #print(f"Completed {successful_iterations} iterations")
+        #print(f"Highest found stability: {best_stability}")
         sys.exit()
