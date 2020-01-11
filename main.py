@@ -36,26 +36,26 @@ if __name__ == '__main__':
     # Checks if the correct number of arguments have been given
     if len(sys.argv) != 4:
         print("usage: python main.py datastructure string_nr iterations")
-        sys.exit(0)
+        sys.exit(1)
     data_structure = sys.argv[1]
     iterations = int(sys.argv[3])
-    data_structures = ["dict", "matrix"]
+    data_structures = ["dict", "matrix", "greedy"]
 
     # Checks if data_structure is available
     if data_structure not in data_structures:
-        print("You must choose either 'dict' or 'matrix'")
-        sys.exit(0)
+        print("You must choose either 'dict', 'matrix', or 'greedy'")
+        sys.exit(1)
 
     # Checks to see if given index corresponds to a protein string
     if int(sys.argv[2]) < 0 or int(sys.argv[2]) > 8:
         print("Choose a string number between 0 and 8.")
-        sys.exit(0)
+        sys.exit(1)
     protein_string = protein_string_list[int(sys.argv[2])]
 
     # Checks if iterations is above 0
     if iterations <= 0:
         print("You must choose a positive number.")
-        sys.exit(0)
+        sys.exit(1)
 
     # Sets up list, dictionary and matrix for given protein string
     test_lattice = lattice.Lattice(protein_string)
@@ -121,3 +121,22 @@ if __name__ == '__main__':
         #     x_list.append(x_coord)
         #     y_list.append(y_coord)
         # visualise.dict_plot(test_lattice.elements, x_list, y_list, best_stability)
+    
+    if data_structure == "greedy":
+        # Set up variables
+        successful_iterations = 0
+        best_stability = 1
+        
+        # Start iterations of greedy algorithm
+        for i in range(iterations):
+            # Stability = ....
+            
+            # Modify best_stability if a higher stability was found.
+            if stability > best_stability:
+                best_stability = stability
+            successful_iterations += 1
+        
+        # Print results
+        print(f"Completed {successful_iterations} iterations")
+        print(f"Highest found stability: {best_stability}")
+        sys.exit()

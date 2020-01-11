@@ -23,7 +23,7 @@ def matrixrandomizer(lattice, moves):
     while set_elements < len(lattice.elements):
 
         # set up 'future' coords
-        future_x = current_x
+        future_x =  current_x
         future_y = current_y
         future_z = current_z
 
