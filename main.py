@@ -65,8 +65,8 @@ if __name__ == '__main__':
     test_lattice.load_list()
 
     if data_structure == "matrix":
-        good_count = 0
-        best_stab = 1
+        # good_count = 0
+        # best_stab = 1
         for i in range(iterations):
             try:
 
@@ -74,9 +74,12 @@ if __name__ == '__main__':
                 if random_matrix[1] != False:
                     stability = randomizematrix.matrix_stability(test_lattice)
                     #print(stability)
-                    if stability < best_stab:
-                        best_stab = stability
-                    good_count += 1
+                    if stability == -16:
+                        print("MATRIX FOUND AT", i)
+                        break
+                    # if stability < best_stab:
+                    #     best_stab = stability
+                    # good_count += 1
 
 
                 test_lattice = lattice.Lattice(protein_string)
@@ -102,7 +105,7 @@ if __name__ == '__main__':
 
             except IndexError:
                 pass
-        print(good_count, best_stab)
+        # print(good_count, best_stab)
 
     if data_structure == "dict":
         best_stability = 1
@@ -110,9 +113,12 @@ if __name__ == '__main__':
         for i in range(iterations):
             random_dict, stability = randomizedict.sarw_dict(test_lattice, ThreeD_moves)
             #print(stability)
-            if stability < best_stability:
-                best_stability = stability
-                best_dict = copy.deepcopy(random_dict)
+            # if stability < best_stability:
+            #     best_stability = stability
+            #     best_dict = copy.deepcopy(random_dict)
+            if stability == -16:
+                print("MATRIX FOUND AT", i)
+                break
 
         # Gets data from best folded protein and plots it
         x_list = []
