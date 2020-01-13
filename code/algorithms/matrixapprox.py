@@ -17,7 +17,7 @@ def approximation():
         even_odd = element.get_even_odd()
         if type == "H" and even_odd == "even":
             even_H_counter += 1
-        elif type == "H" and even_odd = "odd":
+        elif type == "H" and even_odd == "odd":
             odd_H_counter += 1
 
     # Alters the chain so it has equal number of odd and even H's
