@@ -108,7 +108,7 @@ if __name__ == '__main__':
         best_stability = 1
         best_dict = {}
         for i in range(iterations):
-            random_dict, stability = randomizedict.sarw_dict(test_lattice, TwoD_moves)
+            random_dict, stability = randomizedict.sarw_dict(test_lattice, ThreeD_moves)
             #print(stability)
             if stability < best_stability:
                 best_stability = stability
@@ -117,13 +117,14 @@ if __name__ == '__main__':
         # Gets data from best folded protein and plots it
         x_list = []
         y_list = []
+        z_list = []
         for i in range(len(test_lattice.get_list())):
             x_coord, y_coord, z_coord = best_dict[i].get_location()
             x_list.append(x_coord)
             y_list.append(y_coord)
-            # z_list.append(z_coord)
-        visualise.dict_plot_TwoD(test_lattice.elements, x_list, y_list, best_stability)
-        # visualise.dict_plot_ThreeD(test_lattice.elements, x_list, y_list, z_list, best_stability)
+            z_list.append(z_coord)
+        # visualise.dict_plot_TwoD(test_lattice.elements, x_list, y_list, best_stability)
+        visualise.dict_plot_ThreeD(test_lattice.elements, x_list, y_list, z_list, best_stability)
 
     if data_structure == "approx":
         pass

@@ -50,3 +50,14 @@ Dict, random, 2D. 100000 tries, chain length=50: 34s
 
 Matrix, random, 3D, 10000 tries, chain length=50: 1:47m
 Dict, random, 3D, 10000 tries, chain length=50: 5s
+
+string[1] stability -7  (100000)
+string[2] stability -9  (100000)
+string[3] stability -13 (500000)
+
+Dict, random, 3D, string[1], found in iterations: 3064, 1103, 2196, 532, 2353, 9225, 4170, 5860, 389, 11868
+Dict, random, 3D, string[2], found in iterations: 33204, 20245, 152066, 193148, 45333, 92293, 14024, 198964, 9161, 110380
+Dict, random, 3D, string[3], found in iterations: 2601, 536228, 715283, 130287, 1315365, 1197597, 546335, 461616, 145622, 251594
+Matrix, size restriction 0.5 chain length, 3D, string[1], found in iterations: 1012, 120, 207, 1025, 280, 107, 338, 1235, 596, 636
+Matrix, size restriction 0.5 chain length, 3D, string[2], found in iterations: 15944, 11761, 43390, 94921, 140415, 356, 109729, 55086, 284228, 6894
+Matrix, size restriction 0.3 chain length, 3D, string[3], found in iterations: 139667, 568768, 192735, 229475, 135025, 6610, 114089, 210465, 15869, 102333
