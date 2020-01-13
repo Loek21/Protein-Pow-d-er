@@ -9,7 +9,7 @@ import sys
 import copy
 import datetime
 import numpy as np
-from code.algorithms import randomizematrix, randomizedict, matrixapprox.py
+from code.algorithms import randomizematrix, randomizedict, matrixapprox, greedymatrix
 from code.classes import lattice, element
 from code.visualisation import visualise
 
