@@ -13,12 +13,15 @@ Using matrix structure with enumerated elements. Randomly fold elements.
 Element objects
 
 
-# Basic info over 2D protein folding algorithms (self-avoiding walk etc.)
+## Basic info over 2D protein folding algorithms (self-avoiding walk etc.)
 Misschien niet helemaal relevant, maar wellicht interessant.
 http://math.mit.edu/classes/18.417/Slides/HP-protein-prediction.pdf
+misschien wel een goed idee voor een algorithm
+http://dimacs.rutgers.edu/~alantha/papers2/string_fold.pdf
+https://www.brown.edu/Research/Istrail_Lab/papers/1995/p157-hart.pdf
 
 
-Planning:
+## Planning:
 Week 1
 Monday: Experimenting
 Tuesday: 13:00 DL for primary experimenting
