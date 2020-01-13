@@ -9,7 +9,7 @@ import sys
 import copy
 import datetime
 import numpy as np
-from code.algorithms import randomizematrix, randomizedict
+from code.algorithms import randomizematrix, randomizedict, matrixapprox.py
 from code.classes import lattice, element
 from code.visualisation import visualise
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     protein_string_list = ["HHPHHHPH", "HHPHHHPHPHHHPH", "HPHPPHHPHPPHPHHPPHPH", "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
                             "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
                             "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
-                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH"]
+                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HPPHPPHPHPPHPHPHPPPPHH"]
 
     # Checks if the correct number of arguments have been given
     if len(sys.argv) != 4:
@@ -39,7 +39,7 @@ if __name__ == '__main__':
         sys.exit(1)
     data_structure = sys.argv[1]
     iterations = int(sys.argv[3])
-    data_structures = ["dict", "matrix", "greedy"]
+    data_structures = ["dict", "matrix", "greedy", "approx"]
 
     # Checks if data_structure is available
     if data_structure not in data_structures:
@@ -47,8 +47,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Checks to see if given index corresponds to a protein string
-    if int(sys.argv[2]) < 0 or int(sys.argv[2]) > 8:
-        print("Choose a string number between 0 and 8.")
+    if int(sys.argv[2]) < 0 or int(sys.argv[2]) > 9:
+        print("Choose a string number between 0 and 9.")
         sys.exit(1)
     protein_string = protein_string_list[int(sys.argv[2])]
 
@@ -61,6 +61,7 @@ if __name__ == '__main__':
     test_lattice = lattice.Lattice(protein_string)
     test_lattice.load_dict()
     test_lattice.load_matrix()
+    test_lattice.load_TwoD_matrix()
     test_lattice.load_list()
 
     if data_structure == "matrix":
@@ -68,7 +69,7 @@ if __name__ == '__main__':
         best_stab = 1
         for i in range(iterations):
             try:
-            
+
                 random_matrix = randomizematrix.matrixrandomizer(test_lattice, ThreeD_moves)
                 if random_matrix[1] != False:
                     stability = randomizematrix.matrix_stability(test_lattice)
@@ -76,8 +77,8 @@ if __name__ == '__main__':
                     if stability < best_stab:
                         best_stab = stability
                     good_count += 1
-                    
-                    
+
+
                 test_lattice = lattice.Lattice(protein_string)
                 test_lattice.load_matrix()
                 test_lattice.load_list()
@@ -98,46 +99,51 @@ if __name__ == '__main__':
                     #         new_matrix[row][element] = random_matrix[row][element]
 
                     # visualise.matrix_plot(new_matrix)
-        
+
             except IndexError:
                 pass
         print(good_count, best_stab)
 
-    if data_structure == "dict": 
-        # best_stability = 1
-        # best_dict = {}
+    if data_structure == "dict":
+        best_stability = 1
+        best_dict = {}
         for i in range(iterations):
-            random_dict, stability = randomizedict.sarw_dict(test_lattice, ThreeD_moves)
+            random_dict, stability = randomizedict.sarw_dict(test_lattice, TwoD_moves)
             #print(stability)
-            # if stability < best_stability:
-            #     best_stability = stability
-            #     best_dict = copy.deepcopy(random_dict)
+            if stability < best_stability:
+                best_stability = stability
+                best_dict = copy.deepcopy(random_dict)
 
         # Gets data from best folded protein and plots it
-        # x_list = []
-        # y_list = []
-        # for i in range(len(test_lattice.get_list())):
-        #     x_coord, y_coord, z_coord = best_dict[i].get_location()
-        #     x_list.append(x_coord)
-        #     y_list.append(y_coord)
-        # visualise.dict_plot(test_lattice.elements, x_list, y_list, best_stability)
-    
+        x_list = []
+        y_list = []
+        for i in range(len(test_lattice.get_list())):
+            x_coord, y_coord, z_coord = best_dict[i].get_location()
+            x_list.append(x_coord)
+            y_list.append(y_coord)
+            # z_list.append(z_coord)
+        visualise.dict_plot_TwoD(test_lattice.elements, x_list, y_list, best_stability)
+        # visualise.dict_plot_ThreeD(test_lattice.elements, x_list, y_list, z_list, best_stability)
+
+    if data_structure == "approx":
+        pass
+
     if data_structure == "greedy":
         # Set up variables
         successful_iterations = 0
         best_stability = 1
-        
+
         # Start iterations of greedy algorithm
         for i in range(iterations):
             # Stability = ....
             print(test_lattice)
-            
+
             # Modify best_stability if a higher stability was found.
             if stability > best_stability:
                 best_stability = stability
             successful_iterations += 1
             pass
-        
+
         # Print results
         #print(f"Completed {successful_iterations} iterations")
         #print(f"Highest found stability: {best_stability}")
