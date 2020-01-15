@@ -74,9 +74,9 @@ if __name__ == '__main__':
                 if random_matrix[1] != False:
                     stability = randomizematrix.matrix_stability(test_lattice)
                     #print(stability)
-                    if stability == -16:
-                        print("MATRIX FOUND AT", i)
-                        break
+                    # if stability == -16:
+                    #     print("MATRIX FOUND AT", i)
+                    #     break
                     # if stability < best_stab:
                     #     best_stab = stability
                     # good_count += 1
