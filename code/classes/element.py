@@ -44,4 +44,4 @@ class Element:
 
     def __repr__(self):
         """Returns string representation of object"""
-        return f"{self.type}: ({self.x_coord},{self.y_coord},{self.z_coord}), {self.direction}"
+        return f"{self.type}: ({self.x_coord},{self.y_coord},{self.z_coord}), {self.direction}."
