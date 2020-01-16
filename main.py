@@ -9,7 +9,7 @@ import sys
 import copy
 import datetime
 import numpy as np
-from code.algorithms import randomizematrix, randomizedict, matrixapprox, greedymatrix, breadthfirst
+from code.algorithms import randomizematrix, randomizedict, matrixapprox, greedymatrix, breadthfirst, eha
 from code.classes import lattice, element
 from code.visualisation import visualise
 
@@ -31,7 +31,11 @@ if __name__ == '__main__':
     protein_string_list = ["HHPHHHPH", "HHPHHHPHPHHHPH", "HPHPPHHPHPPHPHHPPHPH", "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
                             "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
                             "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
+<<<<<<< HEAD
                             "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HPPHP"]
+=======
+                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HPHPPHHPHPPHPHHPPHPH"]
+>>>>>>> 606ff26f3cbdbd05b9da5c10c078e2dfded15892
 
     # Checks if the correct number of arguments have been given
     if len(sys.argv) != 4:
@@ -39,7 +43,7 @@ if __name__ == '__main__':
         sys.exit(1)
     data_structure = sys.argv[1]
     iterations = int(sys.argv[3])
-    data_structures = ["dict", "matrix", "greedy", "approx", "breadth"]
+    data_structures = ["dict", "matrix", "greedy", "approx", "breadth", "eha"]
 
     # Checks if data_structure is available
     if data_structure not in data_structures:
@@ -66,7 +70,7 @@ if __name__ == '__main__':
 
     if data_structure == "matrix":
         # good_count = 0
-        # best_stab = 1
+        best_stab = 1
         for i in range(iterations):
             try:
 
@@ -77,9 +81,9 @@ if __name__ == '__main__':
                     # if stability == -16:
                     #     print("MATRIX FOUND AT", i)
                     #     break
-                    # if stability < best_stab:
-                    #     best_stab = stability
-                    # good_count += 1
+                    if stability < best_stab:
+                        best_stab = stability
+                    #good_count += 1
 
 
                 test_lattice = lattice.Lattice(protein_string)
@@ -105,13 +109,13 @@ if __name__ == '__main__':
 
             except IndexError:
                 pass
-        # print(good_count, best_stab)
+        print(best_stab)
 
     if data_structure == "dict":
         best_stability = 1
         best_dict = {}
         for i in range(iterations):
-            random_dict, stability = randomizedict.sarw_dict(test_lattice, ThreeD_moves)
+            random_dict, stability = randomizedict.sarw_dict(test_lattice, TwoD_moves)
             #print(stability)
             if stability < best_stability:
                 best_stability = stability
@@ -177,3 +181,18 @@ if __name__ == '__main__':
         #print(f"Completed {successful_iterations} iterations")
         #print(f"Highest found stability: {best_stability}")
         sys.exit()
+
+    if data_structure == "eha":
+        stability, chain = eha.eha(test_lattice, ThreeD_moves, 6)
+        print(stability)
+        print(chain)
+        element_list = []
+        x_list = []
+        y_list = []
+        z_list = []
+        for element in chain:
+            element_list.append(element.type)
+            x_list.append(element.x_coord)
+            y_list.append(element.y_coord)
+            z_list.append(element.z_coord)
+        visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, stability)
