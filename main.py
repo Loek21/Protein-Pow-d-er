@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
     if data_structure == "matrix":
         # good_count = 0
-        # best_stab = 1
+        best_stab = 1
         for i in range(iterations):
             try:
 
@@ -77,9 +77,9 @@ if __name__ == '__main__':
                     # if stability == -16:
                     #     print("MATRIX FOUND AT", i)
                     #     break
-                    # if stability < best_stab:
-                    #     best_stab = stability
-                    # good_count += 1
+                    if stability < best_stab:
+                        best_stab = stability
+                    good_count += 1
 
 
                 test_lattice = lattice.Lattice(protein_string)
