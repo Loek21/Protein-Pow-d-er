@@ -79,7 +79,7 @@ if __name__ == '__main__':
                     #     break
                     if stability < best_stab:
                         best_stab = stability
-                    good_count += 1
+                    #good_count += 1
 
 
                 test_lattice = lattice.Lattice(protein_string)
@@ -105,7 +105,7 @@ if __name__ == '__main__':
 
             except IndexError:
                 pass
-        # print(good_count, best_stab)
+        print(best_stab)
 
     if data_structure == "dict":
         best_stability = 1
