@@ -31,7 +31,7 @@ if __name__ == '__main__':
     protein_string_list = ["HHPHHHPH", "HHPHHHPHPHHHPH", "HPHPPHHPHPPHPHHPPHPH", "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
                             "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
                             "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
-                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HPPHPPHPHPPHPHPHPPPPHH"]
+                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HPPHP"]
 
     # Checks if the correct number of arguments have been given
     if len(sys.argv) != 4:
@@ -137,7 +137,25 @@ if __name__ == '__main__':
         pass
 
     if data_structure == "breadth":
-        breadthfirst.bfs(test_lattice, TwoD_moves)
+        result_states, stabilities = breadthfirst.bfs(test_lattice, ThreeD_moves)
+        best_stability = 1
+        best_state = 0
+        for i in range(len(result_states)):
+            if stabilities[i] < best_stability:
+                best_stability = stabilities[i]
+                best_state = result_states[i]
+
+        x_list = []
+        y_list = []
+        z_list = []
+        for i in range(len(best_state)):
+            x_coord, y_coord, z_coord = best_state[i].get_location()
+            x_list.append(x_coord)
+            y_list.append(y_coord)
+            z_list.append(z_coord)
+
+        visualise.dict_plot_ThreeD(test_lattice.elements, x_list, y_list, z_list, best_stability)
+
 
     if data_structure == "greedy":
         # Set up variables
