@@ -1,5 +1,19 @@
 import itertools
 import copy
+import random
+
+def permutations_maker(moves, piece_length):
+    permutations = [p for p in itertools.product(moves, repeat=piece_length)]
+
+    # for moveset in range(len(permutations) - 1):
+    #     for move in range(len(moveset) - 1):
+    #         if moveset[move] == - moveset[move + 1]:
+    #             moveset.remove()
+
+
+
+    return permutations
+
 
 def eha(lattice, moves, subchain_length):
     """
@@ -19,7 +33,7 @@ def eha(lattice, moves, subchain_length):
     piece_length = subchain_length
 
     # get all permutations of moves you can make
-    permutations = [p for p in itertools.product(moves, repeat=piece_length)]
+    permutations = permutations_maker(moves, subchain_length)
 
     # fix first 2 elements in the matrix
     current_x = int(len(matrix) * 0.5 - 1)
@@ -32,13 +46,6 @@ def eha(lattice, moves, subchain_length):
     current_x += 1
     matrix[current_x][current_y][current_z] = lattice.lattice_list[1]
     lattice.lattice_list[1].set_coordinates(current_x, current_y, current_z)
-    
-    # 2 elements have been set in the matrix
-    set_elements = 2
-
-    # keep track of score
-    score = 0
-    best_moves = []
 
     # getting all the pieces of the remaining chain into separate lists
     piece_list = []
@@ -49,19 +56,31 @@ def eha(lattice, moves, subchain_length):
             piece_list.append(piece)
             piece = []
 
-        if i == len(chain) - 1:
+        if i == len(chain[2:]) - 1:
             piece_list.append(piece)
 
         
-
+    best_matrix = None
+    best_stability = 1
+    print(piece_list)
     # run until all pieces have been set
     for piece in piece_list:
-        best_matrix = None
-        best_stability = 0
 
+        # since some piece lists contain an empty last list due to final append, just break when there is one
+        if len(piece) == 0:
+            break
+        
+        # save the best moves made for a piece, 
+        # so the elements can take over those coordinates at the end of the loop
+        best_moves = []
+        print(f"PIECE {piece}")
+        counter = 0
         for moveset in permutations:
+            counter += 1
+            # print(f"MOVESET {counter}")
             dummy_matrix = copy.deepcopy(matrix)
             elements_coords = []
+            check_score = True
 
             # set up 'future' coords
             future_x = current_x
@@ -90,6 +109,10 @@ def eha(lattice, moves, subchain_length):
                     
                 elif move == -3:
                     future_z += 1
+                
+                # if move hits the border, cancel the move
+                if (future_x == 0) or (future_y == 0) or (future_z == 0) or (future_x == len(matrix) - 1) or (future_y == len(matrix) - 1) or (future_z == len(matrix) - 1):
+                    continue
 
                 # if the coords aren't yet occupied, set element there
                 if dummy_matrix[future_x][future_y][future_z] == None:
@@ -99,8 +122,12 @@ def eha(lattice, moves, subchain_length):
                 
                 # else break out of this moveset and try the next one
                 else:
+                    check_score = False
                     break
-
+            
+            # if check score is False, don't check the stability
+            if check_score == False:
+                continue
             
             # at the end of the moveset, count the score, saving the best score and setting up the elements with the coords of best score
             stability = 0
@@ -117,6 +144,9 @@ def eha(lattice, moves, subchain_length):
                 j = chain[element].y_coord
                 k = chain[element].z_coord
 
+                if not hasattr(dummy_matrix[i][j][k], 'type'):
+                    break
+                
                 if dummy_matrix[i][j][k].type == 'H':
                     if dummy_matrix[i-1][j][k] != None:
                         if dummy_matrix[i-1][j][k].type == 'H':
@@ -139,10 +169,31 @@ def eha(lattice, moves, subchain_length):
 
             # divide stability by 2 since pairs are checked twice
             stability /= 2
+            #print(stability)
+            if stability <= best_stability:
+                if stability == best_stability and random.random() < 0.05:
+                    best_stability = stability
+                    best_matrix = dummy_matrix
+                    best_moves = elements_coords
 
-            if stability < best_stability:
-                best_stability = stability
-                best_matrix = dummy_matrix
+                else:
+                    best_stability = stability
+                    best_matrix = dummy_matrix
+                    best_moves = elements_coords
+
+        # update the element coordinates corresponding to best moves found
+        for (element, coords) in zip(piece, best_moves):
+            element.set_coordinates(coords[0], coords[1], coords[2])
+            current_x = coords[0]
+            current_y = coords[1]
+            current_z = coords[2]
+
+        # update the matrix to be the best one with the piece in place
+        #print(best_matrix)
+
+        matrix = best_matrix
+
+    return best_stability, chain
 
 
 

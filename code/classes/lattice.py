@@ -27,12 +27,16 @@ class Lattice:
 
     def load_matrix(self):
         """Loads a 3D empty matrix which can be filled with objects, big enough so straight chains don't hit borders"""
-        dimension = int(len(self.elements)*0.3)
+<<<<<<< HEAD
+        dimension = int(len(self.elements)*2)
+=======
+        dimension = int(len(self.elements)*0.8)
+>>>>>>> 606ff26f3cbdbd05b9da5c10c078e2dfded15892
         self.matrix = np.empty((dimension, dimension, dimension), dtype=object)
 
     def load_TwoD_matrix(self):
         """Loads a 2D empty matrix which can be filled with objects"""
-        dimension = int(len(self.elements))
+        dimension = int(len(self.elements)*2)
         self.matrix_twoD = np.empty((dimension, dimension), dtype=object)
 
     def get_list(self):

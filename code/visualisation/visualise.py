@@ -7,7 +7,7 @@ def matrix_plot(matrix):
     plt.show()
 
 def dict_plot_ThreeD(list, x_list, y_list, z_list, stability):
-    """Plots scatter plot of lattice"""
+    """Plots scatter plot of lattice (list is string of protein)"""
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     for i in range(len(x_list)):
