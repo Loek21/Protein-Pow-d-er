@@ -49,10 +49,11 @@ def greedy(lattice, moves):
                 best_move_score = 0
                 
                 for move in moves:
+                    if matrix
                     for mat in matrix:
-                        if matrix[current_x + move][current_y][current_z].type == 'H' or\
-                        matrix[current_x][current_y + move][current_z].type == 'H' or\
-                        matrix[current_x][current_y][current_z + move].type == 'H':
+                        if matrix[current_x + move][current_y][current_z].type == 'H':
+                        #matrix[current_x][current_y + move][current_z].type == 'H' or\
+                        #matrix[current_x][current_y][current_z + move].type == 'H':
                             best_moves.append(move)
 
                 move = random.choice(best_moves)
