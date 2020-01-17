@@ -32,7 +32,7 @@ class Lattice:
 
     def load_TwoD_matrix(self):
         """Loads a 2D empty matrix which can be filled with objects"""
-        dimension = int(len(self.elements))
+        dimension = int(len(self.elements)*2)
         self.matrix_twoD = np.empty((dimension, dimension), dtype=object)
 
     def get_list(self):
@@ -52,4 +52,4 @@ class Lattice:
         return self.matrix_twoD
 
     def __str__(self):
-        return self.lattice_list
+        return f"{self.lattice_list}"

@@ -31,7 +31,7 @@ if __name__ == '__main__':
     protein_string_list = ["HHPHHHPH", "HHPHHHPHPHHHPH", "HPHPPHHPHPPHPHHPPHPH", "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
                             "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
                             "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
-                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HPHPPHHPHPPHPHHPPHPH"]
+                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HPPHP"]
 
     # Checks if the correct number of arguments have been given
     if len(sys.argv) != 4:
@@ -82,9 +82,9 @@ if __name__ == '__main__':
                     #good_count += 1
 
 
-                test_lattice = lattice.Lattice(protein_string)
-                test_lattice.load_matrix()
-                test_lattice.load_list()
+                #test_lattice = lattice.Lattice(protein_string)
+                #test_lattice.load_matrix()
+                #test_lattice.load_list()
                     # for row in range(len(random_matrix)):
                     #     for element in range(len(random_matrix)):
                     #         if random_matrix[row][element] == None:
@@ -137,28 +137,54 @@ if __name__ == '__main__':
         pass
 
     if data_structure == "breadth":
-        breadthfirst.bfs(test_lattice, TwoD_moves)
+        result_states, stabilities = breadthfirst.bfs(test_lattice, ThreeD_moves)
+        best_stability = 1
+        best_state = 0
+        for i in range(len(result_states)):
+            if stabilities[i] < best_stability:
+                best_stability = stabilities[i]
+                best_state = result_states[i]
+
+        x_list = []
+        y_list = []
+        z_list = []
+        for i in range(len(best_state)):
+            x_coord, y_coord, z_coord = best_state[i].get_location()
+            x_list.append(x_coord)
+            y_list.append(y_coord)
+            z_list.append(z_coord)
+
+        visualise.dict_plot_ThreeD(test_lattice.elements, x_list, y_list, z_list, best_stability)
+
 
     if data_structure == "greedy":
         # Set up variables
         successful_iterations = 0
-        best_stability = 1
+        best_stability = 0
 
         # Start iterations of greedy algorithm
         for i in range(iterations):
-            # Stability = ....
-            print(test_lattice)
+            #try:
+                greedymat = greedymatrix.greedy(test_lattice, ThreeD_moves)
+                print(greedymat)
+                if greedymat[1] != False:
+                    stability = greedymatrix.matrix_stability(test_lattice)
 
-            # Modify best_stability if a higher stability was found.
-            if stability > best_stability:
-                best_stability = stability
-            successful_iterations += 1
-            pass
+                # Modify best_stability if a higher stability was found.
+                if stability < best_stability:
+                    best_stability = stability
+                successful_iterations += 1
+            #except IndexError:
+            #    print("F")
+            #    pass
 
         # Print results
+        print(f"Completed {successful_iterations} iterations")
+        print(f"Best found stability: {best_stability}")
+        # sys.exit()
         #print(f"Completed {successful_iterations} iterations")
         #print(f"Highest found stability: {best_stability}")
-        sys.exit()
+        # sys.exit()
 
     if data_structure == "eha":
         stability, chain = eha.eha(test_lattice, ThreeD_moves, 6)
