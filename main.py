@@ -170,7 +170,7 @@ if __name__ == '__main__':
                 if greedymat[1] != False:
                     stability = greedymatrix.matrix_stability(test_lattice)
 
-                # Modify best_stability if a higher stability was found.                
+                # Modify best_stability if a higher stability was found.
                 if stability < best_stability:
                     best_stability = stability
                 successful_iterations += 1
@@ -181,10 +181,10 @@ if __name__ == '__main__':
         # Print results
         print(f"Completed {successful_iterations} iterations")
         print(f"Best found stability: {best_stability}")
-        sys.exit()
+        # sys.exit()
         #print(f"Completed {successful_iterations} iterations")
         #print(f"Highest found stability: {best_stability}")
-        sys.exit()
+        # sys.exit()
 
     if data_structure == "eha":
         stability, chain = eha.eha(test_lattice, ThreeD_moves, 6)
