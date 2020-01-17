@@ -52,4 +52,4 @@ class Lattice:
         return self.matrix_twoD
 
     def __str__(self):
-        return self.lattice_list
+        return f"{self.lattice_list}"

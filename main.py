@@ -82,9 +82,9 @@ if __name__ == '__main__':
                     #good_count += 1
 
 
-                test_lattice = lattice.Lattice(protein_string)
-                test_lattice.load_matrix()
-                test_lattice.load_list()
+                #test_lattice = lattice.Lattice(protein_string)
+                #test_lattice.load_matrix()
+                #test_lattice.load_list()
                     # for row in range(len(random_matrix)):
                     #     for element in range(len(random_matrix)):
                     #         if random_matrix[row][element] == None:
@@ -142,20 +142,25 @@ if __name__ == '__main__':
     if data_structure == "greedy":
         # Set up variables
         successful_iterations = 0
-        best_stability = 1
+        best_stability = 0
 
         # Start iterations of greedy algorithm
         for i in range(iterations):
-            # Stability = ....
-            print(test_lattice)
+            #try:
+                greedymat = greedymatrix.greedy(test_lattice, ThreeD_moves)
+                print(greedymat)
+                if greedymat[1] != False:
+                    stability = greedymatrix.matrix_stability(test_lattice)
 
-            # Modify best_stability if a higher stability was found.
-            if stability > best_stability:
-                best_stability = stability
-            successful_iterations += 1
-            pass
+                # Modify best_stability if a higher stability was found.                
+                if stability < best_stability:
+                    best_stability = stability
+                successful_iterations += 1
+            #except IndexError:
+            #    print("F")
+            #    pass
 
         # Print results
-        #print(f"Completed {successful_iterations} iterations")
-        #print(f"Highest found stability: {best_stability}")
+        print(f"Completed {successful_iterations} iterations")
+        print(f"Best found stability: {best_stability}")
         sys.exit()
