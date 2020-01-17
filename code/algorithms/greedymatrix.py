@@ -36,30 +36,30 @@ def greedy(lattice, moves):
 
         moves_tried = 0
 
-        while moves_tried < 50:
+        for move in moves:
             
             # pick a greedy move
-            if matrix[current_x][current_y][current_z].type == 'P':
+            #if matrix[current_x][current_y][current_z].type == 'P':
                 # P element placed randomly, since no change to stability
-                move = random.choice(moves)
+            #    move = random.choice(moves)
             
-            elif matrix[current_x][current_y][current_z].type == 'H':
+            #elif matrix[current_x][current_y][current_z].type == 'H':
                 # make list of best_moves and choose randomly from list
-                best_moves = []
-                best_move_score = 0
+            #    best_moves = []
+            #    best_move_score = 0
                 
-                for move in moves:
-                    if matrix
-                    for mat in matrix:
-                        if matrix[current_x + move][current_y][current_z].type == 'H':
+            #    for move in moves:
+            #        if matrix
+            #        for mat in matrix:
+            #            if matrix[current_x + move][current_y][current_z].type == 'H':
                         #matrix[current_x][current_y + move][current_z].type == 'H' or\
                         #matrix[current_x][current_y][current_z + move].type == 'H':
-                            best_moves.append(move)
+            #                best_moves.append(move)
 
-                move = random.choice(best_moves)
-            else:
-                print("Error. Element in Protein String not recognized")
-                sys.exit(1)
+             #   move = random.choice(best_moves)
+            #else:
+            #    print("Error. Element in Protein String not recognized")
+            #    sys.exit(1)
 
             # update current coords
             if move == 1:
@@ -96,7 +96,31 @@ def greedy(lattice, moves):
                 matrix[current_x][current_y][current_z] = lattice.lattice_list[set_elements]
                 lattice.lattice_list[set_elements].set_coordinates(current_x, current_y, current_z)
                 set_elements += 1
-                break
+                
+                # calculate h neighbours
+                temp_stab = 0
+                if matrix[current_x][current_y][current_z].type == 'H':
+                    if matrix[i-1][j][k] != None:
+                        if matrix[i-1][j][k].type == 'H':
+                            temp_stab -= 1
+                    if matrix[i+1][j][k] != None:
+                        if matrix[i+1][j][k].type == 'H':
+                            temp_stab -= 1
+                    if matrix[i][j-1][k] != None:
+                        if matrix[i][j-1][k].type == 'H':
+                            temp_stab -= 1
+                        if matrix[i][j+1][k] != None:
+                            if matrix[i][j+1][k].type == 'H':
+                                temp_stab -= 1
+                        if matrix[i][j][k+1] != None:
+                            if matrix[i][j][k+1].type == 'H':
+                                temp_stab -= 1
+                        if matrix[i][j][k-1] != None:
+                            if matrix[i][j][k-1].type == 'H':
+                                temp_stab -= 1
+
+                        # divide stability by 2 since pairs are checked twice
+                        stability /= 2
             
             else:
                 # reset 'future' coords for next loop
