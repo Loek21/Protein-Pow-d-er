@@ -61,3 +61,16 @@ Dict, random, 3D, string[3], found in iterations: 2601, 536228, 715283, 130287, 
 Matrix, size restriction 0.5 chain length, 3D, string[1], found in iterations: 1012, 120, 207, 1025, 280, 107, 338, 1235, 596, 636
 Matrix, size restriction 0.5 chain length, 3D, string[2], found in iterations: 15944, 11761, 43390, 94921, 140415, 356, 109729, 55086, 284228, 6894
 Matrix, size restriction 0.3 chain length, 3D, string[3], found in iterations: 139667, 568768, 192735, 229475, 135025, 6610, 114089, 210465, 15869, 102333
+
+
+
+# New best structure found for the 50 length chain. Better than literature with -27. The element list is:
+[H: (24,24,24), None., H: (25,24,24), None., P: (25,24,25), None., H: (24,24,25), None., P: (24,23,25), None., H: (24,23,24), None., P: (23,23,24), None., H: (23,24,24), None., P: (23,25,24), None., H: (24,25,24), None., H: (25,25,24), None., H: (25,25,25), None., H: (24,25,25), None., P: (23,25,25), None., H: (23,24,25), None., P: (23,23,25), None., P: (23,23,26), None., P: (24,23,26), None., H: (24,24,26), None., P: (25,24,26), None., P: (25,23,26), None., P: (25,23,25), None., H: (25,23,24), None., P: (25,23,23), None., P: (25,22,23), None., P: (24,22,23), None., P: (24,22,24), None., H: (25,22,24), None., P: (25,22,25), None., P: (26,22,25), None., P: (26,23,25), None., H: (26,23,24), None., P: (26,24,24), None., P: (26,24,23), None., P: (25,24,23), None., H: (25,25,23), None., P: (25,26,23), None., H: (25,26,24), None., H: (24,26,24), None., H: (24,26,25), None., H: (25,26,25), None., P: (26,26,25), None., H: (26,25,25), None., P: (27,25,25), None., H: (27,25,24), None., P: (27,26,24), None., H: (26,26,24), None., P: (26,26,23), None., H: (26,25,23), None., H: (26,25,24), None.]
+
+Double checked the outcome with the coords of all H's: [(24,24,24), (25,24,24), (24,24,25), (24,23,24), (23,24,24), (24,25,24), (25,25,24), (25,25,25), (24,25,25), (23,24,25), (24,24,26), (25,23,24), (25,22,24), (26,23,24), (25,25,23), (25,26,24), (24,26,24), (24,26,25), (25,26,25), (26,25,25), (27,25,24), (26,26,24), (26,25,23), (26,25,24)]
+Ran a neighbour check and subtracted all consecutive H's of the string itself. -27 is the final answer. -26 was the previous record for this chain. Done with cutting chain into pieces of 8 long.
+
+# Best structure found so far for the 36 length chain. Score is -17 so far, element list is:
+[P: (17,17,17), None., P: (18,17,17), None., P: (18,17,18), None., H: (18,17,19), None., H: (18,17,20), None., P: (18,18,20), None., P: (17,18,20), None., H: (17,17,20), None., H: (17,17,19), None., P: (17,17,18), None., P: (17,16,18), None., P: (17,15,18), None., P: (18,15,18), None., P: (18,15,19), None., H: (18,16,19), None., H: (18,16,20), None., H: (18,16,21), None., H: (18,17,21), None., H: (17,17,21), None., H: (17,16,21), None., H: (17,16,20), None., P: (17,16,19), None., P: (16,16,19), None., H: (16,16,20), None., H: (16,16,21), None., P: (15,16,21), None., P: (15,16,22), None., P: (16,16,22), None., P: (16,17,22), None., H: (16,17,21), None., H: (16,17,20), None., P: (16,18,20), None., P: (16,18,19), None., H: (16,17,19), None., P: (16,17,18), None., P: (15,17,18), None.]
+
+Was done with cutting chain into pieces of 7 long.

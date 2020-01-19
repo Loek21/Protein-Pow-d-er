@@ -202,7 +202,7 @@ if __name__ == '__main__':
         visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, stability)
 
     if data_structure == "ehalist":
-        stability, chain = ehadict.eha_list(test_lattice, ThreeD_moves, 7)
+        stability, chain = ehadict.eha_list(test_lattice, ThreeD_moves, 8)
         print(stability)
         print(chain)
         element_list = []
