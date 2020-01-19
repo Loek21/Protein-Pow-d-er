@@ -14,9 +14,9 @@ class Element:
 
     def set_coordinates(self, x_coord, y_coord, z_coord):
         """Sets object coordinates"""
-        self.x_coord = int(x_coord)
-        self.y_coord = int(y_coord)
-        self.z_coord = int(z_coord)
+        self.x_coord = x_coord
+        self.y_coord = y_coord
+        self.z_coord = z_coord
 
     def set_direction(self, direction):
         """Sets object direction"""
