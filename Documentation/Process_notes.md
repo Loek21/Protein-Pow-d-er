@@ -133,3 +133,4 @@ Runtime: < 26.8 sec
 Best found: -26
 Runtime: < 6:25 minutes
 
+## Upper bound tests

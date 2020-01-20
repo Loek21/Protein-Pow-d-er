@@ -218,7 +218,7 @@ if __name__ == '__main__':
                 best_stability_eha = stability
                 best_chain = chain
 
-            test_lattice = lattice.Lattice(protein_string) 
+            test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
 
         element_list = []
@@ -231,5 +231,5 @@ if __name__ == '__main__':
             y_list.append(element.y_coord)
             z_list.append(element.z_coord)
 
-            
+
         visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, best_stability_eha)

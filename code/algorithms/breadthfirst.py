@@ -69,11 +69,6 @@ def bfs(lattice, P, H, C, moves):
             result_list.append(protein_state)
             stabilities.append(stability_state)
 
-        if len(protein_state) % 3 == 0:
-            check_stability = True
-        else:
-            check_stability = False
-
         if len(protein_state) < depth:
             current_length = len(protein_state)
             for i in moves:
@@ -103,28 +98,28 @@ def bfs(lattice, P, H, C, moves):
                     stability.put(stability_child_copy)
 
                     # For regular testing
-                    mirror_switch = mirror_prune(current_length, protein_child, i)
-                    if mirror_switch == True:
-                        stability_child = stability_calculator(current_length, protein_child)
-                        random_switch = random_prune()
-                        if current_length < 22:
-                            if stability_child <= stability_to_beat:
-                                stability_to_beat = stability_child
-
-                                stability_child_copy = copy.deepcopy(stability_child)
-                                protein_child_copy = copy.deepcopy(protein_child)
-
-                                list_queue.put(protein_child_copy)
-                                stability.put(stability_child_copy)
-                        else:
-                            if stability_child <= stability_to_beat and random_switch == True:
-                                stability_to_beat = stability_child
-
-                                stability_child_copy = copy.deepcopy(stability_child)
-                                protein_child_copy = copy.deepcopy(protein_child)
-
-                                list_queue.put(protein_child_copy)
-                                stability.put(stability_child_copy)
+                    # mirror_switch = mirror_prune(current_length, protein_child, i)
+                    # if mirror_switch == True:
+                    #     stability_child = stability_calculator(current_length, protein_child)
+                    #     random_switch = random_prune()
+                    #     if current_length < 22:
+                    #         if stability_child <= stability_to_beat:
+                    #             stability_to_beat = stability_child
+                    #
+                    #             stability_child_copy = copy.deepcopy(stability_child)
+                    #             protein_child_copy = copy.deepcopy(protein_child)
+                    #
+                    #             list_queue.put(protein_child_copy)
+                    #             stability.put(stability_child_copy)
+                    #     else:
+                    #         if stability_child <= stability_to_beat and random_switch == True:
+                    #             stability_to_beat = stability_child
+                    #
+                    #             stability_child_copy = copy.deepcopy(stability_child)
+                    #             protein_child_copy = copy.deepcopy(protein_child)
+                    #
+                    #             list_queue.put(protein_child_copy)
+                    #             stability.put(stability_child_copy)
 
 
     return result_list, stabilities
