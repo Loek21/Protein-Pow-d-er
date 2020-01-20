@@ -1,13 +1,9 @@
-"""
-Algorithm that calculates the highest stability of a given string according to a 'greedy algorithm'
-"""
-
 import random
 import sys
 
 def greedy(lattice, moves):
+    """This algorithm constructively fills a matrix with elements. Each element is randomly placed, choices limited by a greedy algorithm"""
 
-    # Build Matrix
     matrix = lattice.get_matrix()
 
     # set the first 2 elements in the matrix since all possibilities result in the same structure
@@ -36,30 +32,45 @@ def greedy(lattice, moves):
 
         moves_tried = 0
 
-        for move in moves:
-            
+        while moves_tried < 50:
+    
             # pick a greedy move
-            #if matrix[current_x][current_y][current_z].type == 'P':
-                # P element placed randomly, since no change to stability
-            #    move = random.choice(moves)
-            
-            #elif matrix[current_x][current_y][current_z].type == 'H':
-                # make list of best_moves and choose randomly from list
-            #    best_moves = []
-            #    best_move_score = 0
-                
-            #    for move in moves:
-            #        if matrix
-            #        for mat in matrix:
-            #            if matrix[current_x + move][current_y][current_z].type == 'H':
-                        #matrix[current_x][current_y + move][current_z].type == 'H' or\
-                        #matrix[current_x][current_y][current_z + move].type == 'H':
-            #                best_moves.append(move)
+            # if next element is 'P', move is random because no influence on stability
+            if lattice.elements[set_elements] == 'P':
+                move = random.choice(moves)
 
-             #   move = random.choice(best_moves)
-            #else:
-            #    print("Error. Element in Protein String not recognized")
-            #    sys.exit(1)
+            # if next element is 'H' or 'C', check each surrounding spot
+            elif lattice.elements[set_elements] == 'H' or 'C':
+                best_moves = []
+                best_stab = 0
+                test_stab = 0
+                
+                for move in moves:
+                    if move == 1:
+                        test_stab = element_stability(lattice.matrix, current_x + 1, current_y, current_z)
+                        best_moves, best_stab = compare_stability(move, test_stab, best_stab, best_moves)
+                    if move == -1:
+                        test_stab = element_stability(lattice.matrix, current_x - 1, current_y, current_z)
+                        best_moves, best_stab = compare_stability(move, test_stab, best_stab, best_moves)
+                    if move == 2:
+                        test_stab = element_stability(lattice.matrix, current_x, current_y + 1, current_z)
+                        best_moves, best_stab = compare_stability(move, test_stab, best_stab, best_moves)
+                    if move == -2:
+                        test_stab = element_stability(lattice.matrix, current_x, current_y - 1, current_z)
+                        best_moves, best_stab = compare_stability(move, test_stab, best_stab, best_moves)
+                    if move == 3:
+                        test_stab = element_stability(lattice.matrix, current_x, current_y, current_z + 1)
+                        best_moves, best_stab = compare_stability(move, test_stab, best_stab, best_moves)
+                    if move == -3:
+                        test_stab = element_stability(lattice.matrix, current_x, current_y, current_z - 1)
+                        best_moves, best_stab = compare_stability(move, test_stab, best_stab, best_moves)
+
+                move = random.choice(best_moves)
+            
+            # error, element is not P, H or C
+            else:
+                print("Error: Amino Acid in String not recognized. Ensure that input only contains H/P/C characters")
+                sys.exit(1)
 
             # update current coords
             if move == 1:
@@ -85,42 +96,18 @@ def greedy(lattice, moves):
                 boundary_switch = False
 
             # if coordinate is not yet taken, place element there and update its coords
-            if matrix[future_x][future_y][future_z] == None and (boundary_switch == True):
-                #print(current_x, current_y, move)
+            if (matrix[future_x][future_y][future_z]) == None and (boundary_switch == True):
                 # update current x, y and z
                 current_x = future_x
                 current_y = future_y
                 current_z = future_z
-                
+                #print(current_x, current_y)
                 # set element
                 matrix[current_x][current_y][current_z] = lattice.lattice_list[set_elements]
                 lattice.lattice_list[set_elements].set_coordinates(current_x, current_y, current_z)
                 set_elements += 1
-                
-                # calculate h neighbours
-                temp_stab = 0
-                if matrix[current_x][current_y][current_z].type == 'H':
-                    if matrix[i-1][j][k] != None:
-                        if matrix[i-1][j][k].type == 'H':
-                            temp_stab -= 1
-                    if matrix[i+1][j][k] != None:
-                        if matrix[i+1][j][k].type == 'H':
-                            temp_stab -= 1
-                    if matrix[i][j-1][k] != None:
-                        if matrix[i][j-1][k].type == 'H':
-                            temp_stab -= 1
-                        if matrix[i][j+1][k] != None:
-                            if matrix[i][j+1][k].type == 'H':
-                                temp_stab -= 1
-                        if matrix[i][j][k+1] != None:
-                            if matrix[i][j][k+1].type == 'H':
-                                temp_stab -= 1
-                        if matrix[i][j][k-1] != None:
-                            if matrix[i][j][k-1].type == 'H':
-                                temp_stab -= 1
-
-                        # divide stability by 2 since pairs are checked twice
-                        stability /= 2
+                element_stability(matrix, current_x, current_y, current_z)
+                break
             
             else:
                 # reset 'future' coords for next loop
@@ -136,6 +123,7 @@ def greedy(lattice, moves):
             break
                  
     lattice.matrix = matrix
+    
 
     return lattice.matrix, do_count
 
@@ -182,3 +170,48 @@ def matrix_stability(lattice):
     stability /= 2
 
     return stability
+
+def element_stability(matrix, x_coord, y_coord, z_coord):
+    """calculates stability of one given element by checking surroundings """
+    stability = 0
+    
+    if matrix[x_coord-1][y_coord][z_coord] != None:
+        if matrix[x_coord-1][y_coord][z_coord].type == 'H':
+            stability -= 1
+    if matrix[x_coord+1][y_coord][z_coord] != None:
+        if matrix[x_coord+1][y_coord][z_coord].type == 'H':
+            stability -= 1
+    if matrix[x_coord][y_coord-1][z_coord] != None:
+        if matrix[x_coord][y_coord-1][z_coord].type == 'H':
+            stability -= 1
+    if matrix[x_coord][y_coord+1][z_coord] != None:
+        if matrix[x_coord][y_coord+1][z_coord].type == 'H':
+            stability -= 1
+    if matrix[x_coord][y_coord][z_coord+1] != None:
+        if matrix[x_coord][y_coord][z_coord+1].type == 'H':
+            stability -= 1
+    if matrix[x_coord][y_coord][z_coord-1] != None:
+        if matrix[x_coord][y_coord][z_coord-1].type == 'H':
+            stability -= 1
+
+    return stability
+
+def compare_stability(move, test_stab, best_stab, best_moves):
+    """Compares the stability of a potential move against the up till now best stability and amends best_moves accordingly"""
+    # if potential move has stability equal to up till now best stability, append move to best_moves
+    if test_stab == best_stab:
+        best_moves.append(move)
+    
+    # if potential move has higher stability then up till now best stability, amend up till now best calculated stability,
+    # clear best_moves of lower stability potential moves and append the potential move with higher stability
+    elif test_stab < best_stab:
+        best_stab = test_stab
+        best_moves = []
+        best_moves.append(move)
+    
+    # if potential move has lower stability then up till now best stability of other potential moves, 
+    # disregard move and do not append to best_moves
+    else:
+        pass
+
+    return best_moves, best_stab
