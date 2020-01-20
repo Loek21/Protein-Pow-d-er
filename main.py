@@ -202,16 +202,28 @@ if __name__ == '__main__':
         visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, stability)
 
     if data_structure == "ehalist":
-        stability, chain = ehadict.eha_list(test_lattice, ThreeD_moves, 8)
-        print(stability)
-        print(chain)
+        best_stability_eha = 0
+        best_chain = []
+        for i in range(iterations):
+            stability, chain = ehadict.eha_list(test_lattice, ThreeD_moves, 6)
+            print(stability)
+            print(chain)
+            if stability < best_stability_eha:
+                best_stability_eha = stability
+                best_chain = chain
+
+            test_lattice = lattice.Lattice(protein_string) 
+            test_lattice.load_list()
+
         element_list = []
         x_list = []
         y_list = []
         z_list = []
-        for element in chain:
+        for element in best_chain:
             element_list.append(element.type)
             x_list.append(element.x_coord)
             y_list.append(element.y_coord)
             z_list.append(element.z_coord)
-        visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, stability)
+
+            
+        visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, best_stability_eha)
