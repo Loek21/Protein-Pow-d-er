@@ -47,8 +47,12 @@ def chain_divider(chain, subchain_length):
     # go through the entire chain, making pieces that end with an H and saving those pieces
     for i in range(len(chain[2:])):
         
-        # the piece will end if there's a P after an H and if the piece length is still managable
-        if chain[i+2].type == 'P' and chain[i+1].type == 'H' and len(piece) > subchain_length - 3 and len(piece) <= subchain_length + 1:
+        # the piece will end if there's a P after a C (if cysteine is added) or H, and if the piece length is still managable
+        if (chain[i+2].type == 'P' or chain[i+2].type == 'H') and chain[i+1].type == 'C' and len(piece) > subchain_length - 3 and len(piece) <= subchain_length + 1:
+            piece_list.append(piece)
+            piece = []
+        
+        elif chain[i+2].type == 'P' and chain[i+1].type == 'H' and len(piece) > subchain_length - 3 and len(piece) <= subchain_length + 1:
             piece_list.append(piece)
             piece = []
         
@@ -62,7 +66,7 @@ def chain_divider(chain, subchain_length):
         # at the final element, end the piece that's left over
         if i == len(chain[2:]) - 1:
             piece_list.append(piece)
-            
+
     return piece_list
 
 
@@ -180,26 +184,40 @@ def eha_list(lattice, moves, subchain_length):
             for element in range(len(chain) - 1):
                 if chain[element].type == 'H' and chain[element + 1].type == 'H':
                     stability += 2
+                
+                elif chain[element].type == 'H' and chain[element + 1].type == 'C':
+                    stability += 2
+
+                elif chain[element].type == 'C' and chain[element + 1].type == 'C':
+                    stability += 10
+
+                elif chain[element].type == 'C' and chain[element + 1].type == 'H':
+                    stability += 2
             
             # check the neighbouring elements
             for element in chain:
-                if element.type == 'H':
+                if element.type == 'H' or element.type == 'C':
                     i = element.x_coord
                     j = element.y_coord
                     k = element.z_coord
 
                     if (i or j or k) == None:
                         break
-
+                    
+                    # C-C connections get 5 points, all other connections get 1 point
                     for other_element in chain:
-                        if other_element.type == 'H':
+                        if other_element.type == 'H' or other_element.type == 'C':
                             if other_element.get_location() == (i - 1, j, k) or \
                             other_element.get_location() == (i + 1, j, k)  or \
                             other_element.get_location() == (i, j - 1, k)  or \
                             other_element.get_location() == (i, j + 1, k)  or \
                             other_element.get_location() == (i, j, k - 1) or \
                             other_element.get_location() == (i, j, k + 1):
-                                stability -= 1
+
+                                if element.type == 'C' and other_element.type == 'C':
+                                    stability -= 5
+                                else:
+                                    stability -= 1
 
 
             # divide stability by 2 since pairs are checked twice
