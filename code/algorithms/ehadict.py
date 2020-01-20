@@ -3,6 +3,7 @@ import copy
 import random
 
 def permutations_maker(moves, piece_length):
+    """Makes all permutations for a chain and prunes some easy mistakes"""
     permutations = [p for p in itertools.product(moves, repeat=piece_length)]
     perms_pruned = []
 
@@ -36,6 +37,34 @@ def permutations_maker(moves, piece_length):
 
     return perms_pruned
 
+def chain_divider(chain, subchain_length):
+    """Divides a chain such that the last element is an H"""
+
+    # lists to create and save the pieces
+    piece_list = []
+    piece = []
+
+    # go through the entire chain, making pieces that end with an H and saving those pieces
+    for i in range(len(chain[2:])):
+        
+        # the piece will end if there's a P after an H and if the piece length is still managable
+        if chain[i+2].type == 'P' and chain[i+1].type == 'H' and len(piece) > subchain_length - 3 and len(piece) <= subchain_length + 1:
+            piece_list.append(piece)
+            piece = []
+        
+        piece.append(chain[i+2])
+
+        # if the piece exceeds the given length by 2, end piece anyway
+        if len(piece) > subchain_length + 1:
+            piece_list.append(piece)
+            piece = []
+
+        # at the final element, end the piece that's left over
+        if i == len(chain[2:]) - 1:
+            piece_list.append(piece)
+            
+    return piece_list
+
 
 def eha_list(lattice, moves, subchain_length):
     """
@@ -48,11 +77,8 @@ def eha_list(lattice, moves, subchain_length):
     # get current HP-chain
     chain = lattice.get_list()
 
-    # define a length of the pieces
-    piece_length = subchain_length
-
-    # get all permutations of moves you can make
-    permutations = permutations_maker(moves, subchain_length)
+    # cut the chain in pieces according to the subchain_length
+    piece_list = chain_divider(chain, subchain_length)
 
     # fix first 2 elements in the matrix
     current_x = int(len(chain) * 0.5 - 1)
@@ -63,24 +89,15 @@ def eha_list(lattice, moves, subchain_length):
     lattice.lattice_list[0].set_coordinates(current_x, current_y, current_z)
     current_x += 1
     lattice.lattice_list[1].set_coordinates(current_x, current_y, current_z)
-
-    # getting all the pieces of the remaining chain into separate lists
-    piece_list = []
-    piece = []
-    for i in range(len(chain[2:])):
-        piece.append(chain[i+2])
-        if len(piece) % piece_length == 0:
-            piece_list.append(piece)
-            piece = []
-
-        if i == len(chain[2:]) - 1:
-            piece_list.append(piece)
     
     # give upper bound to stability to start with
     best_stability = 100
 
     # run until all pieces have been set
     for piece in piece_list:
+
+        # get the permutations according to the length of the piece
+        permutations = permutations_maker(moves, len(piece))
 
         # since some piece lists contain an empty last list due to final append, just break when there is one
         if len(piece) == 0:

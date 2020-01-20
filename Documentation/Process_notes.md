@@ -64,13 +64,72 @@ Matrix, size restriction 0.3 chain length, 3D, string[3], found in iterations: 1
 
 
 
-# New best structure found for the 50 length chain. Better than literature with -27. The element list is:
+# New best structure found for the 50 length chain. Better than literature with -27. Down the paragraphs = better results. The element list is:
 [H: (24,24,24), None., H: (25,24,24), None., P: (25,24,25), None., H: (24,24,25), None., P: (24,23,25), None., H: (24,23,24), None., P: (23,23,24), None., H: (23,24,24), None., P: (23,25,24), None., H: (24,25,24), None., H: (25,25,24), None., H: (25,25,25), None., H: (24,25,25), None., P: (23,25,25), None., H: (23,24,25), None., P: (23,23,25), None., P: (23,23,26), None., P: (24,23,26), None., H: (24,24,26), None., P: (25,24,26), None., P: (25,23,26), None., P: (25,23,25), None., H: (25,23,24), None., P: (25,23,23), None., P: (25,22,23), None., P: (24,22,23), None., P: (24,22,24), None., H: (25,22,24), None., P: (25,22,25), None., P: (26,22,25), None., P: (26,23,25), None., H: (26,23,24), None., P: (26,24,24), None., P: (26,24,23), None., P: (25,24,23), None., H: (25,25,23), None., P: (25,26,23), None., H: (25,26,24), None., H: (24,26,24), None., H: (24,26,25), None., H: (25,26,25), None., P: (26,26,25), None., H: (26,25,25), None., P: (27,25,25), None., H: (27,25,24), None., P: (27,26,24), None., H: (26,26,24), None., P: (26,26,23), None., H: (26,25,23), None., H: (26,25,24), None.]
 
 Double checked the outcome with the coords of all H's: [(24,24,24), (25,24,24), (24,24,25), (24,23,24), (23,24,24), (24,25,24), (25,25,24), (25,25,25), (24,25,25), (23,24,25), (24,24,26), (25,23,24), (25,22,24), (26,23,24), (25,25,23), (25,26,24), (24,26,24), (24,26,25), (25,26,25), (26,25,25), (27,25,24), (26,26,24), (26,25,23), (26,25,24)]
 Ran a neighbour check and subtracted all consecutive H's of the string itself. -27 is the final answer. -26 was the previous record for this chain. Done with cutting chain into pieces of 8 long.
 
-# Best structure found so far for the 36 length chain. Score is -17 so far, element list is:
+Another -27 found with an added heuristic, seems to be reproducible now! Element list is:
+[H: (24,24,24), None., H: (25,24,24), None., P: (25,25,24), None., H: (24,25,24), None., P: (24,25,25), None., H: (24,24,25), None., P: (24,23,25), None., H: (23,23,25), None., P: (23,23,24), None., H: (23,24,24), None., H: (23,24,25), None., H: (23,25,25), None., H: (23,25,24), None., P: (23,26,24), None., H: (24,26,24), None., P: (25,26,24), None., P: (25,26,25), None., P: (25,25,25), None., H: (25,24,25), None., P: (25,23,25), None., P: (25,23,26), None., P: (25,24,26), None., H: (24,24,26), None., P: (24,24,27), None., P: (23,24,27), None., P: (23,25,27), None., P: (23,25,26), None., H: (23,24,26), None., P: (22,24,26), None., P: (21,24,26), None., P: (21,24,25), None., H: (22,24,25), None., P: (22,24,24), None., P: (21,24,24), None., P: (21,25,24), None., H: (22,25,24), None., P: (22,25,23), None., H: (23,25,23), None., H: (24,25,23), None., H: (24,24,23), None., H: (23,24,23), None., P: (23,23,23), None., H: (24,23,23), None., P: (25,23,23), None., H: (25,24,23), None., P: (26,24,23), None., H: (26,24,24), None., P: (26,23,24), None., H: (25,23,24), None., H: (24,23,24), None.]
+
+Found -28 with it too, doesn't happen all the time, but it is there! Element list is:
+[H: (24,24,24), None., H: (25,24,24), None., P: (25,24,23), None., H: (24,24,23), None., P: (24,25,23), None., H: (24,25,24), None., P: (23,25,24), None., H: (23,24,24), None., P: (23,24,25), None., H: (24,24,25), None., H: (24,25,25), None., H: (25,25,25), None., H: (25,25,24), None., P: (26,25,24), None., H: (26,25,25), None., P: (26,25,26), None., P: (26,24,26), None., P: (26,24,25), None., H: (25,24,25), None., P: (25,24,26), None., P: (25,24,27), None., P: (24,24,27), None., H: (24,24,26), None., P: (23,24,26), None., P: (23,24,27), None., P: (23,25,27), None., P: (24,25,27), None., H: (24,25,26), None., P: (25,25,26), None., P: (25,26,26), None., P: (26,26,26), None., H: (26,26,25), None., P: (27,26,25), None., P: (28,26,25), None., P: (28,25,25), None., H: (27,25,25), None., P: (27,25,24), None., H: (27,26,24), None., H: (26,26,24), None., H: (25,26,24), None., H: (25,26,25), None., P: (24,26,25), None., H: (24,26,24), None., P: (24,27,24), None., H: (25,27,24), None., P: (25,27,25), None., H: (26,27,25), None., P: (27,27,25), None., H: (27,27,24), None., H: (26,27,24), None.]
+
+## -29!! found. Element list:
+[H: (24,24,24), None., H: (25,24,24), None., P: (25,23,24), None., H: (24,23,24), None., P: (23,23,24), None., H: (23,24,24), None., P: (23,24,25), None., H: (24,24,25), None., P: (24,24,26), None., H: (24,23,26), None., H: (24,23,25), None., H: (25,23,25), None., H: (25,24,25), None., P: (25,24,26), None., H: (25,23,26), None., P: (25,23,27), None., P: (25,22,27), None., P: (25,22,26), None., H: (25,22,25), None., P: (25,22,24), None., P: (25,21,24), None., P: (24,21,24), None., H: (24,22,24), None., P: (23,22,24), None., P: (22,22,24), None., P: (22,22,25), None., P: (23,22,25), None., H: (24,22,25), None., P: (24,21,25), None., P: (25,21,25), None., P: (26,21,25), None., H: (26,22,25), None., P: (26,22,26), None., P: (26,23,26), None., P: (26,24,26), None., H: (26,24,25), None., P: (27,24,25), None., H: (27,23,25), None., H: (26,23,25), None., H: (26,23,24), None., H: (26,24,24), None., P: (27,24,24), None., H: (27,23,24), None., P: (27,22,24), None., H: (26,22,24), None., P: (26,22,23), None., H: (26,23,23), None., P: (25,23,23), None., H: (25,24,23), None., H: (26,24,23), None.]
+
+## -30 found, element list missing because it was part of an iterated run where the lists weren't saved. Graph is saved though.
+
+# Best structure found so far for the 36 length chain. Score is -17 so far. Down the paragraphs = better results. Element list is:
 [P: (17,17,17), None., P: (18,17,17), None., P: (18,17,18), None., H: (18,17,19), None., H: (18,17,20), None., P: (18,18,20), None., P: (17,18,20), None., H: (17,17,20), None., H: (17,17,19), None., P: (17,17,18), None., P: (17,16,18), None., P: (17,15,18), None., P: (18,15,18), None., P: (18,15,19), None., H: (18,16,19), None., H: (18,16,20), None., H: (18,16,21), None., H: (18,17,21), None., H: (17,17,21), None., H: (17,16,21), None., H: (17,16,20), None., P: (17,16,19), None., P: (16,16,19), None., H: (16,16,20), None., H: (16,16,21), None., P: (15,16,21), None., P: (15,16,22), None., P: (16,16,22), None., P: (16,17,22), None., H: (16,17,21), None., H: (16,17,20), None., P: (16,18,20), None., P: (16,18,19), None., H: (16,17,19), None., P: (16,17,18), None., P: (15,17,18), None.]
 
 Was done with cutting chain into pieces of 7 long.
+
+
+New heuristic found the literature's best of -18, element list is:
+[P: (17,17,17), None., P: (18,17,17), None., P: (18,17,18), None., H: (18,16,18), None., H: (18,16,19), None., P: (18,17,19), None., P: (19,17,19), None., H: (19,16,19), None., H: (19,16,18), None., P: (19,16,17), None., P: (19,16,16), None., P: (18,16,16), None., P: (18,16,17), None., P: (18,15,17), None., H: (18,15,18), None., H: (18,15,19), None., H: (19,15,19), None., H: (19,15,18), None., H: (20,15,18), None., H: (20,16,18), None., H: (20,16,19), None., P: (21,16,19), None., P: (21,15,19), None., H: (20,15,19), None., H: (20,14,19), None., P: (20,13,19), None., P: (20,13,18), None., P: (21,13,18), None., P: (21,14,18), None., H: (20,14,18), None., H: (19,14,18), None., P: (19,13,18), None., P: (19,13,19), None., H: (19,14,19), None., P: (19,14,20), None., P: (19,15,20), None.]
+
+
+# Some stats for the eha_list algorithm, 5 iterations per chain for best solution, all times more or less equal for every iteration:
+
+## Chain 0 - length 8, subchain_length = 4-8:
+Best found: -3
+Runtime: < 0.5 sec
+
+## Chain 0 - length 8, subchain_length = 5-9:
+Best found: -3
+Runtime: < 1.5 sec
+
+## Chain 1 - length 14, subchain_length = 4-8:
+Best found: -7
+Runtime: < 2.5 sec
+
+## Chain 1 - length 14, subchain_length = 5-9:
+Best found: -7
+Runtime: < 3.5 sec
+
+## Chain 2 - length 20, subchain_length = 4-8:
+Best found: -11
+Runtime: < 2.3 sec
+
+## Chain 2 - length 20, subchain_length = 5-9:
+Best found: -11
+Runtime: < 2.6 sec
+
+## Chain 3 - length 36, subchain_length = 4-8:
+Best found: -18
+Runtime: < 1:06 minutes
+
+## Chain 3 - length 36, subchain_length = 5-9:
+Best found: -16
+Runtime: < 5:30 minutes
+
+## Chain 4 - length 50, subchain_length = 4-8:
+Best found: -30
+Runtime: < 26.8 sec
+
+## Chain 4 - length 50, subchain_length = 5-9:
+Best found: -26
+Runtime: < 6:25 minutes
+
