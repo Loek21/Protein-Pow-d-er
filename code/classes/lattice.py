@@ -11,6 +11,10 @@ class Lattice:
         self.matrix = None
         self.matrix_twoD = None
 
+    def load_element(self, type):
+        """Loads element object at the end of list"""
+        self.lattice_list.append(Element(type))
+
     def load_list(self):
         """Takes string and adds element objects to a list"""
         for i in range(len(self.elements)):
