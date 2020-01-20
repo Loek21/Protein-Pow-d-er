@@ -11,6 +11,10 @@ class Lattice:
         self.matrix = None
         self.matrix_twoD = None
 
+    def load_element(self, type):
+        """Loads element object at the end of list"""
+        self.lattice_list.append(Element(type))
+
     def load_list(self):
         """Takes string and adds element objects to a list"""
         for i in range(len(self.elements)):
@@ -27,7 +31,7 @@ class Lattice:
 
     def load_matrix(self):
         """Loads a 3D empty matrix which can be filled with objects, big enough so straight chains don't hit borders"""
-        dimension = int(len(self.elements)*2)
+        dimension = int(len(self.elements)*0.4)
         self.matrix = np.empty((dimension, dimension, dimension), dtype=object)
 
     def load_TwoD_matrix(self):

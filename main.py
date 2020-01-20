@@ -9,7 +9,7 @@ import sys
 import copy
 import datetime
 import numpy as np
-from code.algorithms import randomizematrix, randomizedict, matrixapprox, greedymatrix, breadthfirst, eha
+from code.algorithms import randomizematrix, randomizedict, matrixapprox, greedymatrix, breadthfirst, eha, ehadict
 from code.classes import lattice, element
 from code.visualisation import visualise
 
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     protein_string_list = ["HHPHHHPH", "HHPHHHPHPHHHPH", "HPHPPHHPHPPHPHHPPHPH", "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
                             "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
                             "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
-                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HPPHP"]
+                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HHPHHHPHP"]
 
     # Checks if the correct number of arguments have been given
     if len(sys.argv) != 4:
@@ -39,7 +39,7 @@ if __name__ == '__main__':
         sys.exit(1)
     data_structure = sys.argv[1]
     iterations = int(sys.argv[3])
-    data_structures = ["dict", "matrix", "greedy", "approx", "breadth", "eha"]
+    data_structures = ["dict", "matrix", "greedy", "approx", "breadth", "eha", "ehalist"]
 
     # Checks if data_structure is available
     if data_structure not in data_structures:
@@ -82,9 +82,9 @@ if __name__ == '__main__':
                     #good_count += 1
 
 
-                #test_lattice = lattice.Lattice(protein_string)
-                #test_lattice.load_matrix()
-                #test_lattice.load_list()
+                test_lattice = lattice.Lattice(protein_string)
+                test_lattice.load_matrix()
+                test_lattice.load_list()
                     # for row in range(len(random_matrix)):
                     #     for element in range(len(random_matrix)):
                     #         if random_matrix[row][element] == None:
@@ -137,7 +137,13 @@ if __name__ == '__main__':
         pass
 
     if data_structure == "breadth":
-        result_states, stabilities = breadthfirst.bfs(test_lattice, ThreeD_moves)
+        test_lattice_breadth = lattice.Lattice(protein_string)
+        element_P = element.Element("P")
+        element_H = element.Element("H")
+        element_C = element.Element("C")
+
+        result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, ThreeD_moves)
+        print(len(result_states))
         best_stability = 1
         best_state = 0
         for i in range(len(result_states)):
@@ -188,6 +194,21 @@ if __name__ == '__main__':
 
     if data_structure == "eha":
         stability, chain = eha.eha(test_lattice, ThreeD_moves, 6)
+        print(stability)
+        print(chain)
+        element_list = []
+        x_list = []
+        y_list = []
+        z_list = []
+        for element in chain:
+            element_list.append(element.type)
+            x_list.append(element.x_coord)
+            y_list.append(element.y_coord)
+            z_list.append(element.z_coord)
+        visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, stability)
+
+    if data_structure == "ehalist":
+        stability, chain = ehadict.eha_list(test_lattice, ThreeD_moves, 8)
         print(stability)
         print(chain)
         element_list = []
