@@ -1,5 +1,6 @@
 import queue
 import copy
+import random
 
 def coordinates(x_coord, y_coord, z_coord, direction):
     """Uses old coordinates and direction to create new coordinates"""
@@ -29,100 +30,185 @@ def coordinates(x_coord, y_coord, z_coord, direction):
         new_z_coord = z_coord - 1
     return new_x_coord, new_y_coord, new_z_coord
 
-def bfs(lattice, moves):
+def bfs(lattice, P, H, C, moves):
 
-    matrix = lattice.get_matrix()
+    protein_string = lattice.elements
     list = lattice.get_list()
-    length_string = len(list)
+    protein_length = len(protein_string)
     result_list = []
-    stability_list = []
+    stabilities = []
+    stability_to_beat = 0
 
-    # Sets first and second element in the middle of the matrix
-    current_x = int(len(matrix) * 0.5 - 1)
-    current_y = int(len(matrix) * 0.5 - 1)
+    # Setting coordinates from first two elements
+    current_x = 0
+    current_y = 0
     current_z = 0
-    matrix[current_x][current_y][current_z] = lattice.lattice_list[0]
-    matrix[current_x][current_y][current_z].set_coordinates(current_x, current_y, current_z)
-    matrix[current_x][current_y][current_z].set_direction(1)
+    lattice.load_element(protein_string[0])
+    list[0].set_coordinates(current_x, current_y, current_z)
+    list[0].set_direction(1)
     current_x += 1
-    matrix[current_x][current_y][current_z] = lattice.lattice_list[1]
-    matrix[current_x][current_y][current_z].set_coordinates(current_x, current_y, current_z)
+    lattice.load_element(protein_string[1])
+    list[1].set_coordinates(current_x, current_y, current_z)
 
-    depth = length_string
-    Queue_matrix = queue.Queue()
-    Queue_matrix.put(matrix)
-    Queue_list = queue.Queue()
-    Queue_list.put(list)
-    Queue_string = queue.Queue()
-    Queue_string.put("RR")
-    Queue_stability = queue.Queue()
-    Queue_stability.put(0)
+    depth = protein_length
+    list_queue = queue.Queue()
+    stability = queue.Queue()
+    list_queue.put(list)
+    stability.put(0)
 
-    counter = 0
 
-    while not Queue_matrix.empty():
+    while not list_queue.empty():
+        protein_state = list_queue.get()
+        stability_state = stability.get()
+        # print(best_stability)
 
-        element_counter = 0
+        current_x, current_y, current_z = protein_state[len(protein_state) - 1].get_location()
 
-        # Gets the next state in the queue
-        state_matrix = Queue_matrix.get()
-        state_list = Queue_list.get()
-        state_string = Queue_string.get()
-        state_stability = Queue_stability.get()
+        # Adds all final states and stabilities to a list
+        if len(protein_state) == protein_length:
+            result_list.append(protein_state)
+            stabilities.append(stability_state)
 
-        for j in range(length_string):
-            x_coord, y_coord, z_coord = state_list[j].get_location()
-            direction = state_list[j].get_direction()
-            if x_coord != None:
-                element_counter += 1
+        if len(protein_state) % 3 == 0:
+            check_stability = True
+        else:
+            check_stability = False
 
-        # Gets the location of the last placed element in this state
-        current_x, current_y, current_z = state_list[element_counter - 1].get_location()
-
-        if counter % 1000 == 0:
-            print(counter)
-        counter += 1
-
-        # Adds all final states to a list
-        if element_counter == length_string:
-            result_list.append(state_list)
-            stability_list.append(state_stability)
-
-        if len(state_string) < depth:
-            # Loops through all available moves and creates the additional states
+        if len(protein_state) < depth:
+            current_length = len(protein_state)
             for i in moves:
-                child_matrix = copy.deepcopy(state_matrix)
-                child_list = copy.deepcopy(state_list)
-                child_string = copy.deepcopy(state_string)
-                child_stability = copy.deepcopy(state_stability)
+                protein_child = copy.deepcopy(protein_state)
+                stability_child = copy.deepcopy(stability_state)
 
-                # Create new coordinates
                 new_x_coord, new_y_coord, new_z_coord = coordinates(current_x, current_y, current_z, i)
-                if child_matrix[new_x_coord][new_y_coord][new_z_coord] == None:
+                occupied = False
+                for j in range(current_length - 1):
+                    occupied_x, occupied_y, occupied_z = protein_child[j].get_location()
+                    if (occupied_x, occupied_y, occupied_z) == (new_x_coord, new_y_coord, new_z_coord):
+                        occupied = True
 
-                    # Sets the coordinates for the current element and the direction from the previous element
-                    if element_counter != length_string:
-                        child_list[element_counter].set_coordinates(new_x_coord, new_y_coord, new_z_coord)
-                        child_matrix[new_x_coord][new_y_coord][new_z_coord] = child_list[element_counter]
+                if occupied == False:
+                    element = protein_string[len(protein_child)]
+                    protein_child.append(amino_selector(P, H, C, element))
+                    protein_child[len(protein_child) - 1].set_coordinates(new_x_coord, new_y_coord, new_z_coord)
+                    protein_child[len(protein_child) - 2].set_direction(i)
 
-                    child_list[element_counter - 1].set_direction(i)
-                    child_matrix[current_x][current_y][current_z].set_direction(i)
+                    mirror_switch = mirror_prune(current_length, protein_child, i)
+                    if mirror_switch == True:
+                        stability_child = stability_calculator(current_length, protein_child)
+                        random_switch = random_prune()
+                        if current_length < 22:
+                            if stability_child <= stability_to_beat:
+                                stability_to_beat = stability_child
 
-                    child_string += "R"
+                                stability_child_copy = copy.deepcopy(stability_child)
+                                protein_child_copy = copy.deepcopy(protein_child)
 
-                    stability = matrix_stability(child_matrix, child_list, len(child_string))
-                    child_stability = stability
+                                list_queue.put(protein_child_copy)
+                                stability.put(stability_child_copy)
+                        else:
+                            if stability_child <= stability_to_beat and random_switch == True:
+                                stability_to_beat = stability_child
 
-                    # Saves new states and adds them to the queue
-                    new_state_matrix = copy.deepcopy(child_matrix)
-                    new_state_list = copy.deepcopy(child_list)
-                    Queue_matrix.put(new_state_matrix)
-                    Queue_list.put(new_state_list)
-                    Queue_string.put(child_string)
-                    Queue_stability.put(child_stability)
-            element_counter += 1
+                                stability_child_copy = copy.deepcopy(stability_child)
+                                protein_child_copy = copy.deepcopy(protein_child)
 
-    return result_list, stability_list
+                                list_queue.put(protein_child_copy)
+                                stability.put(stability_child_copy)
+
+
+    return result_list, stabilities
+
+def mirror_prune(length, list, move):
+    if length == 3 and (move == -2 or move == -3 or move == 3):
+        return False
+    if length == 4:
+        previous_move = list[2].get_direction()
+        # Following a move in the y direction a move in the z direction will be identical when the length is 4
+        if previous_move == 2 and move == -3:
+            return False
+        # Similar to length is 3 situation
+        if previous_move == 1 and (move == -2 or move == -3 or move == 3):
+            return False
+    if length == 5:
+        previous_move = list[3].get_direction()
+        # Similar to length is 3 situation
+        if previous_move == 1 and (move == -2 or move == -3 or move == 3):
+            return False
+    return True
+
+def random_prune():
+    choice = random.random()
+    if choice < 0.3:
+        return True
+    return False
+
+def amino_selector(P, H, C, element):
+    if element == "P":
+        return P
+    if element == "H":
+        return H
+    if element == "C":
+        return C
+
+def stability_calculator(current_length, list):
+    stability = 0
+
+    # check for successive H's in chain itself and add 2 per pair found
+    # since the matrix checker checks every pair twice, so need to compensate
+    for element in range(current_length):
+        if list[element].type == 'H' and list[element + 1].type == 'H':
+            stability += 2
+        if list[element].type == 'C' and list[element + 1].type == 'C':
+            stability += 10
+        if list[element].type == 'C' and list[element + 1].type == 'H':
+            stability += 2
+        if list[element].type == 'H' and list[element + 1].type == 'C':
+            stability += 2
+
+    # check the neighbouring elements
+    for element in list:
+        if element.type == 'H':
+            x = element.x_coord
+            y = element.y_coord
+            z = element.z_coord
+
+            for other_element in list:
+                if other_element.type == 'H' or other_element.type == 'C':
+                    if other_element.get_location() == (x - 1, y, z) or \
+                    other_element.get_location() == (x + 1, y, z)  or \
+                    other_element.get_location() == (x, y - 1, z)  or \
+                    other_element.get_location() == (x, y + 1, z)  or \
+                    other_element.get_location() == (x, y, z - 1) or \
+                    other_element.get_location() == (x, y, z + 1):
+                        stability -= 1
+
+        if element.type == 'C':
+            x = element.x_coord
+            y = element.y_coord
+            z = element.z_coord
+
+            for other_element in list:
+                if other_element.type == 'H':
+                    if other_element.get_location() == (x - 1, y, z) or \
+                    other_element.get_location() == (x + 1, y, z)  or \
+                    other_element.get_location() == (x, y - 1, z)  or \
+                    other_element.get_location() == (x, y + 1, z)  or \
+                    other_element.get_location() == (x, y, z - 1) or \
+                    other_element.get_location() == (x, y, z + 1):
+                        stability -= 1
+                if other_element.type == 'C':
+                    if other_element.get_location() == (x - 1, y, z) or \
+                    other_element.get_location() == (x + 1, y, z)  or \
+                    other_element.get_location() == (x, y - 1, z)  or \
+                    other_element.get_location() == (x, y + 1, z)  or \
+                    other_element.get_location() == (x, y, z - 1) or \
+                    other_element.get_location() == (x, y, z + 1):
+                        stability -= 5
+
+    # divide stability by 2 since pairs are checked twice
+    stability /= 2
+    return stability
 
 def matrix_stability(matrix, list, length):
     """calculates stability of lattice with matrix"""

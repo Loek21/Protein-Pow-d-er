@@ -13,6 +13,9 @@ def dict_plot_ThreeD(list, x_list, y_list, z_list, stability):
     for i in range(len(x_list)):
         if list[i] == "H":
             ax.scatter(x_list[i], y_list[i], z_list[i], c="red")
+
+        elif list[i] == "C":
+            ax.scatter(x_list[i], y_list[i], z_list[i], c="green")
         else:
             ax.scatter(x_list[i], y_list[i], z_list[i], c="blue")
     ax.plot(x_list, y_list, z_list, c="black")
