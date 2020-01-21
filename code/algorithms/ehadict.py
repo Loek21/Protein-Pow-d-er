@@ -88,9 +88,9 @@ def eha_list(lattice, moves, subchain_length):
     current_x, current_y, current_z = 0, 0, 0
 
     # give these element objects the corresponding coordinates
-    lattice.lattice_list[0].set_coordinates(current_x, current_y, current_z)
+    chain[0].set_coordinates(current_x, current_y, current_z)
     current_x += 1
-    lattice.lattice_list[1].set_coordinates(current_x, current_y, current_z)
+    chain[1].set_coordinates(current_x, current_y, current_z)
     
     # give upper bound to stability to start with
     best_stability = 100
@@ -128,13 +128,14 @@ def eha_list(lattice, moves, subchain_length):
                 # update coords according to move
                 future_x, future_y, future_z = make_move(move, future_x, future_y, future_z)
 
-                # if the coords aren't yet occupied, set element there
+                # check if coords are available
                 occupied = False
                 for amino in chain:
                     if amino.get_location() == (future_x, future_y, future_z):
                         occupied = True
                         break
-
+                
+                # if the coords aren't yet occupied, set element there
                 if occupied == False:
                     element.set_coordinates(future_x, future_y, future_z)
                     elements_coords.append([future_x, future_y, future_z])

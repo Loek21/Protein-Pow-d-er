@@ -220,16 +220,5 @@ if __name__ == '__main__':
 
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
-
-        element_list = []
-        x_list = []
-        y_list = []
-        z_list = []
-        for element in best_chain:
-            element_list.append(element.type)
-            x_list.append(element.x_coord)
-            y_list.append(element.y_coord)
-            z_list.append(element.z_coord)
-
-
-        visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, best_stability_eha)
+            
+        visualise.chain_list_3Dplot(best_chain, best_stability_eha)
