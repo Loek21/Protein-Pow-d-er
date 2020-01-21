@@ -1,32 +1,5 @@
 import random
-
-def coordinates(x_coord, y_coord, z_coord, direction):
-    """Uses old coordinates and direction to create new coordinates"""
-    if direction == 1:
-        new_x_coord = x_coord + 1
-        new_y_coord = y_coord
-        new_z_coord = z_coord
-    elif direction == -1:
-        new_x_coord = x_coord - 1
-        new_y_coord = y_coord
-        new_z_coord = z_coord
-    elif direction == 2:
-        new_x_coord = x_coord
-        new_y_coord = y_coord + 1
-        new_z_coord = z_coord
-    elif direction == -2:
-        new_x_coord = x_coord
-        new_y_coord = y_coord - 1
-        new_z_coord = z_coord
-    elif direction == 3:
-        new_x_coord = x_coord
-        new_y_coord = y_coord
-        new_z_coord = z_coord + 1
-    elif direction == -3:
-        new_x_coord = x_coord
-        new_y_coord = y_coord
-        new_z_coord = z_coord - 1
-    return new_x_coord, new_y_coord, new_z_coord
+from .generalfunctions import stability_calculator, make_move
 
 def move_no_backtrack(list, dict, positions, index, moves):
     """Performs random movement without backtracking"""
@@ -43,7 +16,7 @@ def move_no_backtrack(list, dict, positions, index, moves):
     # Tries finding the next valid position
     while switch == True:
         direction = random.choice(moves)
-        new_x_coord, new_y_coord, new_z_coord = coordinates(x_coord, y_coord, z_coord, direction)
+        new_x_coord, new_y_coord, new_z_coord = make_move(direction, x_coord, y_coord, z_coord)
         new_coords = f"{new_x_coord},{new_y_coord},{new_z_coord}"
 
         if new_coords not in positions:

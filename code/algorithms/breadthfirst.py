@@ -1,34 +1,7 @@
 import queue
 import copy
 import random
-
-def coordinates(x_coord, y_coord, z_coord, direction):
-    """Uses old coordinates and direction to create new coordinates"""
-    if direction == 1:
-        new_x_coord = x_coord + 1
-        new_y_coord = y_coord
-        new_z_coord = z_coord
-    elif direction == -1:
-        new_x_coord = x_coord - 1
-        new_y_coord = y_coord
-        new_z_coord = z_coord
-    elif direction == 2:
-        new_x_coord = x_coord
-        new_y_coord = y_coord + 1
-        new_z_coord = z_coord
-    elif direction == -2:
-        new_x_coord = x_coord
-        new_y_coord = y_coord - 1
-        new_z_coord = z_coord
-    elif direction == 3:
-        new_x_coord = x_coord
-        new_y_coord = y_coord
-        new_z_coord = z_coord + 1
-    elif direction == -3:
-        new_x_coord = x_coord
-        new_y_coord = y_coord
-        new_z_coord = z_coord - 1
-    return new_x_coord, new_y_coord, new_z_coord
+from .generalfunctions import stability_calculator, make_move
 
 def bfs(lattice, P, H, C, moves):
 
@@ -75,7 +48,7 @@ def bfs(lattice, P, H, C, moves):
                 protein_child = copy.deepcopy(protein_state)
                 stability_child = copy.deepcopy(stability_state)
 
-                new_x_coord, new_y_coord, new_z_coord = coordinates(current_x, current_y, current_z, i)
+                new_x_coord, new_y_coord, new_z_coord = make_move(i, current_x, current_y, current_z)
                 occupied = False
                 for j in range(current_length - 1):
                     occupied_x, occupied_y, occupied_z = protein_child[j].get_location()
@@ -100,7 +73,7 @@ def bfs(lattice, P, H, C, moves):
                     # For regular testing
                     mirror_switch = mirror_prune(current_length, protein_child, i)
                     if mirror_switch == True:
-                        stability_child = stability_calculator(current_length, protein_child)
+                        stability_child = stability_calculator(protein_child)
                         random_switch = random_prune()
                         if current_length < 21:
                             if stability_child <= stability_to_beat:
@@ -155,62 +128,3 @@ def amino_selector(P, H, C, element):
         return H
     if element == "C":
         return C
-
-def stability_calculator(current_length, list):
-    stability = 0
-
-    # check for successive H's in chain itself and add 2 per pair found
-    # since the matrix checker checks every pair twice, so need to compensate
-    for element in range(current_length):
-        if list[element].type == 'H' and list[element + 1].type == 'H':
-            stability += 2
-        if list[element].type == 'C' and list[element + 1].type == 'C':
-            stability += 10
-        if list[element].type == 'C' and list[element + 1].type == 'H':
-            stability += 2
-        if list[element].type == 'H' and list[element + 1].type == 'C':
-            stability += 2
-
-    # check the neighbouring elements
-    for element in list:
-        if element.type == 'H':
-            x = element.x_coord
-            y = element.y_coord
-            z = element.z_coord
-
-            for other_element in list:
-                if other_element.type == 'H' or other_element.type == 'C':
-                    if other_element.get_location() == (x - 1, y, z) or \
-                    other_element.get_location() == (x + 1, y, z)  or \
-                    other_element.get_location() == (x, y - 1, z)  or \
-                    other_element.get_location() == (x, y + 1, z)  or \
-                    other_element.get_location() == (x, y, z - 1) or \
-                    other_element.get_location() == (x, y, z + 1):
-                        stability -= 1
-
-        if element.type == 'C':
-            x = element.x_coord
-            y = element.y_coord
-            z = element.z_coord
-
-            for other_element in list:
-                if other_element.type == 'H':
-                    if other_element.get_location() == (x - 1, y, z) or \
-                    other_element.get_location() == (x + 1, y, z)  or \
-                    other_element.get_location() == (x, y - 1, z)  or \
-                    other_element.get_location() == (x, y + 1, z)  or \
-                    other_element.get_location() == (x, y, z - 1) or \
-                    other_element.get_location() == (x, y, z + 1):
-                        stability -= 1
-                if other_element.type == 'C':
-                    if other_element.get_location() == (x - 1, y, z) or \
-                    other_element.get_location() == (x + 1, y, z)  or \
-                    other_element.get_location() == (x, y - 1, z)  or \
-                    other_element.get_location() == (x, y + 1, z)  or \
-                    other_element.get_location() == (x, y, z - 1) or \
-                    other_element.get_location() == (x, y, z + 1):
-                        stability -= 5
-
-    # divide stability by 2 since pairs are checked twice
-    stability /= 2
-    return stability
