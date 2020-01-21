@@ -64,7 +64,7 @@ def chain_divider(chain, subchain_length):
             piece = []
 
         # at the final element, end the piece that's left over
-        if i == len(chain[2:]) - 1:
+        if i == len(chain[2:]) - 1 and len(piece) > 0:
             piece_list.append(piece)
 
     return piece_list
@@ -84,10 +84,8 @@ def eha_list(lattice, moves, subchain_length):
     # cut the chain in pieces according to the subchain_length
     piece_list = chain_divider(chain, subchain_length)
 
-    # fix first 2 elements in the matrix
-    current_x = int(len(chain) * 0.5 - 1)
-    current_y = int(len(chain) * 0.5 - 1)
-    current_z = int(len(chain) * 0.5 - 1)
+    # fix first 2 elements in the matrix, setting first coords to the origin of the grid
+    current_x, current_y, current_z = 0, 0, 0
 
     # give these element objects the corresponding coordinates
     lattice.lattice_list[0].set_coordinates(current_x, current_y, current_z)
@@ -102,10 +100,6 @@ def eha_list(lattice, moves, subchain_length):
 
         # get the permutations according to the length of the piece
         permutations = permutations_maker(moves, len(piece))
-
-        # since some piece lists contain an empty last list due to final append, just break when there is one
-        if len(piece) == 0:
-            break 
 
         # save the best moves made for a piece, 
         # so the elements can take over those coordinates at the end of the loop
@@ -130,31 +124,9 @@ def eha_list(lattice, moves, subchain_length):
 
             # loop over moves and elements simultaneously since they pair up
             for (move, element) in zip(moveset, piece):
-                # ADD ALL ELEMENTS OF PIECE TO GRID
 
                 # update coords according to move
-                if move == 1:
-                    future_x += 1
-                
-                elif move == -1:
-                    future_x -= 1
-    
-                elif move == 2:
-                    future_y -=  1
-                    
-                elif move == -2:
-                    future_y += 1
-
-                elif move == 3:
-                    future_z -= 1
-                    
-                elif move == -3:
-                    future_z += 1
-                
-                # if move hits the border, cancel the move
-                if (future_x == 0) or (future_y == 0) or (future_z == 0) or (future_x == len(chain) - 1) or (future_y == len(chain) - 1) or (future_z == len(chain) - 1):
-                    check_score = False
-                    break
+                future_x, future_y, future_z = make_move(move, future_x, future_y, future_z)
 
                 # if the coords aren't yet occupied, set element there
                 occupied = False
@@ -176,75 +148,97 @@ def eha_list(lattice, moves, subchain_length):
             if check_score == False:
                 continue
 
-            # at the end of the moveset, count the score, saving the best score and setting up the elements with the coords of best score
-            stability = 0
-
-            # check for successive H's in chain itself and add 2 per pair found
-            # since the matrix checker checks every pair twice, so need to compensate
-            for element in range(len(chain) - 1):
-                if chain[element].type == 'H' and chain[element + 1].type == 'H':
-                    stability += 2
-                
-                elif chain[element].type == 'H' and chain[element + 1].type == 'C':
-                    stability += 2
-
-                elif chain[element].type == 'C' and chain[element + 1].type == 'C':
-                    stability += 10
-
-                elif chain[element].type == 'C' and chain[element + 1].type == 'H':
-                    stability += 2
+            # calculate stability at end of moveset
+            stability = stability_checker(chain)
             
-            # check the neighbouring elements
-            for element in chain:
-                if element.type == 'H' or element.type == 'C':
-                    i = element.x_coord
-                    j = element.y_coord
-                    k = element.z_coord
-
-                    if (i or j or k) == None:
-                        break
-                    
-                    # C-C connections get 5 points, all other connections get 1 point
-                    for other_element in chain:
-                        if other_element.type == 'H' or other_element.type == 'C':
-                            if other_element.get_location() == (i - 1, j, k) or \
-                            other_element.get_location() == (i + 1, j, k)  or \
-                            other_element.get_location() == (i, j - 1, k)  or \
-                            other_element.get_location() == (i, j + 1, k)  or \
-                            other_element.get_location() == (i, j, k - 1) or \
-                            other_element.get_location() == (i, j, k + 1):
-
-                                if element.type == 'C' and other_element.type == 'C':
-                                    stability -= 5
-                                else:
-                                    stability -= 1
-
-
-            # divide stability by 2 since pairs are checked twice
-            stability /= 2
-            
+            # if stability equal to highest found, 5% chance to accept this configuration
             if stability == best_stability and random.random() < 0.05:
-                best_stability = stability
-                best_moves = elements_coords
+                best_stability, best_moves = stability, elements_coords
 
+            # if stability better than current best, accept this new configuration
             elif stability < best_stability:
                 print("NEW STAB", stability)
-                best_stability = stability
-                best_moves = elements_coords
+                best_stability, best_moves = stability, elements_coords
         
         # update the element coordinates corresponding to best moves found
         for (element, coords) in zip(piece, best_moves):
             element.set_coordinates(coords[0], coords[1], coords[2])
-            current_x = coords[0]
-            current_y = coords[1]
-            current_z = coords[2]
-
-        # update the matrix to be the best one with the piece in place
-        #print(best_matrix)
-
-        #matrix = best_matrix
+            current_x, current_y, current_z = coords
 
     return best_stability, chain
 
+
+def stability_checker(chain):
+    """takes a list of elements and calculates the stability of the configuration"""
+    stability = 0
+
+    # check for successive H's in chain itself and add 2 per pair found
+    # since the matrix checker checks every pair twice, so need to compensate
+    for element in range(len(chain) - 1):
+        if chain[element].type == 'H' and chain[element + 1].type == 'H':
+            stability += 2
+        
+        elif chain[element].type == 'H' and chain[element + 1].type == 'C':
+            stability += 2
+
+        elif chain[element].type == 'C' and chain[element + 1].type == 'C':
+            stability += 10
+
+        elif chain[element].type == 'C' and chain[element + 1].type == 'H':
+            stability += 2
+    
+    # check the neighbouring elements
+    for element in chain:
+        if element.type == 'H' or element.type == 'C':
+            i = element.x_coord
+            j = element.y_coord
+            k = element.z_coord
+
+            if (i or j or k) == None:
+                break
+            
+            # C-C connections get 5 points, all other connections get 1 point
+            for other_element in chain:
+                if other_element.type == 'H' or other_element.type == 'C':
+                    if other_element.get_location() == (i - 1, j, k) or \
+                    other_element.get_location() == (i + 1, j, k)  or \
+                    other_element.get_location() == (i, j - 1, k)  or \
+                    other_element.get_location() == (i, j + 1, k)  or \
+                    other_element.get_location() == (i, j, k - 1) or \
+                    other_element.get_location() == (i, j, k + 1):
+
+                        if element.type == 'C' and other_element.type == 'C':
+                            stability -= 5
+                        else:
+                            stability -= 1
+    
+    # divide stability by 2 since all pairs are checked twice
+    stability /= 2
+
+    return stability
+
+
+def make_move(move, x, y, z):
+    """takes a move and updates x, y, z coordinates based on move made"""
+
+    if move == 1:
+        x += 1
+    
+    elif move == -1:
+        x -= 1
+
+    elif move == 2:
+        y -=  1
+        
+    elif move == -2:
+        y += 1
+
+    elif move == 3:
+        z -= 1
+        
+    elif move == -3:
+        z += 1
+
+    return x, y, z
 
 
