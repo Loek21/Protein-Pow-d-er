@@ -65,47 +65,24 @@ if __name__ == '__main__':
     test_lattice.load_list()
 
     if data_structure == "matrix":
-        # good_count = 0
         best_stab = 1
+        best_configuration = []
         for i in range(iterations):
-            try:
+            
+            
+            random_mat = randomizematrix.matrixrandomizer(test_lattice, ThreeD_moves)
+            chain = random_mat[0]
+            stability = random_mat[1]
+            
+            if stability < best_stab:
+                best_stab = stability
+                best_configuration = chain
 
-                random_matrix = randomizematrix.matrixrandomizer(test_lattice, ThreeD_moves)
-                if random_matrix[1] != False:
-                    stability = randomizematrix.matrix_stability(test_lattice)
-                    #print(stability)
-                    # if stability == -16:
-                    #     print("MATRIX FOUND AT", i)
-                    #     break
-                    if stability < best_stab:
-                        best_stab = stability
-                    #good_count += 1
-
-
-                test_lattice = lattice.Lattice(protein_string)
-                test_lattice.load_matrix()
-                test_lattice.load_list()
-                    # for row in range(len(random_matrix)):
-                    #     for element in range(len(random_matrix)):
-                    #         if random_matrix[row][element] == None:
-                    #             random_matrix[row][element] = 0.0
-
-                    #         elif random_matrix[row][element].type == 'H':
-                    #             random_matrix[row][element] = 5.0
-
-                    #         else:
-                    #             random_matrix[row][element] = 10.0
-
-                    # new_matrix = np.zeros((len(random_matrix), len(random_matrix)))
-                    # for row in range(len(random_matrix)):
-                    #     for element in range(len(random_matrix)):
-                    #         new_matrix[row][element] = random_matrix[row][element]
-
-                    #visualise.matrix_plot(new_matrix)
-
-            except IndexError:
-                pass
-        print(best_stab)
+            test_lattice = lattice.Lattice(protein_string)
+            test_lattice.load_matrix()
+            test_lattice.load_list()
+        
+        visualise.chain_list_3Dplot(best_configuration, best_stab)
 
     if data_structure == "dict":
         best_stability = 1
@@ -220,5 +197,5 @@ if __name__ == '__main__':
 
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
-            
+
         visualise.chain_list_3Dplot(best_chain, best_stability_eha)
