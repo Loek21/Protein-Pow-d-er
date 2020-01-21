@@ -13,18 +13,6 @@ from code.algorithms import randomizematrix, randomizedict, matrixapprox, greedy
 from code.classes import lattice, element
 from code.visualisation import visualise
 
-
-# Step 1, Import string of amino-acid
-
-# Step 2, Initilize grid
-
-# Step 3, Place amino acid on grid
-
-# Step 4, Calculate 'stability'. More negative = more better
-
-# Step 5, Output result in CSV format
-
-
 if __name__ == '__main__':
     TwoD_moves = [1, -1, 2, -2]
     ThreeD_moves = [1, -1, 2, -2, 3, -3]
@@ -34,16 +22,17 @@ if __name__ == '__main__':
                             "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HPPCH"]
 
     # Checks if the correct number of arguments have been given
-    if len(sys.argv) != 4:
-        print("usage: python main.py datastructure string_nr iterations")
+    if len(sys.argv) != 5:
+        print("usage: python main.py algorithm string_nr iterations dimension")
         sys.exit(1)
     data_structure = sys.argv[1]
     iterations = int(sys.argv[3])
-    data_structures = ["dict", "matrix", "greedy", "approx", "breadth", "eha", "ehalist"]
+    dimension = int(sys.argv[4])
+    data_structures = ["random", "matrix", "greedy", "approx", "breadth", "eha", "ehalist"]
 
     # Checks if data_structure is available
     if data_structure not in data_structures:
-        print("You must choose either 'dict', 'matrix', or 'greedy'")
+        print("You must choose either 'random', 'matrix', 'greedy', 'breadth', 'eha', 'ehalist'")
         sys.exit(1)
 
     # Checks to see if given index corresponds to a protein string
@@ -55,6 +44,14 @@ if __name__ == '__main__':
     # Checks if iterations is above 0
     if iterations <= 0:
         print("You must choose a positive number.")
+        sys.exit(1)
+
+    if dimension == 2:
+        moves = TwoD_moves
+    elif dimension == 3:
+        moves = ThreeD_moves
+    else:
+        print("You must choose '2' for 2D or '3' for 3D.")
         sys.exit(1)
 
     # Sets up list, dictionary and matrix for given protein string
@@ -107,31 +104,17 @@ if __name__ == '__main__':
                 pass
         print(best_stab)
 
-    if data_structure == "dict":
+    if data_structure == "random":
         best_stability = 1
-        best_dict = {}
+        best_list = 0
         for i in range(iterations):
-            random_dict, stability = randomizedict.sarw_dict(test_lattice, TwoD_moves)
-            #print(stability)
+            random_list, stability = randomizedict.sarw_dict(test_lattice, moves)
             if stability < best_stability:
                 best_stability = stability
-                best_dict = copy.deepcopy(random_dict)
-            if stability == -16:
-                print("MATRIX FOUND AT", i)
-                break
+                best_list = copy.deepcopy(random_list)
 
-        # Gets data from best folded protein and plots it
-        x_list = []
-        y_list = []
-        z_list = []
-        for i in range(len(test_lattice.get_list())):
-            x_coord, y_coord, z_coord = best_dict[i].get_location()
-            x_list.append(x_coord)
-            y_list.append(y_coord)
-            z_list.append(z_coord)
 
-        # visualise.dict_plot_TwoD(test_lattice.elements, x_list, y_list, best_stability)
-        visualise.dict_plot_ThreeD(test_lattice.elements, x_list, y_list, z_list, best_stability)
+        visualise.chain_list_3Dplot(best_list, best_stability)
 
     if data_structure == "approx":
         pass
@@ -151,16 +134,7 @@ if __name__ == '__main__':
                 best_stability = stabilities[i]
                 best_state = result_states[i]
 
-        x_list = []
-        y_list = []
-        z_list = []
-        for i in range(len(best_state)):
-            x_coord, y_coord, z_coord = best_state[i].get_location()
-            x_list.append(x_coord)
-            y_list.append(y_coord)
-            z_list.append(z_coord)
-
-        visualise.dict_plot_ThreeD(test_lattice.elements, x_list, y_list, z_list, best_stability)
+        visualise.chain_list_3Dplot(best_state, best_stability)
 
 
     if data_structure == "greedy":
@@ -220,5 +194,5 @@ if __name__ == '__main__':
 
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
-            
+
         visualise.chain_list_3Dplot(best_chain, best_stability_eha)

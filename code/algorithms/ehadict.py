@@ -1,6 +1,7 @@
 import itertools
 import copy
 import random
+from .generalfunctions import stability_calculator, make_move
 
 def permutations_maker(moves, piece_length):
     """Makes all permutations for a chain and prunes some easy mistakes"""
@@ -150,7 +151,7 @@ def eha_list(lattice, moves, subchain_length):
                 continue
 
             # calculate stability at end of moveset
-            stability = stability_checker(chain)
+            stability = stability_calculator(chain)
 
             # if stability equal to highest found, 5% chance to accept this configuration
             if stability == best_stability and random.random() < 0.05:
