@@ -144,7 +144,7 @@ def mirror_prune(length, list, move):
 
 def random_prune():
     choice = random.random()
-    if choice < 0.1:
+    if choice < 0.05:
         return True
     return False
 
@@ -213,45 +213,4 @@ def stability_calculator(current_length, list):
 
     # divide stability by 2 since pairs are checked twice
     stability /= 2
-    return stability
-
-def matrix_stability(matrix, list, length):
-    """calculates stability of lattice with matrix"""
-    stability = 0
-
-    # check for successive H's in chain itself and add 2 per pair found
-    # since the matrix checker checks every pair twice, so need to compensate
-    for element in range(length - 1):
-        if list[element].type == 'H' and list[element + 1].type == 'H':
-            stability += 2
-
-    # check the neighbouring elements
-    for element in range(length):
-        i = list[element].x_coord
-        j = list[element].y_coord
-        k = list[element].z_coord
-
-        if matrix[i][j][k].type == 'H':
-            if matrix[i-1][j][k] != None:
-                if matrix[i-1][j][k].type == 'H':
-                    stability -= 1
-            if matrix[i+1][j][k] != None:
-                if matrix[i+1][j][k].type == 'H':
-                    stability -= 1
-            if matrix[i][j-1][k] != None:
-                if matrix[i][j-1][k].type == 'H':
-                    stability -= 1
-            if matrix[i][j+1][k] != None:
-                if matrix[i][j+1][k].type == 'H':
-                    stability -= 1
-            if matrix[i][j][k+1] != None:
-                if matrix[i][j][k+1].type == 'H':
-                    stability -= 1
-            if matrix[i][j][k-1] != None:
-                if matrix[i][j][k-1].type == 'H':
-                    stability -= 1
-
-    # divide stability by 2 since pairs are checked twice
-    stability /= 2
-
     return stability
