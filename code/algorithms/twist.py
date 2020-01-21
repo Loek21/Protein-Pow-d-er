@@ -1,4 +1,5 @@
 import random
+from .generalfunctions import stability_calculator, make_move
 
 def matrixrandomizer(lattice, moves):
     """Fills a matrix constructively with element objects"""
@@ -28,7 +29,6 @@ def matrixrandomizer(lattice, moves):
         future_z = current_z
 
         # to circumvent getting stuck and losing time, try a max of 50 moves
-
         moves_tried = 0
 
         while moves_tried < 50:
@@ -36,38 +36,21 @@ def matrixrandomizer(lattice, moves):
             # pick a random move
             move = random.choice(moves)
 
-            # update current coords
-            if move == 1:
-                future_x = current_x + 1
-            
-            elif move == -1:
-                future_x = current_x -1
-   
-            elif move == 2:
-                future_y = current_y - 1
-                 
-            elif move == -2:
-                future_y = current_y + 1
-
-            elif move == 3:
-                future_z = current_z - 1
-                 
-            elif move == -3:
-                future_z = current_z + 1
+            # update coords according to move
+            future_x, future_y, future_z = make_move(move, future_x, future_y, future_z)
 
             boundary_switch = True
             if (future_x == 0) or (future_y == 0) or (future_z == 0) or (future_x == len(matrix) - 1) or (future_y == len(matrix) - 1) or (future_z == len(matrix) - 1):
-                #print("HEYHEY")
                 boundary_switch = False
 
             # if coordinate is not yet taken, place element there and update its coords
             if (matrix[future_x][future_y][future_z]) == None and (boundary_switch == True):
-                #print(current_x, current_y, move)
+                
                 # update current x, y and z
                 current_x = future_x
                 current_y = future_y
                 current_z = future_z
-                #print(current_x, current_y)
+                
                 # set element
                 matrix[current_x][current_y][current_z] = lattice.lattice_list[set_elements]
                 lattice.lattice_list[set_elements].set_coordinates(current_x, current_y, current_z)
@@ -84,13 +67,14 @@ def matrixrandomizer(lattice, moves):
         do_count = True
         if moves_tried == 50:
             do_count = False
-            #print("WHILE BROKEN")
             break
-                 
-    lattice.matrix = matrix
+        
+    # calculate stability
+    stability = 0
+    if do_count == True:
+        stability = stability_calculator(lattice.lattice_list)
     
-
-    return lattice.matrix, do_count
+    return lattice.lattice_list, stability
 
 def matrix_stability(lattice):
     """calculates stability of lattice with matrix"""

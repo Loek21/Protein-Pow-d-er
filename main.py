@@ -9,7 +9,7 @@ import sys
 import copy
 import datetime
 import numpy as np
-from code.algorithms import randomizematrix, randomizedict, matrixapprox, greedymatrix, breadthfirst, eha, ehadict
+from code.algorithms import twist, randomize, greedymatrix, breadthfirst, eha, ehadict
 from code.classes import lattice, element
 from code.visualisation import visualise
 
@@ -25,14 +25,14 @@ if __name__ == '__main__':
     if len(sys.argv) != 5:
         print("usage: python main.py algorithm string_nr iterations dimension")
         sys.exit(1)
-    data_structure = sys.argv[1]
+    algorithm = sys.argv[1]
     iterations = int(sys.argv[3])
     dimension = int(sys.argv[4])
-    data_structures = ["random", "matrix", "greedy", "approx", "breadth", "eha", "ehalist"]
+    algorithms = ["random", "twist", "greedy", "breadth", "eha", "ehalist"]
 
     # Checks if data_structure is available
-    if data_structure not in data_structures:
-        print("You must choose either 'random', 'matrix', 'greedy', 'breadth', 'eha', 'ehalist'")
+    if algorithm not in algorithms:
+        print("You must choose either 'random', 'twist', 'greedy', 'breadth', 'eha', 'ehalist'")
         sys.exit(1)
 
     # Checks to see if given index corresponds to a protein string
@@ -61,54 +61,31 @@ if __name__ == '__main__':
     test_lattice.load_TwoD_matrix()
     test_lattice.load_list()
 
-    if data_structure == "matrix":
-        # good_count = 0
+    if algorithm == "twist":
         best_stab = 1
+        best_configuration = []
         for i in range(iterations):
-            try:
-
-                random_matrix = randomizematrix.matrixrandomizer(test_lattice, ThreeD_moves)
-                if random_matrix[1] != False:
-                    stability = randomizematrix.matrix_stability(test_lattice)
-                    #print(stability)
-                    # if stability == -16:
-                    #     print("MATRIX FOUND AT", i)
-                    #     break
-                    if stability < best_stab:
-                        best_stab = stability
-                    #good_count += 1
 
 
-                test_lattice = lattice.Lattice(protein_string)
-                test_lattice.load_matrix()
-                test_lattice.load_list()
-                    # for row in range(len(random_matrix)):
-                    #     for element in range(len(random_matrix)):
-                    #         if random_matrix[row][element] == None:
-                    #             random_matrix[row][element] = 0.0
+            random_mat = twist.matrixrandomizer(test_lattice, moves)
+            chain = random_mat[0]
+            stability = random_mat[1]
 
-                    #         elif random_matrix[row][element].type == 'H':
-                    #             random_matrix[row][element] = 5.0
+            if stability < best_stab:
+                best_stab = stability
+                best_configuration = chain
 
-                    #         else:
-                    #             random_matrix[row][element] = 10.0
+            test_lattice = lattice.Lattice(protein_string)
+            test_lattice.load_matrix()
+            test_lattice.load_list()
 
-                    # new_matrix = np.zeros((len(random_matrix), len(random_matrix)))
-                    # for row in range(len(random_matrix)):
-                    #     for element in range(len(random_matrix)):
-                    #         new_matrix[row][element] = random_matrix[row][element]
+        visualise.chain_list_3Dplot(best_configuration, best_stab)
 
-                    #visualise.matrix_plot(new_matrix)
-
-            except IndexError:
-                pass
-        print(best_stab)
-
-    if data_structure == "random":
+    if algorithm == "random":
         best_stability = 1
         best_list = 0
         for i in range(iterations):
-            random_list, stability = randomizedict.sarw_dict(test_lattice, moves)
+            random_list, stability = randomize.sarw_dict(test_lattice, moves)
             if stability < best_stability:
                 best_stability = stability
                 best_list = copy.deepcopy(random_list)
@@ -116,16 +93,13 @@ if __name__ == '__main__':
 
         visualise.chain_list_3Dplot(best_list, best_stability)
 
-    if data_structure == "approx":
-        pass
-
-    if data_structure == "breadth":
+    if algorithm == "breadth":
         test_lattice_breadth = lattice.Lattice(protein_string)
         element_P = element.Element("P")
         element_H = element.Element("H")
         element_C = element.Element("C")
 
-        result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, ThreeD_moves)
+        result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, moves)
         print(len(result_states))
         best_stability = 1
         best_state = 0
@@ -137,7 +111,7 @@ if __name__ == '__main__':
         visualise.chain_list_3Dplot(best_state, best_stability)
 
 
-    if data_structure == "greedy":
+    if algorithm == "greedy":
         # Set up variables
         successful_iterations = 0
         best_stability = 0
@@ -145,7 +119,7 @@ if __name__ == '__main__':
         # Start iterations of greedy algorithm
         try:
             for i in range(iterations):
-                greedymat = greedymatrix.greedy(test_lattice, ThreeD_moves)
+                greedymat = greedymatrix.greedy(test_lattice, moves)
                 if greedymat[1] != False:
                     stability = greedymatrix.matrix_stability(test_lattice)
 
@@ -166,8 +140,8 @@ if __name__ == '__main__':
         #visualise.matrix_plot(greedymat)
         sys.exit()
 
-    if data_structure == "eha":
-        stability, chain = eha.eha(test_lattice, ThreeD_moves, 6)
+    if algorithm == "eha":
+        stability, chain = eha.eha(test_lattice, moves, 6)
         print(stability)
         print(chain)
         element_list = []
@@ -181,11 +155,11 @@ if __name__ == '__main__':
             z_list.append(element.z_coord)
         visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, stability)
 
-    if data_structure == "ehalist":
+    if algorithm == "ehalist":
         best_stability_eha = 0
         best_chain = []
         for i in range(iterations):
-            stability, chain = ehadict.eha_list(test_lattice, ThreeD_moves, 6)
+            stability, chain = ehadict.eha_list(test_lattice, moves, 6)
             print(stability)
             print(chain)
             if stability < best_stability_eha:
