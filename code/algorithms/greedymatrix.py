@@ -39,11 +39,12 @@ def greedy(lattice, moves):
             # pick a greedy move
             # if next element is 'P', move is random because no influence on stability
             if lattice.elements[set_elements] == 'P':
+                print("DOEI!1")
                 move = random.choice(moves)
 
             # if next element is 'H' or 'C', check each surrounding spot
             elif lattice.elements[set_elements] == 'H':
-                print("DOEI!")
+                print("DOEI!2")
                 best_moves = []
                 best_stab = 0
                 test_stab = 0
@@ -105,7 +106,7 @@ def greedy(lattice, moves):
         do_count = True
         if moves_tried == 50:
             do_count = False
-            #print("WHILE BROKEN")
+            print("WHILE BROKEN")
             break
                  
     lattice.matrix = matrix
