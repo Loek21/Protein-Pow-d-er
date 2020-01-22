@@ -26,13 +26,17 @@ def bfs(lattice, P, H, C, moves):
     depth = protein_length
     list_queue = queue.Queue()
     stability = queue.Queue()
+    P_counter = queue.Queue()
     list_queue.put(list)
     stability.put(0)
+    P_counter.put(0)
 
+    counter = 0
 
     while not list_queue.empty():
         protein_state = list_queue.get()
         stability_state = stability.get()
+        P_state = P_counter.get()
         # print(best_stability)
 
         current_x, current_y, current_z = protein_state[len(protein_state) - 1].get_location()
@@ -42,11 +46,16 @@ def bfs(lattice, P, H, C, moves):
             result_list.append(protein_state)
             stabilities.append(stability_state)
 
+        counter += 1
+        if counter % 10000 == 0:
+            print(counter)
+
         if len(protein_state) < depth:
             current_length = len(protein_state)
             for i in moves:
                 protein_child = copy.deepcopy(protein_state)
                 stability_child = copy.deepcopy(stability_state)
+                P_child = copy.deepcopy(P_state)
 
                 new_x_coord, new_y_coord, new_z_coord = make_move(i, current_x, current_y, current_z)
                 occupied = False
@@ -62,7 +71,7 @@ def bfs(lattice, P, H, C, moves):
                     protein_child[len(protein_child) - 2].set_direction(i)
 
                     # For benchmarking upper bound
-                    # stability_child = stability_calculator(current_length, protein_child)
+                    # stability_child = stability_calculator(protein_child)
                     #
                     # stability_child_copy = copy.deepcopy(stability_child)
                     # protein_child_copy = copy.deepcopy(protein_child)
@@ -71,28 +80,31 @@ def bfs(lattice, P, H, C, moves):
                     # stability.put(stability_child_copy)
 
                     # For regular testing
+                    if element == "P":
+                        P_child += 1
+                    else:
+                        P_child = 0
+
                     mirror_switch = mirror_prune(current_length, protein_child, i)
                     if mirror_switch == True:
                         stability_child = stability_calculator(protein_child)
                         random_switch = random_prune()
-                        if current_length < 21:
-                            if stability_child <= stability_to_beat:
-                                stability_to_beat = stability_child
+                        save_switch = False
+                        if P_child >= 2 and random_switch == True:
+                            save_switch = True
 
-                                stability_child_copy = copy.deepcopy(stability_child)
-                                protein_child_copy = copy.deepcopy(protein_child)
+                        elif P_child < 2 and stability_child <= stability_to_beat:
+                            stability_to_beat = stability_child
+                            save_switch = True
 
-                                list_queue.put(protein_child_copy)
-                                stability.put(stability_child_copy)
-                        else:
-                            if stability_child <= stability_to_beat and random_switch == True:
-                                stability_to_beat = stability_child
+                        if save_switch == True:
+                            stability_child_copy = copy.deepcopy(stability_child)
+                            protein_child_copy = copy.deepcopy(protein_child)
+                            P_child_copy = copy.deepcopy(P_child)
 
-                                stability_child_copy = copy.deepcopy(stability_child)
-                                protein_child_copy = copy.deepcopy(protein_child)
-
-                                list_queue.put(protein_child_copy)
-                                stability.put(stability_child_copy)
+                            list_queue.put(protein_child_copy)
+                            stability.put(stability_child_copy)
+                            P_counter.put(P_child_copy)
 
 
     return result_list, stabilities
@@ -117,7 +129,7 @@ def mirror_prune(length, list, move):
 
 def random_prune():
     choice = random.random()
-    if choice < 0.05:
+    if choice < 0.40:
         return True
     return False
 
