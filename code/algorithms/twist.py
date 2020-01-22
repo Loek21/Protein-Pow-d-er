@@ -1,7 +1,7 @@
 import random
 from .generalfunctions import stability_calculator, make_move
 
-def matrixrandomizer(lattice, moves):
+def twist(lattice, moves):
     """Fills a matrix constructively with element objects"""
 
     matrix = lattice.get_matrix()

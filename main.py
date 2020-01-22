@@ -19,7 +19,7 @@ if __name__ == '__main__':
     protein_string_list = ["HHPHHHPH", "HHPHHHPHPHHHPH", "HPHPPHHPHPPHPHHPPHPH", "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
                             "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
                             "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
-                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HPPCH"]
+                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HHHHHHHHHHHHHHHHHHHH"]
 
     # Checks if the correct number of arguments have been given
     if len(sys.argv) != 5:
@@ -67,7 +67,7 @@ if __name__ == '__main__':
         for i in range(iterations):
 
 
-            random_mat = twist.matrixrandomizer(test_lattice, moves)
+            random_mat = twist.twist(test_lattice, moves)
             chain = random_mat[0]
             stability = random_mat[1]
 
