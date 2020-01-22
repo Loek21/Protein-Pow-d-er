@@ -56,5 +56,5 @@ def chain_list_3Dplot(chain, stability):
         else:
             ax.scatter(x_list[i], y_list[i], z_list[i], c="blue")
     ax.plot(x_list, y_list, z_list, c="black")
-    plt.title(f"stability = {stability}")
+    plt.title(f"stability = {stability}", fontsize=20)
     plt.show()

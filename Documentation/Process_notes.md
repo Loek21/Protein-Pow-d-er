@@ -134,3 +134,10 @@ Best found: -26
 Runtime: < 6:25 minutes
 
 ## Upper bound tests
+Chain length 12, 3D: 6989025 possible states (calculated: )
+Chain length 10, 3D: 308981 possible states (calculated: 390625) (26% overestimation)
+Chain length 9, 3D: 64661 possible states (calculated: 78125) (20% overestimation)
+
+## Beam search results
+protein_length 36: using beamsearch of highest stability every level, and 80% discard after 3 consecutive P's: 31082 permutations, results in stability : -18
+protein_length 50: using beamsearch of highest stability every level, and 50% discard after 3 consecutive P's: 15 permutations, results in stability : -30

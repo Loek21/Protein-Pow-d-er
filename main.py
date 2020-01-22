@@ -19,7 +19,9 @@ if __name__ == '__main__':
     protein_string_list = ["HHPHHHPH", "HHPHHHPHPHHHPH", "HPHPPHHPHPPHPHHPPHPH", "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
                             "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
                             "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
-                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "HHHHHHHHHHHHHHHHHHHH"]
+                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "PPPHHP", "HHPPHPPHPPHPPHPPHPPHPPHH",
+                            "PPHHHPHHHPPPHPHHPHHPPHPHHHHPHPPHHHHHPHPHHPPHHP", "PPHPPHHPPHHPPPPPHHHHHHHHHHPPPPPPHHPPHHPPHPPHHHHH",
+                            "PPHHHPHHHHHHHHPPPHHHHHHHHHHPHPPPHHHHHHHHHHHHPPPPHHHHHHPHHPHP"]
 
     # Checks if the correct number of arguments have been given
     if len(sys.argv) != 5:
@@ -36,8 +38,8 @@ if __name__ == '__main__':
         sys.exit(1)
 
     # Checks to see if given index corresponds to a protein string
-    if int(sys.argv[2]) < 0 or int(sys.argv[2]) > 9:
-        print("Choose a string number between 0 and 9.")
+    if int(sys.argv[2]) < 0 or int(sys.argv[2]) > 13:
+        print("Choose a string number between 0 and 13.")
         sys.exit(1)
     protein_string = protein_string_list[int(sys.argv[2])]
 
@@ -99,14 +101,30 @@ if __name__ == '__main__':
         element_H = element.Element("H")
         element_C = element.Element("C")
 
-        result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, moves)
-        print(len(result_states))
-        best_stability = 1
+        best_state_list = []
+        best_stability_list = []
+
+        for i in range(iterations):
+            result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, moves)
+            print(len(result_states))
+            best_stability_iteration = 1
+            best_state_iteration = 0
+            if len(result_states) != 0:
+                for i in range(len(result_states)):
+                    if stabilities[i] < best_stability_iteration:
+                        best_stability_iteration = stabilities[i]
+                        best_state_iteration = result_states[i]
+            best_state_list.append(best_state_iteration)
+            best_stability_list.append(best_stability_iteration)
+            test_lattice_breadth = lattice.Lattice(protein_string)
+
         best_state = 0
-        for i in range(len(result_states)):
-            if stabilities[i] < best_stability:
-                best_stability = stabilities[i]
-                best_state = result_states[i]
+        best_stability = 0
+        for i in range(len(best_state_list)):
+            if best_stability_list[i] < best_stability:
+                best_stability = best_stability_list[i]
+                best_state = best_state_list[i]
+
 
         visualise.chain_list_3Dplot(best_state, best_stability)
 
