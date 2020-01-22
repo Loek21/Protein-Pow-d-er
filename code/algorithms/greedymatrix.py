@@ -1,8 +1,10 @@
 import random
 import sys
+from .generalfunctions import *
 
 def greedy(lattice, moves):
-    """This algorithm constructively fills a matrix with elements. Each element is randomly placed, choices limited by a greedy algorithm"""
+    """This algorithm constructively fills a matrix with elements.
+    Each element is randomly placed, choices limited by a greedy algorithm"""
 
     matrix = lattice.get_matrix()
 
@@ -17,7 +19,7 @@ def greedy(lattice, moves):
     current_x += 1
     matrix[current_x][current_y][current_z] = lattice.lattice_list[1]
     lattice.lattice_list[1].set_coordinates(current_x, current_y, current_z)
-    
+
     # 2 elements have been set in the matrix
     set_elements = 2
 
@@ -40,7 +42,8 @@ def greedy(lattice, moves):
                 move = random.choice(moves)
 
             # if next element is 'H' or 'C', check each surrounding spot
-            elif lattice.elements[set_elements] == 'H' or 'C':
+            elif lattice.elements[set_elements] == 'H':
+                print("DOEI!")
                 best_moves = []
                 best_stab = 0
                 test_stab = 0
@@ -73,23 +76,7 @@ def greedy(lattice, moves):
                 sys.exit(1)
 
             # update current coords
-            if move == 1:
-                future_x = current_x + 1
-            
-            elif move == -1:
-                future_x = current_x -1
-   
-            elif move == 2:
-                future_y = current_y - 1
-                 
-            elif move == -2:
-                future_y = current_y + 1
-
-            elif move == 3:
-                future_z = current_z - 1
-                 
-            elif move == -3:
-                future_z = current_z + 1
+            future_x, future_y, future_z = make_move(move, current_x, current_y, current_z)
 
             boundary_switch = True
             if (future_x == 0) or (future_y == 0) or (future_z == 0) or (future_x == len(matrix) - 1) or (future_y == len(matrix) - 1) or (future_z == len(matrix) - 1):
@@ -142,8 +129,8 @@ def matrix_stability(lattice):
         #    stability += 1
         #if elements[element].type == 'H' and elements[element + 1].type == 'C':
         #    stability += 1
-        if elements[element].type == 'C' and elements[element + 1].type == 'C':
-            stability += 10
+        #if elements[element].type == 'C' and elements[element + 1].type == 'C':
+        #   stability += 10
 
     
     # check the neighbouring elements
@@ -216,7 +203,6 @@ def element_stability(matrix, element, x_coord, y_coord, z_coord):
         if matrix[x_coord-1][y_coord][z_coord] != None:
             if matrix[x_coord-1][y_coord][z_coord].type == 'H':
                 stability -= 1
-                print("Joe")
         if matrix[x_coord+1][y_coord][z_coord] != None:
             if matrix[x_coord+1][y_coord][z_coord].type == 'H':
                 stability -= 1

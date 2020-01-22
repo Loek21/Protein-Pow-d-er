@@ -115,12 +115,15 @@ if __name__ == '__main__':
         # Set up variables
         successful_iterations = 0
         best_stability = 0
+        
 
         # Start iterations of greedy algorithm
         try:
             for i in range(iterations):
                 greedymat = greedymatrix.greedy(test_lattice, moves)
+                print("DOEI")
                 if greedymat[1] != False:
+                    print("Jo")
                     stability = greedymatrix.matrix_stability(test_lattice)
 
                 # Modify best_stability if a higher stability was found.
