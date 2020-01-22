@@ -2,22 +2,21 @@ import random
 from .generalfunctions import stability_calculator, make_move
 
 def twist(lattice, moves):
-    """Fills a matrix constructively with element objects"""
+    """Fills grid with elements randomly, but restricts their freedom of movement with a border"""
 
-    matrix = lattice.get_matrix()
+    chain = lattice.lattice_list
 
-    # set the first 2 elements in the matrix since all possibilities result in the same structure
-    current_x = int(len(matrix) * 0.5 - 1)
-    current_y = int(len(matrix) * 0.5 - 1)
-    current_z = int(len(matrix) * 0.5 - 1)
-    matrix[current_x][current_y][current_z] = lattice.lattice_list[0]
+    # fix first 2 elements in the matrix, setting first coords to the origin of the grid
+    current_x, current_y, current_z = 0, 0, 0
 
     # give these element objects the corresponding coordinates
-    lattice.lattice_list[0].set_coordinates(current_x, current_y, current_z)
+    chain[0].set_coordinates(current_x, current_y, current_z)
     current_x += 1
-    matrix[current_x][current_y][current_z] = lattice.lattice_list[1]
-    lattice.lattice_list[1].set_coordinates(current_x, current_y, current_z)
+    chain[1].set_coordinates(current_x, current_y, current_z)
     
+    # set up a boundary
+    boundary = int(len(chain) * 0.1)
+
     # 2 elements have been set in the matrix
     set_elements = 2
 
@@ -39,12 +38,20 @@ def twist(lattice, moves):
             # update coords according to move
             future_x, future_y, future_z = make_move(move, future_x, future_y, future_z)
 
+            # check if move crosses boundary, if so, don't make the move
             boundary_switch = True
-            if (future_x == 0) or (future_y == 0) or (future_z == 0) or (future_x == len(matrix) - 1) or (future_y == len(matrix) - 1) or (future_z == len(matrix) - 1):
+            if abs(future_x) == boundary or abs(future_y) == boundary or abs(future_z) == boundary:
                 boundary_switch = False
 
-            # if coordinate is not yet taken, place element there and update its coords
-            if (matrix[future_x][future_y][future_z]) == None and (boundary_switch == True):
+            # check if the coords are taken
+            occupied = False
+            for amino in chain:
+                if amino.get_location() == (future_x, future_y, future_z):
+                    occupied = True
+                    break
+
+            # if coordinate is not yet taken and boundary not crosses, place element there and update its coords
+            if (occupied == False) and (boundary_switch == True):
                 
                 # update current x, y and z
                 current_x = future_x
@@ -52,7 +59,7 @@ def twist(lattice, moves):
                 current_z = future_z
                 
                 # set element
-                matrix[current_x][current_y][current_z] = lattice.lattice_list[set_elements]
+                #matrix[current_x][current_y][current_z] = lattice.lattice_list[set_elements]
                 lattice.lattice_list[set_elements].set_coordinates(current_x, current_y, current_z)
                 set_elements += 1
                 break
@@ -64,6 +71,7 @@ def twist(lattice, moves):
                 future_z = current_z
                 moves_tried += 1
 
+        # if more than 50 moves are made and thus problem is stuck, don't bother checking stability
         do_count = True
         if moves_tried == 50:
             do_count = False

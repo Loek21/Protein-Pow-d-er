@@ -143,26 +143,11 @@ if __name__ == '__main__':
         #visualise.matrix_plot(greedymat)
         sys.exit()
 
-    if algorithm == "eha":
-        stability, chain = eha.eha(test_lattice, moves, 6)
-        print(stability)
-        print(chain)
-        element_list = []
-        x_list = []
-        y_list = []
-        z_list = []
-        for element in chain:
-            element_list.append(element.type)
-            x_list.append(element.x_coord)
-            y_list.append(element.y_coord)
-            z_list.append(element.z_coord)
-        visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, stability)
-
     if algorithm == "ehalist":
         best_stability_eha = 0
         best_chain = []
         for i in range(iterations):
-            stability, chain = ehadict.eha_list(test_lattice, moves, 6)
+            stability, chain = ehadict.eha_list(test_lattice, moves, 7)
             print(stability)
             print(chain)
             if stability < best_stability_eha:
