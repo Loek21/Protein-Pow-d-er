@@ -1,6 +1,8 @@
+"""Greedymatrix.py"""
+
 import random
 import sys
-from .generalfunctions import *
+from .generalfunctions import make_move, stability_calculator
 
 def greedy(lattice, moves):
     """This algorithm constructively fills a matrix with elements.
@@ -35,7 +37,7 @@ def greedy(lattice, moves):
         moves_tried = 0
 
         while moves_tried < 50:
-    
+
             # pick a greedy move
             # if next element is 'P', move is random because no influence on stability
             if lattice.elements[set_elements] == 'P':
@@ -44,17 +46,19 @@ def greedy(lattice, moves):
 
             # if next element is 'H' or 'C', check each surrounding spot
             elif lattice.elements[set_elements] == 'H':
-                print("DOEI!2")
+
                 best_moves = []
                 best_stab = 0
                 test_stab = 0
-                
+
                 for move in moves:
                     if move == 1:
-                        test_stab = element_stability(lattice.matrix, lattice.elements[set_elements], current_x + 1, current_y, current_z)
+                        test_stab = element_stability(lattice.matrix, lattice.elements[set_elements],
+                                                      current_x + 1, current_y, current_z)
                         best_moves, best_stab = compare_stability(move, test_stab, best_stab, best_moves)
                     if move == -1:
-                        test_stab = element_stability(lattice.matrix, lattice.elements[set_elements], current_x - 1, current_y, current_z)
+                        test_stab = element_stability(lattice.matrix, lattice.elements[set_elements],
+                                                      current_x - 1, current_y, current_z)
                         best_moves, best_stab = compare_stability(move, test_stab, best_stab, best_moves)
                     if move == 2:
                         test_stab = element_stability(lattice.matrix, lattice.elements[set_elements], current_x, current_y + 1, current_z)
@@ -70,7 +74,7 @@ def greedy(lattice, moves):
                         best_moves, best_stab = compare_stability(move, test_stab, best_stab, best_moves)
 
                 move = random.choice(best_moves)
-            
+
             # error, element is not P, H or C
             else:
                 print("Error: Amino Acid in String not recognized. Ensure that input only contains H/P/C characters")
@@ -84,12 +88,12 @@ def greedy(lattice, moves):
                 boundary_switch = False
 
             # if coordinate is not yet taken, place element there and update its coords
-            if (matrix[future_x][future_y][future_z]) == None and (boundary_switch == True):
+            if (matrix[future_x][future_y][future_z]) is None and boundary_switch:
                 # update current x, y and z
                 current_x = future_x
                 current_y = future_y
                 current_z = future_z
-                #print(current_x, current_y)
+
                 # set element
                 matrix[current_x][current_y][current_z] = lattice.lattice_list[set_elements]
                 lattice.lattice_list[set_elements].set_coordinates(current_x, current_y, current_z)
@@ -111,91 +115,9 @@ def greedy(lattice, moves):
                  
     lattice.matrix = matrix
     
+    stability = stability_calculator(lattice.lattice_list)
 
-    return lattice.matrix, do_count
-
-def matrix_stability(lattice):
-    """calculates stability of lattice with matrix"""
-    elements = lattice.lattice_list
-    
-    mat = lattice.matrix
-    stability = 0
-
-    # check for successive H's in chain itself and add 2 per pair found
-    # since the matrix checker checks every pair twice, so need to compensate
-    for element in range(len(elements) - 1):
-        if elements[element].type == 'H' and elements[element + 1].type == 'H':
-            stability += 2
-        #if elements[element].type == 'C' and elements[element + 1].type == 'H':
-        #    stability += 1
-        #if elements[element].type == 'H' and elements[element + 1].type == 'C':
-        #    stability += 1
-        #if elements[element].type == 'C' and elements[element + 1].type == 'C':
-        #   stability += 10
-
-    
-    # check the neighbouring elements
-    for element in range(len(elements)):
-        i = elements[element].x_coord
-        j = elements[element].y_coord
-        k = elements[element].z_coord
-
-        if mat[i][j][k].type == 'H':
-            if mat[i-1][j][k] != None:
-                if mat[i-1][j][k].type == 'H':
-                    stability -= 1
-            if mat[i+1][j][k] != None:
-                if mat[i+1][j][k].type == 'H':
-                    stability -= 1
-            if mat[i][j-1][k] != None:
-                if mat[i][j-1][k].type == 'H':
-                    stability -= 1
-            if mat[i][j+1][k] != None:
-                if mat[i][j+1][k].type == 'H':
-                    stability -= 1
-            if mat[i][j][k+1] != None:
-                if mat[i][j][k+1].type == 'H':
-                    stability -= 1
-            if mat[i][j][k-1] != None:
-                if mat[i][j][k-1].type == 'H':
-                    stability -= 1
-            
-        if mat[i][j][k].type == 'C':
-            if mat[i-1][j][k] != None:
-                if mat[i-1][j][k].type == 'H':
-                    stability -= 1
-                if mat[i-1][j][k].type == 'C':
-                    stability -= 5
-            if mat[i+1][j][k] != None:
-                if mat[i+1][j][k].type == 'H':
-                    stability -= 1
-                if mat[i+1][j][k].type == 'C':
-                    stability -= 5
-            if mat[i][j-1][k] != None:
-                if mat[i][j-1][k].type == 'H':
-                    stability -= 1
-                if mat[i][j-1][k].type == 'C':
-                    stability -= 5
-            if mat[i][j+1][k] != None:
-                if mat[i][j+1][k].type == 'H':
-                    stability -= 1
-                if mat[i][j+1][k].type == 'C':
-                    stability -= 5
-            if mat[i][j][k+1] != None:
-                if mat[i][j][k+1].type == 'H':
-                    stability -= 1
-                if mat[i][j][k+1].type == 'C':
-                    stability -= 5
-            if mat[i][j][k-1] != None:
-                if mat[i][j][k-1].type == 'H':
-                    stability -= 1
-                if mat[i][j][k-1].type == 'C':
-                    stability -= 5
-
-    # divide stability by 2 since pairs are checked twice
-    stability /= 2
-
-    return stability
+    return lattice.lattice_list, stability
 
 def element_stability(matrix, element, x_coord, y_coord, z_coord):
     """calculates stability of one given element by checking surroundings """
