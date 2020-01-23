@@ -69,7 +69,7 @@ if __name__ == '__main__':
         for i in range(iterations):
 
 
-            random_mat = twist.matrixrandomizer(test_lattice, moves)
+            random_mat = twist.twist(test_lattice, moves)
             chain = random_mat[0]
             stability = random_mat[1]
 
@@ -139,9 +139,7 @@ if __name__ == '__main__':
         try:
             for i in range(iterations):
                 greedymat = greedymatrix.greedy(test_lattice, moves)
-                print("DOEI")
                 if greedymat[1] != False:
-                    print("Jo")
                     stability = greedymatrix.matrix_stability(test_lattice)
 
                 # Modify best_stability if a higher stability was found.
@@ -161,26 +159,11 @@ if __name__ == '__main__':
         #visualise.matrix_plot(greedymat)
         sys.exit()
 
-    if algorithm == "eha":
-        stability, chain = eha.eha(test_lattice, moves, 6)
-        print(stability)
-        print(chain)
-        element_list = []
-        x_list = []
-        y_list = []
-        z_list = []
-        for element in chain:
-            element_list.append(element.type)
-            x_list.append(element.x_coord)
-            y_list.append(element.y_coord)
-            z_list.append(element.z_coord)
-        visualise.dict_plot_ThreeD(element_list, x_list, y_list, z_list, stability)
-
     if algorithm == "ehalist":
         best_stability_eha = 0
         best_chain = []
         for i in range(iterations):
-            stability, chain = ehadict.eha_list(test_lattice, moves, 6)
+            stability, chain = ehadict.eha_list(test_lattice, moves, 7)
             print(stability)
             print(chain)
             if stability < best_stability_eha:
