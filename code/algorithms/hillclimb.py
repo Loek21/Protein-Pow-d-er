@@ -52,18 +52,13 @@ def pullmove(chain, stability, iterations):
                 other_amino.set_coordinates(x, y, z)
 
             new_chain_stability = stability_calculator(new_chain)
-            print(new_chain)
-            print(new_chain_stability)
 
             if new_chain_stability <= best_stability:
-                print(new_chain_stability, best_stability)
                 best_stability = new_chain_stability
                 best_chain = new_chain
 
     print(best_chain)
     return best_chain, best_stability
-
-    
 
 def makepull(chain, element):
 
@@ -76,7 +71,7 @@ def makepull(chain, element):
         taken_coords.append(element.get_location())
 
     for coords in ((x + 1, y, z + 1), (x + 1, y, z - 1), (x + 1, y - 1, z), (x + 1, y + 1, z), (x, y - 1, z - 1), (x, y - 1, z + 1), (x - 1, y - 1, z), (x - 1, y, z + 1), (x - 1, y, z - 1), (x - 1, y + 1, z), (x, y + 1, z + 1), (x, y + 1, z - 1)):
-        
+
         if coords not in taken_coords:
 
             if coords == (x + 1, y, z + 1):
@@ -158,12 +153,3 @@ def makepull(chain, element):
 
 
     return None
-            
-
-
-
-    
-
-
-
-

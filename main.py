@@ -178,13 +178,13 @@ if __name__ == '__main__':
     if algorithm == "pull":
         best_random_stability = 1
         best_random_solution = 0
-        for i in range(100):
+        for i in range(5):
             random_solution, random_stability = randomize.sarw_dict(test_lattice, moves)
             if random_stability < best_random_stability:
                 best_random_stability = random_stability
                 best_random_solution = copy.deepcopy(random_solution)
 
-        solution, stability = hillclimb.pullmove(random_solution, best_random_stability, iterations)
+        solution, stability = hillclimb.pullmove(best_random_solution, best_random_stability, iterations)
 
         visualise.chain_list_3Dplot(best_random_solution, best_random_stability)
         visualise.chain_list_3Dplot(solution, stability)
