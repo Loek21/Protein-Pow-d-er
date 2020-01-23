@@ -9,7 +9,7 @@ import sys
 import copy
 import datetime
 import numpy as np
-from code.algorithms import twist, randomize, greedymatrix, breadthfirst, eha, ehadict
+from code.algorithms import twist, randomize, greedymatrix, breadthfirst, eha, ehadict, hillclimb
 from code.classes import lattice, element
 from code.visualisation import visualise
 
@@ -176,4 +176,5 @@ if __name__ == '__main__':
         visualise.chain_list_3Dplot(best_chain, best_stability_eha)
 
     if algorithm == "pull":
-        pass
+        random_solution, random_stability =  randomize.sarw_dict(test_lattice, moves)
+        solution, stability = hillclimb.pullmove(random_solution, random_stability, iterations)
