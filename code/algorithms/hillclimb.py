@@ -16,16 +16,17 @@ def pullmove(chain, stability, iterations):
         if max_reached == True:
             break
 
-        new_chain = copy.deepcopy(best_chain)
-        new_chain_stability = copy.deepcopy(best_stability)
+        # new_chain = copy.deepcopy(best_chain)
+        # new_chain_stability = copy.deepcopy(best_stability)
         moves_tried = 0
-        for element in range(1, len(new_chain)):
+        for element in range(1, len(best_chain) - 1):
             new_chain = copy.deepcopy(best_chain)
             new_chain_stability = copy.deepcopy(best_stability)
 
             amino = new_chain[element]
             previous_amino = new_chain[element - 1]
-            move = makepull(new_chain, new_chain[element])
+            move = makepull(new_chain, new_chain[element], new_chain[element+1])
+            #print(move)
 
             if move == None:
                 moves_tried += 1
@@ -36,14 +37,8 @@ def pullmove(chain, stability, iterations):
             i += 1
             moves_tried = 0
 
-            diagonal = move[0]
-            adjacent = move[1]
+            for other_element in range(element - 1):
 
-            # set current element and the previous one to the move made
-            amino.set_coordinates(diagonal[0], diagonal[1], diagonal[2])
-            previous_amino.set_coordinates(adjacent[0], adjacent[1], adjacent[2])
-
-            for other_element in range(element - 2):
                 other_amino = new_chain[other_element]
                 amino_ahead = new_chain[other_element + 2]
 
@@ -51,27 +46,41 @@ def pullmove(chain, stability, iterations):
 
                 other_amino.set_coordinates(x, y, z)
 
-            new_chain_stability = stability_calculator(new_chain)
-            print(new_chain)
-            print(new_chain_stability)
+            diagonal = move[0]
+            adjacent = move[1]
 
-            if new_chain_stability <= best_stability:
-                print(new_chain_stability, best_stability)
+            # set current element and the previous one to the move made
+            amino.set_coordinates(diagonal[0], diagonal[1], diagonal[2])
+            previous_amino.set_coordinates(adjacent[0], adjacent[1], adjacent[2])
+
+            
+
+            new_chain_stability = stability_calculator(new_chain)
+            #print(best_chain)
+            #print(new_chain)
+            #print(new_chain_stability)
+
+            if new_chain_stability < best_stability:
+                #print(new_chain_stability, best_stability)
                 best_stability = new_chain_stability
                 best_chain = new_chain
 
-    print(best_chain)
+    #print(best_chain)
     return best_chain, best_stability
 
     
 
-def makepull(chain, element):
+def makepull(chain, element, next_element):
 
     x, y, z = element.get_location()
+    x_next, y_next, z_next = next_element.get_location()
 
     possible_diagonals = []
-
     taken_coords = []
+
+    diagonal_coords = [(x + 1, y, z + 1), (x + 1, y, z - 1), (x + 1, y - 1, z), (x + 1, y + 1, z), (x, y - 1, z - 1), (x, y - 1, z + 1), (x - 1, y - 1, z), (x - 1, y, z + 1), (x - 1, y, z - 1), (x - 1, y + 1, z), (x, y + 1, z + 1), (x, y + 1, z - 1)]
+    next_element_adj_coords = [(x_next + 1, y_next, z_next), (x_next - 1, y_next, z_next), (x_next, y_next + 1, z_next), (x_next, y_next - 1, z_next), (x_next, y_next, z_next + 1), (x_next, y_next, z_next - 1)]
+
     for element in chain:
         taken_coords.append(element.get_location())
 
@@ -152,9 +161,21 @@ def makepull(chain, element):
                 if (x, y, z - 1) not in taken_coords:
                     possible_diagonals.append((coords, (x, y, z - 1)))
 
-    if len(possible_diagonals) > 0:
+    # if len(possible_diagonals) > 0:
+    #     move = random.choice(possible_diagonals)
+    #     return move
+
+    is_connected = False
+    while is_connected == False:
         move = random.choice(possible_diagonals)
-        return move
+        #print(move)
+        #print(next_element_adj_coords)
+
+        if move[0] in next_element_adj_coords:
+            is_connected = True
+            return move
+
+
 
 
     return None
