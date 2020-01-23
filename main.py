@@ -106,7 +106,6 @@ if __name__ == '__main__':
 
         for i in range(iterations):
             result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, moves)
-            print(len(result_states))
             best_stability_iteration = 1
             best_state_iteration = 0
             if len(result_states) != 0:
@@ -117,6 +116,7 @@ if __name__ == '__main__':
             best_state_list.append(best_state_iteration)
             best_stability_list.append(best_stability_iteration)
             test_lattice_breadth = lattice.Lattice(protein_string)
+            print(f"permutations:{len(result_states)} stability: {best_stability_iteration}")
 
         best_state = 0
         best_stability = 0
@@ -125,7 +125,7 @@ if __name__ == '__main__':
                 best_stability = best_stability_list[i]
                 best_state = best_state_list[i]
 
-
+        print(best_state)
         visualise.chain_list_3Dplot(best_state, best_stability)
 
 
@@ -133,7 +133,7 @@ if __name__ == '__main__':
         # Set up variables
         successful_iterations = 0
         best_stability = 0
-        
+
 
         # Start iterations of greedy algorithm
         try:

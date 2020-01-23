@@ -139,5 +139,13 @@ Chain length 10, 3D: 308981 possible states (calculated: 390625) (26% overestima
 Chain length 9, 3D: 64661 possible states (calculated: 78125) (20% overestimation)
 
 ## Beam search results
-protein_length 36: using beamsearch of highest stability every level, and 80% discard after 3 consecutive P's: 31082 permutations, results in stability : -18
-protein_length 50: using beamsearch of highest stability every level, and 50% discard after 3 consecutive P's: 15 permutations, results in stability : -30
+Using beamsearch of highest stability every level, and 60% discard after 2 consecutive P's, 70% after 3, 75% after 4 and 80% after 5 or more. After 100 runs these are the best results:
+String 0, 3D results in a best stability of -3
+String 1, 3D results in a best stability of -7
+String 2, 3D results in a best stability of -11
+String 3, 3D results in a best stability of -18
+String 4, 3D results in a best stability of -31
+String 5, 3D results in a best stability of -33
+String 6, 3D results in a best stability of -59
+String 7, 3D results in a best stability of -47
+String 8, 3D results in a best stability of -50

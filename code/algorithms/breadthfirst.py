@@ -88,7 +88,7 @@ def bfs(lattice, P, H, C, moves):
                     mirror_switch = mirror_prune(current_length, protein_child, i)
                     if mirror_switch == True:
                         stability_child = stability_calculator(protein_child)
-                        random_switch = random_prune()
+                        random_switch = random_prune(P_child)
                         save_switch = False
                         if P_child >= 2 and random_switch == True:
                             save_switch = True
@@ -127,9 +127,15 @@ def mirror_prune(length, list, move):
             return False
     return True
 
-def random_prune():
+def random_prune(P_counter):
     choice = random.random()
-    if choice < 0.40:
+    if choice < 0.4 and P_counter == 2:
+        return True
+    if choice < 0.3 and P_counter == 3:
+        return True
+    if choice < 0.25 and P_counter == 4:
+        return True
+    if choice < 0.2 and P_counter >= 5:
         return True
     return False
 
