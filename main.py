@@ -30,11 +30,11 @@ if __name__ == '__main__':
     algorithm = sys.argv[1]
     iterations = int(sys.argv[3])
     dimension = int(sys.argv[4])
-    algorithms = ["random", "twist", "greedy", "breadth", "eha", "ehalist"]
+    algorithms = ["random", "twist", "greedy", "breadth", "pull", "ehalist"]
 
     # Checks if data_structure is available
     if algorithm not in algorithms:
-        print("You must choose either 'random', 'twist', 'greedy', 'breadth', 'eha', 'ehalist'")
+        print("You must choose either 'random', 'twist', 'greedy', 'breadth', 'pull', 'ehalist'")
         sys.exit(1)
 
     # Checks to see if given index corresponds to a protein string
@@ -174,3 +174,6 @@ if __name__ == '__main__':
             test_lattice.load_list()
 
         visualise.chain_list_3Dplot(best_chain, best_stability_eha)
+
+    if algorithm == "pull":
+        pass
