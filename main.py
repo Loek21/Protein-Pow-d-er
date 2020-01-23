@@ -186,4 +186,5 @@ if __name__ == '__main__':
 
         solution, stability = hillclimb.pullmove(random_solution, random_stability, iterations)
 
+        visualise.chain_list_3Dplot(best_random_solution, best_random_stability)
         visualise.chain_list_3Dplot(solution, stability)
