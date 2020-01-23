@@ -138,9 +138,10 @@ if __name__ == '__main__':
         # Start iterations of greedy algorithm
         try:
             for i in range(iterations):
-                greedymat = greedymatrix.greedy(test_lattice, moves)
+                greedymat, stability = greedymatrix.greedy(test_lattice, moves)
                 if greedymat[1] != False:
-                    stability = greedymatrix.matrix_stability(test_lattice)
+                    #stability = greedymatrix.matrix_stability(test_lattice)
+                    pass
 
                 # Modify best_stability if a higher stability was found.
                 if stability < best_stability:
@@ -156,7 +157,7 @@ if __name__ == '__main__':
         # Print results
         print(f"Completed {successful_iterations} iterations")
         print(f"Best found stability: {best_stability}")
-        #visualise.matrix_plot(greedymat)
+        visualise.chain_list_3Dplot(greedymat, best_stability)
         sys.exit()
 
     if algorithm == "ehalist":
