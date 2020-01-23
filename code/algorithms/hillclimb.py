@@ -1,5 +1,6 @@
 from .generalfunctions import stability_calculator, make_move
 import copy
+import random
 
 def pullmove(chain, stability, iterations):
     """Hill climb algorithm based on diagonal pull moves"""
@@ -9,30 +10,64 @@ def pullmove(chain, stability, iterations):
     best_stability = stability
 
     i = 0
+
+    max_reached = False
     while i < iterations:
-        i += 1
+        if max_reached == True:
+            break
+
         new_chain = copy.deepcopy(best_chain)
-        new_chain_stability = best_stability
+        new_chain_stability = copy.deepcopy(best_stability)
+        moves_tried = 0
+        for element in range(1, len(new_chain)):
+            new_chain = copy.deepcopy(best_chain)
+            new_chain_stability = copy.deepcopy(best_stability)
 
-        for element in new_chain:
+            amino = new_chain[element]
+            previous_amino = new_chain[element - 1]
+            move = makepull(new_chain, new_chain[element])
 
-            """
-            LOGIC FOR THE PULL MOVE HERE
-            """
+            if move == None:
+                moves_tried += 1
+                if moves_tried == len(chain):
+                    max_reached = True
+                continue
+
+            i += 1
+            moves_tried = 0
+
+            diagonal = move[0]
+            adjacent = move[1]
+
+            # set current element and the previous one to the move made
+            amino.set_coordinates(diagonal[0], diagonal[1], diagonal[2])
+            previous_amino.set_coordinates(adjacent[0], adjacent[1], adjacent[2])
+
+            for other_element in range(element - 2):
+                other_amino = new_chain[other_element]
+                amino_ahead = new_chain[other_element + 2]
+
+                x, y, z = amino_ahead.get_location()
+
+                other_amino.set_coordinates(x, y, z)
 
             new_chain_stability = stability_calculator(new_chain)
+            print(new_chain)
+            print(new_chain_stability)
 
-            if new_chain_stability < best_stability:
+            if new_chain_stability <= best_stability:
+                print(new_chain_stability, best_stability)
                 best_stability = new_chain_stability
                 best_chain = new_chain
+
+    print(best_chain)
+    return best_chain, best_stability
 
     
 
 def makepull(chain, element):
 
     x, y, z = element.get_location()
-
-    do_move = False
 
     possible_diagonals = []
 
@@ -117,7 +152,12 @@ def makepull(chain, element):
                 if (x, y, z - 1) not in taken_coords:
                     possible_diagonals.append((coords, (x, y, z - 1)))
 
-    return possible_diagonals
+    if len(possible_diagonals) > 0:
+        move = random.choice(possible_diagonals)
+        return move
+
+
+    return None
             
 
 
