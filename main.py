@@ -176,5 +176,14 @@ if __name__ == '__main__':
         visualise.chain_list_3Dplot(best_chain, best_stability_eha)
 
     if algorithm == "pull":
-        random_solution, random_stability =  randomize.sarw_dict(test_lattice, moves)
+        best_random_stability = 1
+        best_random_solution = 0
+        for i in range(100):
+            random_solution, random_stability = randomize.sarw_dict(test_lattice, moves)
+            if random_stability < best_random_stability:
+                best_random_stability = random_stability
+                best_random_solution = copy.deepcopy(random_solution)
+
         solution, stability = hillclimb.pullmove(random_solution, random_stability, iterations)
+
+        visualise.chain_list_3Dplot(solution, stability)
