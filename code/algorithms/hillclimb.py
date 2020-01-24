@@ -64,7 +64,11 @@ def pullmove(chain, stability, iterations):
                     best_stability_move = new_move_stability
                     best_move = new_move
 
+            acceptance = acceptance_probability(i)
             if best_stability_move <= best_stability:
+                best_stability = best_stability_move
+                best_chain = best_move
+            elif acceptance == False:
                 best_stability = best_stability_move
                 best_chain = best_move
 
@@ -171,3 +175,8 @@ def makepull(chain, element, next_element):
             selected_diagonals.append(coords)
 
     return selected_diagonals
+
+def acceptance_probability(iteration):
+    if random.random() > 0.3 / iteration:
+        return True
+    return False

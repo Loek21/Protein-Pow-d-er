@@ -16,3 +16,12 @@ String 8, 3D results in a best stability of -50
 Chain length 12, 3D: 6989025 possible states (calculated: )
 Chain length 10, 3D: 308981 possible states (calculated: 390625) (26% overestimation)
 Chain length 9, 3D: 64661 possible states (calculated: 78125) (20% overestimation)
+
+## String 4
+STABILITY STATISTICS
+Mean: -27.978021978021978
+Median: -28.0
+Mode: -28.0
+Standard deviation: 1.325
+Best result: -30.0
+Worst result: -25.0

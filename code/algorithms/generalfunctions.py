@@ -81,9 +81,10 @@ def stability_calculator(chain):
 def list_stats(solutions_list):
     """Gives a brief report on the statistics of a list"""
     mean = statistics.mean(solutions_list)
+    median = statistics.median(solutions_list)
+    mode = statistics.mode(solutions_list)
     stdev = round(statistics.stdev(solutions_list), 3)
     best_found = min(solutions_list)
     worst_found = max(solutions_list)
 
-    return f"STABILITY STATISTICS \nMean: {mean} \nStandard deviation: {stdev} \nBest result: {best_found} \nWorst result: {worst_found}"
-
+    return f"STABILITY STATISTICS \nN: {len(solutions_list)} \nMean: {mean} \nMedian: {median} \nMode: {mode} \nStandard deviation: {stdev} \nBest result: {best_found} \nWorst result: {worst_found}"
