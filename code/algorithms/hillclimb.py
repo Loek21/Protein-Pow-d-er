@@ -177,6 +177,6 @@ def makepull(chain, element, next_element):
     return selected_diagonals
 
 def acceptance_probability(iteration):
-    if random.random() > 1 / iteration:
+    if random.random() > 0.3 / iteration:
         return True
     return False

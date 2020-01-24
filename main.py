@@ -9,7 +9,7 @@ import sys
 import copy
 import datetime
 import numpy as np
-from code.algorithms import twist, randomize, greedymatrix, breadthfirst, eha, ehadict, hillclimb
+from code.algorithms import twist, randomize, greedymatrix, breadthfirst, eha, ehadict, hillclimb, generalfunctions
 from code.classes import lattice, element
 from code.visualisation import visualise
 
@@ -112,8 +112,8 @@ if __name__ == '__main__':
                     if stabilities[i] < best_stability_iteration:
                         best_stability_iteration = stabilities[i]
                         best_state_iteration = result_states[i]
-            best_state_list.append(best_state_iteration)
-            best_stability_list.append(best_stability_iteration)
+                best_state_list.append(best_state_iteration)
+                best_stability_list.append(best_stability_iteration)
             test_lattice_breadth = lattice.Lattice(protein_string)
             print(f"permutations:{len(result_states)} stability: {best_stability_iteration}")
 
@@ -124,6 +124,7 @@ if __name__ == '__main__':
                 best_stability = best_stability_list[i]
                 best_state = best_state_list[i]
 
+        print(generalfunctions.list_stats(best_stability_list))
         print(best_state)
         visualise.chain_list_3Dplot(best_state, best_stability)
 
