@@ -182,5 +182,36 @@ if __name__ == '__main__':
                 best_random_stability = random_stability
                 best_random_solution = copy.deepcopy(random_solution)
 
+        # test_lattice_breadth = lattice.Lattice(protein_string)
+        # element_P = element.Element("P")
+        # element_H = element.Element("H")
+        # element_C = element.Element("C")
+        #
+        # best_state_list = []
+        # best_stability_list = []
+        #
+        # for i in range(1):
+        #     result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, moves)
+        #     best_stability_iteration = 1
+        #     best_state_iteration = 0
+        #     if len(result_states) != 0:
+        #         for i in range(len(result_states)):
+        #             if stabilities[i] < best_stability_iteration:
+        #                 best_stability_iteration = stabilities[i]
+        #                 best_state_iteration = result_states[i]
+        #     best_state_list.append(best_state_iteration)
+        #     best_stability_list.append(best_stability_iteration)
+        #     test_lattice_breadth = lattice.Lattice(protein_string)
+        #     print(f"permutations:{len(result_states)} stability: {best_stability_iteration}")
+        #
+        # best_state = 0
+        # best_stability = 0
+        # for i in range(len(best_state_list)):
+        #     if best_stability_list[i] < best_stability:
+        #         best_stability = best_stability_list[i]
+        #         best_state = best_state_list[i]
+
+        solution, stability = hillclimb.pullmove(best_random_solution, best_random_stability, iterations)
+
         visualise.chain_list_3Dplot(best_random_solution, best_random_stability)
         visualise.chain_list_3Dplot(solution, stability)
