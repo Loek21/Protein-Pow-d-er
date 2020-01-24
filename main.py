@@ -68,7 +68,6 @@ if __name__ == '__main__':
         best_configuration = []
         for i in range(iterations):
 
-
             random_mat = twist.twist(test_lattice, moves)
             chain = random_mat[0]
             stability = random_mat[1]
@@ -134,18 +133,16 @@ if __name__ == '__main__':
         successful_iterations = 0
         best_stability = 0
 
-
         # Start iterations of greedy algorithm
         try:
             for i in range(iterations):
                 greedymat, stability = greedymatrix.greedy(test_lattice, moves)
-                if greedymat[1] != False:
-                    #stability = greedymatrix.matrix_stability(test_lattice)
-                    pass
+                print(stability)
 
                 # Modify best_stability if a higher stability was found.
                 if stability < best_stability:
                     best_stability = stability
+                    best_mat = greedymat
                 successful_iterations += 1
 
                 test_lattice = lattice.Lattice(protein_string)
@@ -157,7 +154,7 @@ if __name__ == '__main__':
         # Print results
         print(f"Completed {successful_iterations} iterations")
         print(f"Best found stability: {best_stability}")
-        visualise.chain_list_3Dplot(greedymat, best_stability)
+        visualise.chain_list_3Dplot(best_mat, best_stability)
         sys.exit()
 
     if algorithm == "ehalist":
