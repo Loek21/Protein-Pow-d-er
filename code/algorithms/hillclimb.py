@@ -43,7 +43,7 @@ def pullmove(chain, stability, iterations):
             amino.set_coordinates(diagonal[0], diagonal[1], diagonal[2])
             previous_amino.set_coordinates(adjacent[0], adjacent[1], adjacent[2])
 
-            for other_element in range(element - 2):
+            for other_element in range(element - 1):
                 other_amino = new_chain[other_element]
                 amino_ahead = new_chain[other_element + 2]
 
