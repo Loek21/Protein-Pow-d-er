@@ -32,6 +32,13 @@ permutations:72 stability: -3.0
 None.]
 
 ## String 1
+STABILITY STATISTICS
+N: 100
+Mean: -7.0
+Median: -7.0
+Standard deviation: 0.0
+Best result: -7.0
+Worst result: -7.0
 
 ### Long run without random pruning
 permutations:130 stability: -7.0
@@ -39,6 +46,13 @@ permutations:130 stability: -7.0
 3., P: (-1,0,-1), 1., H: (0,0,-1), 1., H: (1,0,-1), 2., H: (1,-1,-1), 1., P: (2,-1,-1), -2., H: (2,0,-1), None.]
 
 ## String 2
+STABILITY STATISTICS
+N: 100
+Mean: -10.88
+Median: -11.0
+Standard deviation: 0.356
+Best result: -11.0
+Worst result: -9.0
 
 ### Long run without random pruning
 permutations:176 stability: -11.0
