@@ -126,6 +126,7 @@ if __name__ == '__main__':
 
         print(generalfunctions.list_stats(best_stability_list))
         print(best_state)
+        generalfunctions.write_to_worksheet(best_stability_list, int(sys.argv[2]), algorithm)
         visualise.chain_list_3Dplot(best_state, best_stability)
 
 
