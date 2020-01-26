@@ -1,18 +1,21 @@
 from .generalfunctions import stability_calculator, make_move
 import copy
 import random
+import math
 
-def pullmove(chain, stability, iterations):
+def pullmove(chain, stability):
     """Hill climb algorithm based on diagonal pull moves"""
 
     # save current best chains and stabilities
     best_chain = chain
+    chain_length = len(best_chain)
     best_stability = stability
 
     i = 0
+    temp_factor = 1
 
     max_reached = False
-    while i < iterations:
+    while i < 10000:
         if max_reached == True:
             break
 
@@ -26,12 +29,16 @@ def pullmove(chain, stability, iterations):
             moves_list = makepull(new_chain, new_chain[element], new_chain[element+1])
             if len(moves_list) == 0:
                 moves_tried += 1
-                if moves_tried == len(chain):
+                if moves_tried == len(chain) * 10:
                     max_reached = True
                 continue
 
             # Counts iteration only if a move has actually been made
             i += 1
+            if i % 100 == 0:
+                temp_factor -= 0.01
+                if temp_factor < 0:
+                    temp_factor = 0.001
             moves_tried = 0
 
             for other_element in range(element - 1):
@@ -64,11 +71,8 @@ def pullmove(chain, stability, iterations):
                     best_stability_move = new_move_stability
                     best_move = new_move
 
-            acceptance = acceptance_probability(i)
-            if best_stability_move <= best_stability:
-                best_stability = best_stability_move
-                best_chain = best_move
-            elif acceptance == False:
+            acceptance = acceptance_probability(chain_length, temp_factor, best_stability_move, best_stability)
+            if acceptance == True:
                 best_stability = best_stability_move
                 best_chain = best_move
 
@@ -76,7 +80,7 @@ def pullmove(chain, stability, iterations):
     return best_chain, best_stability
 
 def makepull(chain, element, next_element):
-
+    """Makes the pull move in diagonal direction, returns a list of all possible pull movements"""
     x, y, z = element.get_location()
     x_next, y_next, z_next = next_element.get_location()
 
@@ -176,7 +180,15 @@ def makepull(chain, element, next_element):
 
     return selected_diagonals
 
-def acceptance_probability(iteration):
-    if random.random() > 0.3 / iteration:
+def acceptance_probability(length, factor, new_stability, old_stability):
+    """Simulated annealing acceptance probability, returns true if new state is accepted otherwise false"""
+    temp = 10 * length
+    k = 6 * length
+    if new_stability < old_stability:
         return True
-    return False
+    probability = math.exp(-(new_stability - old_stability) / (k * temp * factor))
+    random_nr = random.random()
+    if random_nr <= probability:
+        return True
+    else:
+        return False

@@ -78,6 +78,16 @@ def stability_calculator(chain):
 
     return stability
 
+def get_best_state(stability_list, state_list):
+    """Returns best state and stability from a list of states and stabilities"""
+    best_stability = 0
+    best_state = 0
+    for i in range(len(state_list)):
+        if stability_list[i] < best_stability:
+            best_stability = stability_list[i]
+            best_state = state_list[i]
+    return best_state, best_stability
+
 
 def list_stats(solutions_list):
     """Gives a brief report on the statistics of a list"""
