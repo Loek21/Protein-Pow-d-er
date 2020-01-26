@@ -73,6 +73,9 @@ if __name__ == '__main__':
     test_lattice.load_TwoD_matrix()
     test_lattice.load_list()
 
+    state_list = []
+    stability_list = []
+
     if algorithm == "twist":
         best_stab = 1
         best_configuration = []
@@ -109,9 +112,6 @@ if __name__ == '__main__':
         element_P = element.Element("P")
         element_H = element.Element("H")
         element_C = element.Element("C")
-
-        state_list = []
-        stability_list = []
 
         for i in range(iterations):
             result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, moves)
@@ -180,8 +180,6 @@ if __name__ == '__main__':
         visualise.chain_list_3Dplot(best_chain, best_stability_eha)
 
     if algorithm == "pull":
-        state_list = []
-        stability_list = []
 
         # Gets random solution and stability
         random_solution, random_stability = randomize.sarw_dict(test_lattice, moves)
