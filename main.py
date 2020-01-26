@@ -162,9 +162,14 @@ if __name__ == '__main__':
         best_stability_eha = 0
         best_chain = []
         all_stabs = []
-        for i in range(iterations):
-            stability, chain = ehadict.eha_list(test_lattice, moves, 6)
-            all_stabs.append(stability)
+        #for i in range(iterations): 
+        while len(all_stabs) < iterations:
+            stability, chain = ehadict.eha_list(test_lattice, moves, 8)
+            if len(all_stabs) == 0:
+                all_stabs.append(stability)
+            elif stability < min(all_stabs) / 2:
+                all_stabs.append(stability)
+
             print(stability)
             print(chain)
             if stability < best_stability_eha:
