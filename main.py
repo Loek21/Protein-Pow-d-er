@@ -9,7 +9,7 @@ import sys
 import copy
 import datetime
 import numpy as np
-from code.algorithms import twist, randomize, greedymatrix, breadthfirst, eha, ehadict, hillclimb, generalfunctions
+from code.algorithms import twist, randomize, greedy, breadthfirst, eha, ehadict, hillclimb, generalfunctions
 from code.classes import lattice, element
 from code.visualisation import visualise
 
@@ -126,6 +126,7 @@ if __name__ == '__main__':
 
         print(generalfunctions.list_stats(best_stability_list))
         print(best_state)
+        generalfunctions.write_to_worksheet(best_stability_list, int(sys.argv[2]), algorithm)
         visualise.chain_list_3Dplot(best_state, best_stability)
 
 
@@ -137,8 +138,7 @@ if __name__ == '__main__':
         # Start iterations of greedy algorithm
         try:
             for i in range(iterations):
-                greedymat, stability = greedymatrix.greedy(test_lattice, moves)
-                print(stability)
+                greedymat, stability = greedy.greedy_dict(test_lattice, moves)
 
                 # Modify best_stability if a higher stability was found.
                 if stability < best_stability:

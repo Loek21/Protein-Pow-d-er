@@ -35,6 +35,8 @@ def bfs(lattice, P, H, C, moves):
     stability.put(0)
     P_counter.put(0)
 
+    counter = 1
+
     # Continues making a new branch untill the queues are empty
     while not list_queue.empty():
 
@@ -50,6 +52,12 @@ def bfs(lattice, P, H, C, moves):
         if len(protein_state) == protein_length:
             result_list.append(protein_state)
             stabilities.append(stability_state)
+
+        if counter % 10000 == 0:
+            print(counter)
+            print(len(protein_state))
+
+        counter += 1
 
         # Continues untill the full proteins string and all the permutations have been created
         if len(protein_state) < depth:
