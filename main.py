@@ -138,9 +138,6 @@ if __name__ == '__main__':
                     best_mat = greedymat
                 successful_iterations += 1
 
-                test_lattice = lattice.Lattice(protein_string)
-                test_lattice.load_matrix()
-                test_lattice.load_list()
         except IndexError:
             pass
 
