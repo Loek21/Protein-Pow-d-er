@@ -30,21 +30,21 @@ Every algorithm can be selected and run on any of the preselected protein string
 One can select any of the algorithms mentioned in the next chapters. Choose "random", "twist", "greedy", "breadth", "eha" or "pull" to use any of the respective algorithms.
 
 #### Protein string number
-One can select any of the following numbers with the respective protein string. Where the numbers 0 through 8 originate from the given assignment and the numbers 9 through 13 originate from available literature.
-0: HHPHHHPH
-1: HHPHHHPHPHHHPH
-2: HPHPPHHPHPPHPHHPPHPH
-3: PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP
-4: HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH
-5: PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP
-6: CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC
-7: HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH
-8: HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH
-9: PPHPPPHPPPHPHHHHPHPHPHPHH
-10: HHPPHPPHPPHPPHPPHPPHPPHH
-11: PPHHHPHHHPPPHPHHPHHPPHPHHHHPHPPHHHHHPHPHHPPHHP
-12: PPHPPHHPPHHPPPPPHHHHHHHHHHPPPPPPHHPPHHPPHPPHHHHH
-13: PPHHHPHHHHHHHHPPPHHHHHHHHHHPHPPPHHHHHHHHHHHHPPPPHHHHHHPHHPHP
+One can select any of the following numbers with the respective protein string. Where the numbers 0 through 8 originate from the given assignment and the numbers 9 through 13 originate from available literature. \n
+0: HHPHHHPH\n
+1: HHPHHHPHPHHHPH\n
+2: HPHPPHHPHPPHPHHPPHPH\n
+3: PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP\n
+4: HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH\n
+5: PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP\n
+6: CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC\n
+7: HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH\n
+8: HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH\n
+9: PPHPPPHPPPHPHHHHPHPHPHPHH\n
+10: HHPPHPPHPPHPPHPPHPPHPPHH\n
+11: PPHHHPHHHPPPHPHHPHHPPHPHHHHPHPPHHHHHPHPHHPPHHP\n
+12: PPHPPHHPPHHPPPPPHHHHHHHHHHPPPPPPHHPPHHPPHPPHHHHH\n
+13: PPHHHPHHHHHHHHPPPHHHHHHHHHHPHPPPHHHHHHHHHHHHPPPPHHHHHHPHHPHP\n
 
 #### Iterations
 One can select any number higher than 0. If one selects 2 or higher statistical information about the found stabilities will be printed in the terminal, this includes the total number of found solutions (N), the average, the median, the standard deviation, the best found stability and the worst found stability.
