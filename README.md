@@ -24,13 +24,13 @@ Contains functions that are used to visualise the folding of a certain protein s
 
 ### Operation
 Before running any code it is important to update your python modules by installing requirements.txt found in the main folder.
-Every algorithm can be selected and run on any of the preselected protein strings from main.py. It works on the basis of command line arguments. The correct format for using command line arguments in calling a specific algorithm is: python main.py algorithm protein_string_nr iterations dimension. In addition one will be prompted with the message if one wants to have a printed list of coordinates and a graph displaying the solution, this can be answered with a "y" or "yes" or a "n" or "no" depending on ones wishes. Lastly if one executes python main.py help an explanation will also be printed in the terminal itself.
+Every algorithm can be selected and run on any of the preselected protein strings from main.py. It works on the basis of command line arguments. The correct format for using command line arguments in calling a specific algorithm is: `python main.py algorithm protein_string_nr iterations dimension`. In addition one will be prompted with the message if one wants to have a printed list of coordinates and a graph displaying the solution, this can be answered with a `y` or `yes` or a `n` or `no` depending on ones wishes. Lastly if one executes `python main.py help` an explanation will also be printed in the terminal itself.
 
 #### Algorithm
 One can select any of the algorithms mentioned in the next chapters. Choose "random", "twist", "greedy", "breadth", "eha" or "pull" to use any of the respective algorithms.
 
 #### Protein string number
-One can select any of the following numbers with the respective protein string. Where the numbers 0 through 8 originate from the given assignment and the numbers 9 through 13 originate from available literature. \n
+One can select any of the following numbers with the respective protein string. Where the numbers 0 through 8 originate from the given assignment and the numbers 9 through 13 originate from available literature.
 0: HHPHHHPH
 
 1: HHPHHHPHPHHHPH
@@ -76,6 +76,7 @@ The stability is calculated at the end.
 ### Twist
 
 ### Greedy
+This is an incomplete, constructive algorithm that randomly chooses a move from a selected moveset that would result in the highest stability based on the next move. In essence, like random, each next protein element is attached to the previous protein element. The 
 
 ### Breadth First with Beam Search
 This is an incomplete, constructive algorithm based on Breadth First Search (BFS). The plain version of BFS will often carry too many permutations for it to be a viable option in tackling the preceding problem. To solve this a Beam Search was added. The algorithm will only save the permutations with the best stability. With this alone the algorithm is able to run but will still take up to several hours to complete one calculation. The main reason for this are the substrings with consecutive P elements (P's do not contribute to an improved stability) and therefore the Beam Search no longer prunes any permutations within these substrings. To overcome this a random feature was added with a decreasing acceptance probability based on the number of consecutive P's. Now each calculation can be completed within several minutes (for protein strings up to a length of 60). Produced results are in line with the best known results found in literature.

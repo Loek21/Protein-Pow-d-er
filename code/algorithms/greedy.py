@@ -9,12 +9,13 @@ def greedy_calc_move(list, index, moves):
         return moves
     
     if list[index].type == 'H' or 'C':
+        return moves
         print(list[index])
         for move in moves:
             lookahead_x, lookahead_y, lookahead_z = make_move(move, list[index].x_coord, list[index].y_coord, list[index].z_coord)
             print(list[index])
-            #if list.get_location(lookahead_x, lookahead_y, lookahead_z).type == 'H':
-            #    print("BINGO!")
+            if list[[lookahead_x, lookahead_y, lookahead_z]].get_location == 'H':
+                print("BINGO!")
         print("yo")
         return moves
             
