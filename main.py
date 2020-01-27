@@ -164,7 +164,7 @@ if __name__ == '__main__':
         all_stabs = []
         #for i in range(iterations): 
         while len(all_stabs) < iterations:
-            stability, chain = ehadict.eha_list(test_lattice, moves, 8)
+            stability, chain = ehadict.eha_list(test_lattice, moves, 6)
             if len(all_stabs) == 0:
                 all_stabs.append(stability)
             elif stability < min(all_stabs) / 2:
@@ -179,6 +179,7 @@ if __name__ == '__main__':
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
         print(generalfunctions.list_stats(all_stabs))
+        generalfunctions.write_to_worksheet(all_stabs, int(sys.argv[2]), algorithm)
         visualise.chain_list_3Dplot(best_chain, best_stability_eha)
 
     if algorithm == "pull":
