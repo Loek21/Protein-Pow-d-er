@@ -82,29 +82,27 @@ if __name__ == '__main__':
     stability_list = []
 
     if algorithm == "twist":
-        best_stab = 1
-        best_configuration = []
+        border_size = float(input("Enter a size restriction (in chain lengths) between 0-1. Default is 0.5\n"))
+
+        if (border_size < 0) or (border_size > 1):
+            border_size = 0.5
+
         for i in range(iterations):
 
-            random_mat = twist.twist(test_lattice, moves)
-            chain = random_mat[0]
-            stability = random_mat[1]
+            chain, stability = twist.twist(test_lattice, moves, border_size)
+            stability_list.append(stability)
+            state_list.append(chain)
 
-            if stability < best_stab:
-                best_stab = stability
-                best_configuration = chain
-
+            # reset the lattice
             test_lattice = lattice.Lattice(protein_string)
-            test_lattice.load_matrix()
             test_lattice.load_list()
-
-        visualise.chain_list_3Dplot(best_configuration, best_stab)
 
     if algorithm == "random":
         for i in range(iterations):
             random_list, stability = randomize.sarw_dict(test_lattice, moves)
             state_list.append(random_list)
             stability_list.append(stability)
+
             # reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
@@ -181,7 +179,6 @@ if __name__ == '__main__':
 
     # Calculates best found state and stability
     best_state, best_stability = generalfunctions.get_best_state(stability_list, state_list)
-    print(best_state, best_stability, "HEYOOOOO")
     print(stability_list)
     print(state_list)
 
