@@ -120,7 +120,7 @@ if __name__ == '__main__':
                 stability_list.append(best_stability_iteration)
             test_lattice_breadth = lattice.Lattice(protein_string)
 
-        generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
+        # generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "greedy":
         # Set up variables
