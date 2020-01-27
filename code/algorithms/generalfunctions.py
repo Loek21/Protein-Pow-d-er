@@ -78,8 +78,18 @@ def stability_calculator(chain):
 
     return stability
 
+def get_best_state(stability_list, state_list):
+    """Returns best state and stability from a list of states and stabilities"""
+    best_stability = 0
+    best_state = 0
+    for i in range(len(state_list)):
+        if stability_list[i] < best_stability:
+            best_stability = stability_list[i]
+            best_state = state_list[i]
+    return best_state, best_stability
 
-def list_stats(solutions_list):
+
+def list_stats(solutions_list, algorithm):
     """Gives a brief report on the statistics of a list"""
     mean = statistics.mean(solutions_list)
     median = statistics.median(solutions_list)
@@ -87,7 +97,7 @@ def list_stats(solutions_list):
     best_found = min(solutions_list)
     worst_found = max(solutions_list)
 
-    return f"STABILITY STATISTICS \nN: {len(solutions_list)} \nMean: {mean} \nMedian: {median} \nStandard deviation: {stdev} \nBest result: {best_found} \nWorst result: {worst_found}"
+    return f"STABILITY STATISTICS FOR {algorithm}\nN: {len(solutions_list)} \nMean: {mean} \nMedian: {median} \nStandard deviation: {stdev} \nBest result: {best_found} \nWorst result: {worst_found}"
 
 def write_to_worksheet(stability_list, string_nr, algorithm):
     workbook = xlsxwriter.Workbook(f'Data/{algorithm}_{string_nr}.xlsx')

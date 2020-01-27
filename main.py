@@ -19,22 +19,37 @@ if __name__ == '__main__':
     protein_string_list = ["HHPHHHPH", "HHPHHHPHPHHHPH", "HPHPPHHPHPPHPHHPPHPH", "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
                             "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
                             "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
-                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "PPPHHP", "HHPPHPPHPPHPPHPPHPPHPPHH",
+                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "PPHPPPHPPPHPHHHHPHPHPHPHH", "HHPPHPPHPPHPPHPPHPPHPPHH",
                             "PPHHHPHHHPPPHPHHPHHPPHPHHHHPHPPHHHHHPHPHHPPHHP", "PPHPPHHPPHHPPPPPHHHHHHHHHHPPPPPPHHPPHHPPHPPHHHHH",
                             "PPHHHPHHHHHHHHPPPHHHHHHHHHHPHPPPHHHHHHHHHHHHPPPPHHHHHHPHHPHP"]
 
     # Checks if the correct number of arguments have been given
     if len(sys.argv) != 5:
-        print("usage: python main.py algorithm string_nr iterations dimension")
+
+        # Prints operation explanation if one requires it
+        if len(sys.argv) == 2 and sys.argv[1] == "help":
+            print("Select any of the following algorithms:\n'random', 'twist', 'greedy', 'breadth', 'pull' and 'eha'")
+            print("Select any of the following string numbers:")
+            for i in range(len(protein_string_list)):
+                print(f"{i}: {protein_string_list[i]}")
+            print("Number of iterations:\nAny number higher than 0 will work.\nWhen you select 1 or higher some statistical results will be displayed.")
+            print("Dimension:\nType '2' for 2D and '3' for 3D.")
+        else:
+            print("usage: python main.py algorithm string_nr iterations dimension\nFor more information type 'python main.py help'")
+
         sys.exit(1)
+
+    # Asks user if they want the list and graphical result for the best found solution
+    want_list_graph = input("Would you like a list and graph of the best found solution? (y/n)\n")
+
     algorithm = sys.argv[1]
     iterations = int(sys.argv[3])
     dimension = int(sys.argv[4])
-    algorithms = ["random", "twist", "greedy", "breadth", "pull", "ehalist"]
+    algorithms = ["random", "twist", "greedy", "breadth", "pull", "eha"]
 
     # Checks if data_structure is available
     if algorithm not in algorithms:
-        print("You must choose either 'random', 'twist', 'greedy', 'breadth', 'pull', 'ehalist'")
+        print("You must choose either 'random', 'twist', 'greedy', 'breadth', 'pull', 'eha'")
         sys.exit(1)
 
     # Checks to see if given index corresponds to a protein string
@@ -63,6 +78,9 @@ if __name__ == '__main__':
     test_lattice.load_TwoD_matrix()
     test_lattice.load_list()
 
+    state_list = []
+    stability_list = []
+
     if algorithm == "twist":
         best_stab = 1
         best_configuration = []
@@ -83,16 +101,10 @@ if __name__ == '__main__':
         visualise.chain_list_3Dplot(best_configuration, best_stab)
 
     if algorithm == "random":
-        best_stability = 1
-        best_list = 0
         for i in range(iterations):
             random_list, stability = randomize.sarw_dict(test_lattice, moves)
-            if stability < best_stability:
-                best_stability = stability
-                best_list = copy.deepcopy(random_list)
-
-
-        visualise.chain_list_3Dplot(best_list, best_stability)
+            state_list.append(random_list)
+            stability_list.append(stability)
 
     if algorithm == "breadth":
         test_lattice_breadth = lattice.Lattice(protein_string)
@@ -100,69 +112,46 @@ if __name__ == '__main__':
         element_H = element.Element("H")
         element_C = element.Element("C")
 
-        best_state_list = []
-        best_stability_list = []
-
         for i in range(iterations):
             result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, moves)
-            best_stability_iteration = 1
-            best_state_iteration = 0
             if len(result_states) != 0:
-                for i in range(len(result_states)):
-                    if stabilities[i] < best_stability_iteration:
-                        best_stability_iteration = stabilities[i]
-                        best_state_iteration = result_states[i]
-                best_state_list.append(best_state_iteration)
-                best_stability_list.append(best_stability_iteration)
+                best_state_iteration, best_stability_iteration = generalfunctions.get_best_state(stabilities, result_states)
+                state_list.append(best_state_iteration)
+                stability_list.append(best_stability_iteration)
             test_lattice_breadth = lattice.Lattice(protein_string)
-            print(f"permutations:{len(result_states)} stability: {best_stability_iteration}")
 
-        best_state = 0
-        best_stability = 0
-        for i in range(len(best_state_list)):
-            if best_stability_list[i] < best_stability:
-                best_stability = best_stability_list[i]
-                best_state = best_state_list[i]
-
-        print(generalfunctions.list_stats(best_stability_list))
-        print(best_state)
-        generalfunctions.write_to_worksheet(best_stability_list, int(sys.argv[2]), algorithm)
-        visualise.chain_list_3Dplot(best_state, best_stability)
-
+        # generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "greedy":
         # Set up variables
-        successful_iterations = 0
-        best_stability = 0
+        # successful_iterations = 0
+        # best_stability = 0
 
         # Start iterations of greedy algorithm
-        try:
-            for i in range(iterations):
-                greedymat, stability = greedy.greedy_dict(test_lattice, moves)
+        for i in range(iterations):
+            greedy_state, stability = greedy.greedy_dict(test_lattice, moves)
+            #print(stability)
+            state_list.append(greedy_state)
+            stability_list.append(stability)
 
-                # Modify best_stability if a higher stability was found.
-                if stability < best_stability:
-                    best_stability = stability
-                    best_mat = greedymat
-                successful_iterations += 1
-
-                test_lattice = lattice.Lattice(protein_string)
-                test_lattice.load_matrix()
-                test_lattice.load_list()
-        except IndexError:
-            pass
+            # Modify best_stability if a higher stability was found.
+            #if stability < best_stability:
+            #    best_stability = stability
+            #    best_state = greedy_state
+            #successful_iterations += 1
 
         # Print results
-        print(f"Completed {successful_iterations} iterations")
-        print(f"Best found stability: {best_stability}")
-        visualise.chain_list_3Dplot(best_mat, best_stability)
-        sys.exit()
+        #print(f"Completed {successful_iterations} iterations")
+        #print(f"Best found stability: {best_stability}")
+        #print(generalfunctions.list_stats(stability_list, algorithm))
+        #visualise.chain_list_3Dplot(best_state, best_stability)
+        #exit()
 
-    if algorithm == "ehalist":
+    if algorithm == "eha":
         best_stability_eha = 0
         best_chain = []
         all_stabs = []
-        #for i in range(iterations): 
+        #for i in range(iterations):
         while len(all_stabs) < iterations:
             stability, chain = ehadict.eha_list(test_lattice, moves, 6)
             if len(all_stabs) == 0:
@@ -183,44 +172,27 @@ if __name__ == '__main__':
         visualise.chain_list_3Dplot(best_chain, best_stability_eha)
 
     if algorithm == "pull":
-        best_random_stability = 1
-        best_random_solution = 0
-        for i in range(5):
-            random_solution, random_stability = randomize.sarw_dict(test_lattice, moves)
-            if random_stability < best_random_stability:
-                best_random_stability = random_stability
-                best_random_solution = copy.deepcopy(random_solution)
 
-        # test_lattice_breadth = lattice.Lattice(protein_string)
-        # element_P = element.Element("P")
-        # element_H = element.Element("H")
-        # element_C = element.Element("C")
-        #
-        # best_state_list = []
-        # best_stability_list = []
-        #
-        # for i in range(1):
-        #     result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, moves)
-        #     best_stability_iteration = 1
-        #     best_state_iteration = 0
-        #     if len(result_states) != 0:
-        #         for i in range(len(result_states)):
-        #             if stabilities[i] < best_stability_iteration:
-        #                 best_stability_iteration = stabilities[i]
-        #                 best_state_iteration = result_states[i]
-        #     best_state_list.append(best_state_iteration)
-        #     best_stability_list.append(best_stability_iteration)
-        #     test_lattice_breadth = lattice.Lattice(protein_string)
-        #     print(f"permutations:{len(result_states)} stability: {best_stability_iteration}")
-        #
-        # best_state = 0
-        # best_stability = 0
-        # for i in range(len(best_state_list)):
-        #     if best_stability_list[i] < best_stability:
-        #         best_stability = best_stability_list[i]
-        #         best_state = best_state_list[i]
+        # Gets random solution and stability
+        random_solution, random_stability = randomize.sarw_dict(test_lattice, moves)
 
-        solution, stability = hillclimb.pullmove(best_random_solution, best_random_stability, iterations)
+        for i in range(iterations):
+            solution, stability = hillclimb.pullmove(random_solution, random_stability)
+            state_list.append(solution)
+            stability_list.append(stability)
 
-        visualise.chain_list_3Dplot(best_random_solution, best_random_stability)
-        visualise.chain_list_3Dplot(solution, stability)
+        # generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
+
+    # Calculates best found state and stability
+    best_state, best_stability = generalfunctions.get_best_state(stability_list, state_list)
+    print(stability_list)
+    print(state_list)
+
+    # If 2 or more iterations are selected, it will print stability statistics
+    if iterations >= 2:
+        print(generalfunctions.list_stats(stability_list, algorithm))
+
+    # If y or yes is selected the user will get a list and graph of the best found solution
+    if want_list_graph == "y" or want_list_graph == "yes":
+        print(best_state)
+        visualise.chain_list_3Dplot(best_state, best_stability)

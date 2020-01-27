@@ -3,12 +3,15 @@ from .generalfunctions import stability_calculator, make_move
 
 def greedy_calc_move(list, index, moves):
     """ returns stability of an assumed move """
-    
+
+    # if next element is P, return random move, because no impact on stability
     if list[index].type == 'P':
         return moves
-    
+
+    # if next element is H or C, start checking for stability per move.
     if list[index].type == 'H' or 'C':
         return moves
+
 
 def greedy_move_no_backtrack(list, index, moves):
     """Performs random movement without backtracking"""
@@ -25,7 +28,6 @@ def greedy_move_no_backtrack(list, index, moves):
     # Tries finding the next valid position
     while switch == True:
         # Make new list of moves that return highest stability
-        print(list[index].type)
         greedy_moves = greedy_calc_move(list, index, moves)
 
         # Select move out of greedy_moves

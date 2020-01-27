@@ -89,16 +89,6 @@ def bfs(lattice, P, H, C, moves):
                     protein_child[len(protein_child) - 1].set_coordinates(new_x_coord, new_y_coord, new_z_coord)
                     protein_child[len(protein_child) - 2].set_direction(i)
 
-                    # For benchmarking upper bound
-                    # stability_child = stability_calculator(protein_child)
-                    #
-                    # stability_child_copy = copy.deepcopy(stability_child)
-                    # protein_child_copy = copy.deepcopy(protein_child)
-                    #
-                    # list_queue.put(protein_child_copy)
-                    # stability.put(stability_child_copy)
-
-                    # For regular testing
                     # Adds to the consecutive P counter if the element is a P, else it resets the counter to 0
                     if element == "P":
                         P_child += 1
