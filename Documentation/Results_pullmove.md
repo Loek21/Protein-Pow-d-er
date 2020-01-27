@@ -11,10 +11,22 @@ Best result: -3.0
 Worst result: -1.0
 
 ## String 1
-
+STABILITY STATISTICS FOR pull
+N: 100
+Mean: -6.74
+Median: -7.0
+Standard deviation: 0.787
+Best result: -7.0
+Worst result: -3.0
 
 ## String 2
-
+STABILITY STATISTICS FOR pull
+N: 100
+Mean: -3.15
+Median: 0.0
+Standard deviation: 3.965
+Best result: -10.0
+Worst result: 0.0
 
 ## String 3
 

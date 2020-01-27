@@ -16,7 +16,7 @@ def pullmove(chain, stability):
     temp_factor = 1
 
     max_reached = False
-    while i < 10000:
+    while i < 1000:
 
         # Will break if the chain isn't able in creating any new pull moves
         if max_reached == True:
@@ -41,8 +41,8 @@ def pullmove(chain, stability):
             # Counts iteration only if a move has actually been made
             i += 1
 
-            # Every 100 iterations the temperature factor is lowered by 0.01 cannot go lower than 0.001
-            if i % 100 == 0:
+            # Every 10 iterations the temperature factor is lowered by 0.01 cannot go lower than 0.001
+            if i % 10 == 0:
                 temp_factor -= 0.01
                 if temp_factor < 0:
                     temp_factor = 0.001

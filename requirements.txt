@@ -1,1 +1,1 @@
-numpy, XlsxWriter
+numpy, XlsxWriter, matplotlib
