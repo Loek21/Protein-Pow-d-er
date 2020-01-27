@@ -180,10 +180,12 @@ if __name__ == '__main__':
             state_list.append(solution)
             stability_list.append(stability)
 
-        generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
+        # generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     # Calculates best found state and stability
     best_state, best_stability = generalfunctions.get_best_state(stability_list, state_list)
+    print(stability_list)
+    print(state_list)
 
     # If 2 or more iterations are selected, it will print stability statistics
     if iterations >= 2:
