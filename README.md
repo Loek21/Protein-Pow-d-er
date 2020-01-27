@@ -87,4 +87,5 @@ This is an incomplete, iterative algorithm based on an article by C. Chira [2]. 
 
 ## References
 1: Traykov, Metodi, et al. "Algorithm for protein folding problem in 3D lattice HP model." International Journal of Biology and Biomedicine 3 (2018).
+
 2: Chira, Camelia. "Hill-climbing search in evolutionary models for protein folding simulations." Stud Univ Babe s-Bolyai Inform 55 (2010): 29-40.
