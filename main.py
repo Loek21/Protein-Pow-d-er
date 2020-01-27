@@ -124,8 +124,8 @@ if __name__ == '__main__':
 
     if algorithm == "greedy":
         # Set up variables
-        successful_iterations = 0
-        best_stability = 0
+        # successful_iterations = 0
+        # best_stability = 0
 
         # Start iterations of greedy algorithm
         for i in range(iterations):

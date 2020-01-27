@@ -3,17 +3,17 @@ from .generalfunctions import stability_calculator, make_move
 
 def greedy_calc_move(list, index, moves):
     """ returns stability of an assumed move """
-    
+
     # if next element is p, return random move, because no impact on stability
     if list[index].type == 'P':
         return moves
-    
+
     if list[index].type == 'H' or 'C':
         for move in moves:
             lookahead_x, lookahead_y, lookahead_z = make_move(move, list[index].x_coord, list[index].y_coord, list[index].z_coord)
             if list[[lookahead_x, lookahead_y, lookahead_z]].get_location == 'H':
         return moves
-            
+
 
 def greedy_move_no_backtrack(list, index, moves):
     """Performs random movement without backtracking"""
