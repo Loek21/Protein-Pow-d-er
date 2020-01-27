@@ -4,7 +4,7 @@ Shire Peasants 3: Mark Dzoljic, Sebastiaan Kruize & Loek van Steijn
 ## Introduction
 The aim of this project is to find the most stable form of HP(C) protein strings in a square (2D) or cubic (3D) lattice. The stability of the protein strings is based on the number of hydrogen bonds that can be formed between two elements within the protein string. hydrogen bonds can only form between two topological neighbours, two protein elements are considered to be topological neighbours if they are adjacent to each other but not in consecutive order within the protein string. For a P-P and P-C bond the stability decreases by -1 and for a C-C bond the stability decreases by -5. The state with the lowest stability is considered to be the most stable state.
 
-This is a well-known NP-hard problem in bioinformatics, to achieve the aim of this project several algorithms based on different constructive and iterative methods were created. Each algorithm will be briefly explained in the following subsections of this file along with a brief explanation on how to operate and navigate the algorithms.
+This is a well-known NP-hard problem in bioinformatics, to achieve the aim of this project several algorithms based on different constructive and iterative methods were created. Each algorithm will be briefly explained in the following subchapters of this file along with a brief explanation on how to operate and navigate the algorithms.
 
 ## Navigation & Operation
 
@@ -31,6 +31,10 @@ One can select any of the algorithms mentioned in the next chapters. Choose "ran
 
 #### Protein string number
 One can select any of the following numbers with the respective protein string. Where the numbers 0 through 8 originate from the given assignment and the numbers 9 through 13 originate from available literature.
+<<<<<<< HEAD
+
+=======
+>>>>>>> b8a453bc8c51f4b0e52d22bcc1d0fe88862b9827
 0: HHPHHHPH
 
 1: HHPHHHPHPHHHPH
