@@ -9,7 +9,7 @@ import sys
 import copy
 import datetime
 import numpy as np
-from code.algorithms import twist, randomize, greedy, breadthfirst, eha, ehadict, hillclimb, generalfunctions
+from code.algorithms import twist, randomize, greedy, breadthfirst, eha, ehaplus, hillclimb, generalfunctions
 from code.classes import lattice, element
 from code.visualisation import visualise
 
@@ -148,28 +148,18 @@ if __name__ == '__main__':
         #exit()
 
     if algorithm == "eha":
-        best_stability_eha = 0
-        best_chain = []
-        all_stabs = []
-        #for i in range(iterations):
-        while len(all_stabs) < iterations:
-            stability, chain = ehadict.eha_list(test_lattice, moves, 6)
-            if len(all_stabs) == 0:
-                all_stabs.append(stability)
-            elif stability < min(all_stabs) / 2:
-                all_stabs.append(stability)
-
-            print(stability)
-            print(chain)
-            if stability < best_stability_eha:
-                best_stability_eha = stability
-                best_chain = chain
-
+        while len(stability_list) < iterations:
+            stability, chain = ehaplus.ehaplus(test_lattice, moves, 5)
+            if len(stability_list) == 0:
+                stability_list.append(stability)
+                state_list.append(chain)
+            elif stability < min(stability_list) / 2:
+                stability_list.append(stability)
+                state_list.append(chain)
+            
+            # reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
-        print(generalfunctions.list_stats(all_stabs))
-        generalfunctions.write_to_worksheet(all_stabs, int(sys.argv[2]), algorithm)
-        visualise.chain_list_3Dplot(best_chain, best_stability_eha)
 
     if algorithm == "pull":
 
@@ -185,6 +175,7 @@ if __name__ == '__main__':
 
     # Calculates best found state and stability
     best_state, best_stability = generalfunctions.get_best_state(stability_list, state_list)
+    print(best_state, best_stability, "HEYOOOOO")
     print(stability_list)
     print(state_list)
 

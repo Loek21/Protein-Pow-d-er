@@ -33,9 +33,6 @@ def permutations_maker(moves, piece_length):
         if take_moves == True:
             perms_pruned.append(moveset)
 
-    print(len(permutations))
-    print(len(perms_pruned))
-
     return perms_pruned
 
 def chain_divider(chain, subchain_length):
@@ -71,7 +68,7 @@ def chain_divider(chain, subchain_length):
     return piece_list
 
 
-def eha_list(lattice, moves, subchain_length):
+def ehaplus(lattice, moves, subchain_length):
     """
     Extended Heuristic Algorithm version.
     Cuts chain up in smaller pieces and goes
@@ -105,12 +102,7 @@ def eha_list(lattice, moves, subchain_length):
         # save the best moves made for a piece,
         # so the elements can take over those coordinates at the end of the loop
         best_moves = []
-        print(f"PIECE {piece}")
-        counter = 0
         for moveset in permutations:
-            counter += 1
-            if counter % 50000 == 0:
-                print("MOVESET", counter)
             elements_coords = []
             check_score = True
 
@@ -159,7 +151,6 @@ def eha_list(lattice, moves, subchain_length):
 
             # if stability better than current best, accept this new configuration
             elif stability < best_stability:
-                print("NEW STAB", stability)
                 best_stability, best_moves = stability, elements_coords
 
         # update the element coordinates corresponding to best moves found
