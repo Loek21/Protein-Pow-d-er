@@ -105,6 +105,9 @@ if __name__ == '__main__':
             random_list, stability = randomize.sarw_dict(test_lattice, moves)
             state_list.append(random_list)
             stability_list.append(stability)
+            # reset the lattice
+            test_lattice = lattice.Lattice(protein_string)
+            test_lattice.load_list()
 
     if algorithm == "breadth":
         test_lattice_breadth = lattice.Lattice(protein_string)
@@ -134,6 +137,9 @@ if __name__ == '__main__':
             state_list.append(greedy_state)
             stability_list.append(stability)
 
+            # reset the lattice
+            test_lattice = lattice.Lattice(protein_string)
+            test_lattice.load_list()
             # Modify best_stability if a higher stability was found.
             #if stability < best_stability:
             #    best_stability = stability
@@ -156,7 +162,7 @@ if __name__ == '__main__':
             elif stability < min(stability_list) / 2:
                 stability_list.append(stability)
                 state_list.append(chain)
-            
+
             # reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
