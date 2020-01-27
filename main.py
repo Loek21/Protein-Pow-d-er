@@ -105,6 +105,7 @@ if __name__ == '__main__':
             random_list, stability = randomize.sarw_dict(test_lattice, moves)
             state_list.append(random_list)
             stability_list.append(stability)
+            
             # reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
@@ -181,9 +182,6 @@ if __name__ == '__main__':
 
     # Calculates best found state and stability
     best_state, best_stability = generalfunctions.get_best_state(stability_list, state_list)
-    print(best_state, best_stability, "HEYOOOOO")
-    print(stability_list)
-    print(state_list)
 
     # If 2 or more iterations are selected, it will print stability statistics
     if iterations >= 2:

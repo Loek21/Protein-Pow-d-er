@@ -87,7 +87,6 @@ def get_best_state(stability_list, state_list):
             best_stability = stability_list[i]
             best_state = state_list[i]
 
-    print(best_state, best_stability, "HEEEYYYYY")
     return best_state, best_stability
 
 
