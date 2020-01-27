@@ -130,20 +130,22 @@ if __name__ == '__main__':
         # Start iterations of greedy algorithm
         for i in range(iterations):
             greedy_state, stability = greedy.greedy_dict(test_lattice, moves)
+            #print(stability)
             state_list.append(greedy_state)
             stability_list.append(stability)
 
             # Modify best_stability if a higher stability was found.
-            if stability < best_stability:
-                best_stability = stability
-                best_state = greedy_state
-            successful_iterations += 1
+            #if stability < best_stability:
+            #    best_stability = stability
+            #    best_state = greedy_state
+            #successful_iterations += 1
 
         # Print results
-        print(f"Completed {successful_iterations} iterations")
-        print(f"Best found stability: {best_stability}")
-        print(generalfunctions.list_stats(stability_list, algorithm))
-        visualise.chain_list_3Dplot(best_state, best_stability)
+        #print(f"Completed {successful_iterations} iterations")
+        #print(f"Best found stability: {best_stability}")
+        #print(generalfunctions.list_stats(stability_list, algorithm))
+        #visualise.chain_list_3Dplot(best_state, best_stability)
+        #exit()
 
     if algorithm == "eha":
         best_stability_eha = 0
