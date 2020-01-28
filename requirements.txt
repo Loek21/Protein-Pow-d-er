@@ -1,1 +1,1 @@
-numpy, XlsxWriter, matplotlib
+numpy, XlsxWriter, matplotlib, statistics
