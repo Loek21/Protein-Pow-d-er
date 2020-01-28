@@ -15,7 +15,7 @@ The following folders can be found in the folder code.
 
 #### Classes
 The algorithms are created with two classes which can be found in the classes folder.
-The Element class which holds all the information regarding one protein element. The type of the protein element (P, H or C), the location of the element in the square or cubic lattice (X, Y, Z coordinates), and the direction to the next element (1, -1 for movements in de x-direction, 2, -2 for movements in de y-direction and 3, -3 for movements in de z-direction).
+The Element class which holds all the information regarding one protein element. The type of the protein element (P, H or C), the location of the element in the square or cubic lattice (X, Y, Z coordinates), and the direction to the next element (1, -1 for movements in de x-direction, 2, -2 for movements in de y-direction and 3, -3 for movements in the z-direction).
 The Lattice class which holds a list of Element objects in the correct sequence.
 
 #### Algorithms
@@ -43,7 +43,9 @@ In addition one will be prompted with the message if one wants to have a printed
 One can select any of the algorithms mentioned in the next chapters. Choose "random", "twist", "greedy", "breadth", "eha" or "pull" to use any of the respective algorithms.
 
 ### Protein string number
-One can select any of the following numbers with the respective protein string. Where the numbers 0 through 8 originate from the given assignment and the numbers 9 through 13 originate from available literature.
+One can select any of the following numbers with the respective protein string. Where the numbers 0 through 8 originate from the given assignment and the numbers 10 through 13 originate from available literature. String number 9 is reserved for a custom string input from the user. If this option is chosen, the user will be asked to fill in either
+their own custom string, or a length and model (HP or HPC) to create a random string.
+
 0: HHPHHHPH
 
 1: HHPHHHPHPHHHPH
@@ -62,7 +64,7 @@ One can select any of the following numbers with the respective protein string. 
 
 8: HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH
 
-9: PPHPPPHPPPHPHHHHPHPHPHPHH
+9: CUSTOM
 
 10: HHPPHPPHPPHPPHPPHPPHPPHH
 
