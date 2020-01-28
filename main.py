@@ -157,8 +157,7 @@ if __name__ == '__main__':
     if algorithm == "eha":
 
         # Get subchain length from user
-        subchain_length = int(input("Enter subchain length between 5-8. This length is +/- 2 in the algorithm, so 6 means subchains of 4-8.\n \
-                                Recommended length is 6, higher lengths result in much longer runtimes (up to hours)."))
+        subchain_length = int(input("Enter subchain length between 5-8. This length is +/- 2 in the algorithm, so 6 means subchains of 4-8.\nRecommended length is 6, higher lengths result in much longer runtimes (up to hours).\n"))
 
         # If subchain length not within boundaries, set to 6
         if (subchain_length < 5) or (subchain_length > 8):
