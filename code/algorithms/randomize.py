@@ -1,7 +1,7 @@
 import random
 from ..generalfunctions.generalfunctions import stability_calculator, make_move
 
-def move_no_backtrack(list, index, moves):
+def move_no_backtrack(chain_list, index, moves):
     """Performs random movement without backtracking"""
     switch = True
     tries_counter = 0
@@ -9,9 +9,9 @@ def move_no_backtrack(list, index, moves):
         x_coord = 0
         y_coord = 0
         z_coord = 0
-        list[0].set_coordinates(0, 0, 0)
+        chain_list[0].set_coordinates(0, 0, 0)
     else:
-        x_coord, y_coord, z_coord = list[index].get_location()
+        x_coord, y_coord, z_coord = chain_list[index].get_location()
 
     # Tries finding the next valid position
     while switch == True:
@@ -19,15 +19,15 @@ def move_no_backtrack(list, index, moves):
         new_x_coord, new_y_coord, new_z_coord = make_move(direction, x_coord, y_coord, z_coord)
 
         occupied = False
-        for j in range(len(list) - 1):
-            occupied_x, occupied_y, occupied_z = list[j].get_location()
+        for j in range(len(chain_list) - 1):
+            occupied_x, occupied_y, occupied_z = chain_list[j].get_location()
             if (occupied_x, occupied_y, occupied_z) == (new_x_coord, new_y_coord, new_z_coord):
                 occupied = True
 
         if occupied == False:
-            list[index].set_direction(direction)
-            if index + 1 != len(list):
-                list[index + 1].set_coordinates(new_x_coord, new_y_coord, new_z_coord)
+            chain_list[index].set_direction(direction)
+            if index + 1 != len(chain_list):
+                chain_list[index + 1].set_coordinates(new_x_coord, new_y_coord, new_z_coord)
             switch = False
 
         # If 50 attempts have been made to move and all failed the chain is stuck
@@ -39,15 +39,15 @@ def move_no_backtrack(list, index, moves):
 
 def sarw_dict(lattice, moves):
     """Performs self avoiding random walk on the given protein and determines the stability"""
-    list = lattice.get_list()
+    chain_list = lattice.get_list()
 
-    # performs each random step returns stability 1 if the walk gets stuck
-    for i in range(len(list)):
-        positions = move_no_backtrack(list, i, moves)
+    # Performs each random step returns stability 1 if the walk gets stuck
+    for i in range(len(chain_list)):
+        positions = move_no_backtrack(chain_list, i, moves)
         if positions == False:
-            return list, 0
+            return chain_list, 0
 
     # Counts the stability per element of the protein
-    stability = stability_calculator(list)
+    stability = stability_calculator(chain_list)
 
-    return list, stability
+    return chain_list, stability

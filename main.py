@@ -92,10 +92,11 @@ if __name__ == '__main__':
         for i in range(iterations):
 
             chain, stability = twist.twist(test_lattice, moves, border_size)
-            stability_list.append(stability)
-            state_list.append(chain)
+            if stability != None:
+                stability_list.append(stability)
+                state_list.append(chain)
 
-            # reset the lattice
+            # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
 
@@ -105,7 +106,7 @@ if __name__ == '__main__':
             state_list.append(random_list)
             stability_list.append(stability)
 
-            # reset the lattice
+            # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
 
@@ -130,26 +131,39 @@ if __name__ == '__main__':
         for i in range(iterations):
             greedy_state, stability = greedy.greedy_dict(test_lattice, moves)
 
-            # append states and stability to lists
+            # Append states and stability to lists
             state_list.append(greedy_state)
             stability_list.append(stability)
 
-            # reset the lattice
+            # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
 
     if algorithm == "eha":
+        subchain_length = int(input("Enter subchain length between 5-8. This length is +/- 2 in the algorithm, so 6 means subchains of 4-8.\n \
+                                Recommended length is 6, higher lengths result in much longer runtimes (up to hours)."))
+
+        if (subchain_length < 5) or (subchain_length > 8):
+            print("Subchain length chosen not valid, setting to default value of 6.")
+            subchain_length = 6
+
         while len(stability_list) < iterations:
-            stability, chain = ehaplus.ehaplus(test_lattice, moves, 6)
+
+            # Get solution from the ehaplus algorithm
+            stability, chain = ehaplus.ehaplus(test_lattice, moves, subchain_length)
+
+            # Save the first iteration
             if len(stability_list) == 0:
                 stability_list.append(stability)
                 state_list.append(chain)
+
+            # Some results are 'stuck' configurations, these aren't valid and will not be saved.
             elif stability < min(stability_list) / 2:
                 stability_list.append(stability)
                 state_list.append(chain)
             print(len(stability_list))
 
-            # reset the lattice
+            # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
 
