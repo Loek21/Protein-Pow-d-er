@@ -153,17 +153,20 @@ if __name__ == '__main__':
 
     if algorithm == "eha":
         while len(stability_list) < iterations:
-            stability, chain = ehaplus.ehaplus(test_lattice, moves, 5)
+            stability, chain = ehaplus.ehaplus(test_lattice, moves, 6)
             if len(stability_list) == 0:
                 stability_list.append(stability)
                 state_list.append(chain)
             elif stability < min(stability_list) / 2:
                 stability_list.append(stability)
                 state_list.append(chain)
+            print(len(stability_list))
 
             # reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
+        
+        generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "pull":
 
