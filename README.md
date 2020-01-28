@@ -21,6 +21,9 @@ The Lattice class which holds a list of Element objects in the correct sequence.
 #### Algorithms
 The created algorithms can be found in the folder algorithms. A brief explanation of each algorithm can be found in the succeeding chapters. Along side the algorithms once can find the general functions file in which all functions are written that are used in many of the algorithms such as calculating the stability of a protein string.
 
+#### Generalfunctions
+This folder contains generalfunctions.py. It serves as a placeholder for general functions, such as making moves based on directions, that all algorithms use.
+
 #### Visualisation
 Contains functions that are used to visualise the folding of a certain protein string in a 3D plot. In the plot the red points are representing P elements, the blue points represent H and the green points represent C elements.
 
