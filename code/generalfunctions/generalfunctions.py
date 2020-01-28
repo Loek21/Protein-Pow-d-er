@@ -80,7 +80,7 @@ def stability_calculator(chain):
 
 def get_best_state(stability_list, state_list):
     """Returns best state and stability from a list of states and stabilities"""
-    best_stability = 0
+    best_stability = 1
     best_state = 0
     for i in range(len(state_list)):
         if stability_list[i] < best_stability:

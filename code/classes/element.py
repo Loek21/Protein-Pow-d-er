@@ -10,7 +10,6 @@ class Element:
         self.y_coord = None
         self.z_coord = None
         self.direction = None
-        self.even_odd = None
 
     def set_coordinates(self, x_coord, y_coord, z_coord):
         """Sets object coordinates"""
@@ -21,10 +20,6 @@ class Element:
     def set_direction(self, direction):
         """Sets object direction"""
         self.direction = direction
-
-    def set_even_odd(self, even_odd):
-        """Sets whether element is odd or even"""
-        self.even_odd = even_odd
 
     def get_type(self):
         """Gets object type"""
@@ -37,10 +32,6 @@ class Element:
     def get_direction(self):
         """Gets object direction"""
         return self.direction
-
-    def get_even_odd(self):
-        """Gets object even or odd property"""
-        return self.even_odd
 
     def __repr__(self):
         """Returns string representation of object"""
