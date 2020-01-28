@@ -1,7 +1,7 @@
 import random
 from .generalfunctions import stability_calculator, make_move
 
-def twist(lattice, moves):
+def twist(lattice, moves, border_size):
     """Fills grid with elements randomly, but restricts their freedom of movement with a border"""
 
     chain = lattice.lattice_list
@@ -15,7 +15,7 @@ def twist(lattice, moves):
     chain[1].set_coordinates(current_x, current_y, current_z)
     
     # set up a boundary
-    boundary = int(len(chain) * 0.1)
+    boundary = int(len(chain) * border_size)
 
     # 2 elements have been set in the matrix
     set_elements = 2
