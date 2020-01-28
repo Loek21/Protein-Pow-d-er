@@ -14,7 +14,7 @@ def move_no_backtrack(chain_list, index, moves):
         x_coord, y_coord, z_coord = chain_list[index].get_location()
 
     # Tries finding the next valid position
-    while switch == True:
+    while switch:
         direction = random.choice(moves)
         new_x_coord, new_y_coord, new_z_coord = make_move(direction, x_coord, y_coord, z_coord)
 
@@ -24,7 +24,7 @@ def move_no_backtrack(chain_list, index, moves):
             if (occupied_x, occupied_y, occupied_z) == (new_x_coord, new_y_coord, new_z_coord):
                 occupied = True
 
-        if occupied == False:
+        if not occupied:
             chain_list[index].set_direction(direction)
             if index + 1 != len(chain_list):
                 chain_list[index + 1].set_coordinates(new_x_coord, new_y_coord, new_z_coord)
@@ -44,7 +44,7 @@ def sarw_dict(lattice, moves):
     # Performs each random step returns stability None if the walk gets stuck
     for i in range(len(chain_list)):
         positions = move_no_backtrack(chain_list, i, moves)
-        if positions == False:
+        if not positions:
             return chain_list, None
 
     # Counts the stability per element of the protein

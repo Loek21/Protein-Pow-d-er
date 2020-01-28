@@ -1,11 +1,6 @@
 import statistics
 import random
 
-# This file contains all the functions that have a function in all of the algorithms
-# It contains:
-# Next coordinate function, which takes the current position and direction and give the new position
-# Stability calculator function, which takes the
-
 def make_move(move, x, y, z):
     """Takes a move and updates x, y, z coordinates based on move made"""
 

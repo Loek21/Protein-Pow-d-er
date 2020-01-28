@@ -13,7 +13,7 @@ def twist(lattice, moves, border_size):
     chain[0].set_coordinates(current_x, current_y, current_z)
     current_x += 1
     chain[1].set_coordinates(current_x, current_y, current_z)
-    
+
     # Set up a boundary
     boundary = int(len(chain) * border_size)
 
@@ -31,7 +31,7 @@ def twist(lattice, moves, border_size):
         moves_tried = 0
 
         while moves_tried < 50:
-    
+
             # Pick a random move
             move = random.choice(moves)
 
@@ -51,18 +51,18 @@ def twist(lattice, moves, border_size):
                     break
 
             # If coordinate is not yet taken and boundary not crosses, place element there and update its coords
-            if (occupied == False) and (boundary_switch == True):
-                
+            if not occupied and boundary_switch:
+
                 # Update current x, y and z
                 current_x = future_x
                 current_y = future_y
                 current_z = future_z
-                
+
                 # Set element
                 lattice.lattice_list[set_elements].set_coordinates(current_x, current_y, current_z)
                 set_elements += 1
                 break
-            
+
             else:
                 # Reset 'future' coords for next loop
                 future_x = current_x
@@ -75,18 +75,18 @@ def twist(lattice, moves, border_size):
         if moves_tried == 50:
             do_count = False
             break
-        
+
     # Calculate stability
     stability = None
-    if do_count == True:
+    if do_count:
         stability = stability_calculator(lattice.lattice_list)
-    
+
     return lattice.lattice_list, stability
 
 def matrix_stability(lattice):
     """calculates stability of lattice with matrix"""
     elements = lattice.lattice_list
-    
+
     mat = lattice.matrix
     stability = 0
 
@@ -95,30 +95,30 @@ def matrix_stability(lattice):
     for element in range(len(elements) - 1):
         if elements[element].type == 'H' and elements[element + 1].type == 'H':
             stability += 2
-    
+
     # Check the neighbouring elements
-    for element in range(len(elements)):
+    for element in enumerate(elements):
         i = elements[element].x_coord
         j = elements[element].y_coord
         k = elements[element].z_coord
 
         if mat[i][j][k].type == 'H':
-            if mat[i-1][j][k] != None:
+            if mat[i-1][j][k] is not None:
                 if mat[i-1][j][k].type == 'H':
                     stability -= 1
-            if mat[i+1][j][k] != None:
+            if mat[i+1][j][k] is not None:
                 if mat[i+1][j][k].type == 'H':
                     stability -= 1
-            if mat[i][j-1][k] != None:
+            if mat[i][j-1][k] is not None:
                 if mat[i][j-1][k].type == 'H':
                     stability -= 1
-            if mat[i][j+1][k] != None:
+            if mat[i][j+1][k] is not None:
                 if mat[i][j+1][k].type == 'H':
                     stability -= 1
-            if mat[i][j][k+1] != None:
+            if mat[i][j][k+1] is not None:
                 if mat[i][j][k+1].type == 'H':
                     stability -= 1
-            if mat[i][j][k-1] != None:
+            if mat[i][j][k-1] is not None:
                 if mat[i][j][k-1].type == 'H':
                     stability -= 1
 

@@ -8,4 +8,4 @@ Each element object at least contains the 'character' it refers to and it's XYZ 
 
 # Lattice.py
 all element objects are then collected in a lattice object. Through that lattice object, the element objects can be conveniently called in different ways, such as a list or a dictionairy.
-In a way, this is a multifuctional datastructure that allows the developers to call the element objects in a convenient way for their algorithm. 
+In a way, this is a multifuctional datastructure that allows the developers to call the element objects in a convenient way for their algorithm.
