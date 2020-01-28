@@ -51,7 +51,7 @@ def bfs(lattice, P, H, C, moves, P_number):
                 # and the state will not be saved
                 occupied = check_occupation(current_length, protein_child, new_x_coord, new_y_coord, new_z_coord)
 
-                if occupied == False:
+                if not occupied:
 
                     # If new coordinates are free, the next protein element will be made and the coordinates
                     # wil be added to its location and the direction will be added to the previous protein element
@@ -63,7 +63,7 @@ def bfs(lattice, P, H, C, moves, P_number):
 
                     # Mirror prune cuts out all the mirrored versions of the same state in the first 4 elements
                     mirror_switch = mirror_prune(current_length, protein_child, i)
-                    if mirror_switch == True:
+                    if mirror_switch:
 
                         # Calculates the stability of the new state
                         stability_child = stability_calculator(protein_child)
@@ -75,7 +75,7 @@ def bfs(lattice, P, H, C, moves, P_number):
 
                         # If the consecutive P's chain is longer than 2 and the state has passed through the random
                         # prune function it will be selected for saving
-                        if P_child >= P_number and random_switch == True:
+                        if P_child >= P_number and random_switch:
                             save_switch = True
 
                         # Else if the new stability is better or just as good as the current best stability it will be saved too
@@ -89,12 +89,12 @@ def bfs(lattice, P, H, C, moves, P_number):
 
     return result_list, stabilities
 
-def mirror_prune(length, list, move):
+def mirror_prune(length, chain_list, move):
     """Performs the mirror prune for the first four elements and partially the fifth"""
     if length == 3 and (move == -2 or move == -3 or move == 3):
         return False
     if length == 4:
-        previous_move = list[2].get_direction()
+        previous_move = chain_list[2].get_direction()
 
         # Following a move in the y direction a move in the z direction will be identical when the length is 4
         if previous_move == 2 and move == -3:
@@ -104,7 +104,7 @@ def mirror_prune(length, list, move):
         if previous_move == 1 and (move == -2 or move == -3 or move == 3):
             return False
     if length == 5:
-        previous_move = list[3].get_direction()
+        previous_move = chain_list[3].get_direction()
 
         # Similar to length is 3 situation
         if previous_move == 1 and (move == -2 or move == -3 or move == 3):

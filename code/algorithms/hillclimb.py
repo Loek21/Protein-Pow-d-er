@@ -9,7 +9,7 @@ def pullmove(chain, stability):
     returns best state and best stability
     """
 
-    # save current best chains and stabilities
+    # Save current best chains and stabilities
     best_chain = chain
     chain_length = len(best_chain)
     best_stability = stability
@@ -75,7 +75,7 @@ def pullmove(chain, stability):
                 diagonal = move[0]
                 adjacent = move[1]
 
-                # set current element and the previous one to the move made
+                # Set current element and the previous one to the move made
                 amino.set_coordinates(diagonal[0], diagonal[1], diagonal[2])
                 previous_amino.set_coordinates(adjacent[0], adjacent[1], adjacent[2])
 
@@ -204,7 +204,7 @@ def makepull(chain, element, next_element):
 
 def acceptance_probability(length, factor, new_stability, old_stability):
     """Simulated annealing acceptance probability, returns true if new state is accepted otherwise false"""
-    # probability parameters based on literature
+    # Probability parameters based on literature
     temp = 10 * length
     k = 6 * length
 
