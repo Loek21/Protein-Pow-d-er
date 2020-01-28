@@ -1,17 +1,56 @@
 import random
 from .generalfunctions import stability_calculator, make_move
 
+def compare_stability(move, test_stab, best_stab, best_moves):
+    """Compares the stability of a potential move against the up till now best stability and amends best_moves accordingly"""
+    # if potential move has stability equal to up till now best stability, append move to best_moves
+    if test_stab == best_stab:
+        best_moves.append(move)
+    
+    # if potential move has higher stability then up till now best stability, amend up till now best calculated stability,
+    # clear best_moves of lower stability potential moves and append the potential move with higher stability
+    elif test_stab < best_stab:
+        best_stab = test_stab
+        best_moves = []
+        best_moves.append(move)
+    
+    # if potential move has lower stability then up till now best stability of other potential moves, 
+    # disregard move and do not append to best_moves
+    else:
+        pass
+
+    return best_moves, best_stab
+
 def greedy_calc_move(list, index, moves):
     """ returns stability of an assumed move """
-
+    
     # if next element is P, return random move, because no impact on stability
     if list[index].type == 'P':
         return moves
-
+    
     # if next element is H or C, start checking for stability per move.
     if list[index].type == 'H' or 'C':
-        return moves
+        best_moves = []
+        best_stab = 0
 
+        for move in moves:
+            lookahead_x, lookahead_y, lookahead_z = make_move(move, list[index].x_coord, list[index].y_coord, list[index].z_coord)
+            test_stab = 0
+            for i in list:
+                if i is None:
+                    if i.get_location() == (lookahead_x - 1, lookahead_y, lookahead_z) or \
+                    i.get_location() == (lookahead_x + 1, lookahead_y, lookahead_z)  or \
+                    i.get_location() == (lookahead_x, lookahead_y - 1, lookahead_z)  or \
+                    i.get_location() == (lookahead_x, lookahead_y + 1, lookahead_z)  or \
+                    i.get_location() == (lookahead_x, lookahead_y, lookahead_z - 1) or \
+                    i.get_location() == (lookahead_x, lookahead_y, lookahead_z + 1):
+                        if list[index].type == 'C' and i.type == 'C':
+                            test_stab -= 5
+                        else:
+                            test_stab -= 1
+            best_moves, best_stab = compare_stability(move, test_stab, best_stab, best_moves)
+
+        return best_moves
 
 def greedy_move_no_backtrack(list, index, moves):
     """Performs random movement without backtracking"""
