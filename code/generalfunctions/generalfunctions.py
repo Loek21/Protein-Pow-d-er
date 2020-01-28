@@ -1,5 +1,4 @@
 import statistics
-import xlsxwriter
 import random
 
 # This file contains all the functions that have a function in all of the algorithms
@@ -34,7 +33,7 @@ def stability_calculator(chain):
     """Takes a list of elements and calculates the stability of the configuration"""
     stability = 0
 
-    # check for successive H's in chain itself and add 2 per pair found
+    # Check for successive H's in chain itself and add 2 per pair found
     # since the matrix checker checks every pair twice, so need to compensate
     for element in range(len(chain) - 1):
         if chain[element].type == 'H' and chain[element + 1].type == 'H':
@@ -49,7 +48,7 @@ def stability_calculator(chain):
         elif chain[element].type == 'C' and chain[element + 1].type == 'H':
             stability += 2
 
-    # check the neighbouring elements
+    # Check the neighbouring elements
     for element in chain:
         if element.type == 'H' or element.type == 'C':
             i = element.x_coord
@@ -74,7 +73,7 @@ def stability_calculator(chain):
                         else:
                             stability -= 1
 
-    # divide stability by 2 since all pairs are checked twice
+    # Divide stability by 2 since all pairs are checked twice
     stability /= 2
 
     return stability
@@ -104,7 +103,7 @@ def list_stats(solutions_list, algorithm):
 
 def stringmaker(protein_length, model, *args):
     """Allows user to create their own random string"""
-    
+
     protein = ''
     elements = []
 
