@@ -50,7 +50,8 @@ def twist(lattice, moves, border_size):
                     occupied = True
                     break
 
-            # If coordinate is not yet taken and boundary not crosses, place element there and update its coords
+            # If coordinate is not yet taken and boundary not crosses,
+            # place element there and update its coords
             if not occupied and boundary_switch:
 
                 # Update current x, y and z

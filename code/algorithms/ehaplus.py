@@ -1,5 +1,4 @@
 import itertools
-import copy
 import random
 from ..generalfunctions.generalfunctions import stability_calculator, make_move
 
@@ -20,7 +19,9 @@ def permutations_maker(moves, piece_length):
 
         # Filter out too large straight moves
         for move in range(len(moveset) - 3):
-            if moveset[move] == moveset[move + 1] and moveset[move] == moveset[move + 2] and moveset[move] == moveset[move + 3]:
+            if moveset[move] == moveset[move + 1] and \
+                 moveset[move] == moveset[move + 2] and \
+                      moveset[move] == moveset[move + 3]:
                 take_moves = False
                 break
 
@@ -30,7 +31,7 @@ def permutations_maker(moves, piece_length):
                 take_moves = False
                 break
 
-        if take_moves == True:
+        if take_moves:
             perms_pruned.append(moveset)
 
     return perms_pruned
@@ -45,12 +46,15 @@ def chain_divider(chain, subchain_length):
     # Go through the entire chain, making pieces that end with an H and saving those pieces
     for i in range(len(chain[2:])):
 
-        # The piece will end if there's a P after a C (if cysteine is added) or H, and if the piece length is still managable
-        if (chain[i+2].type == 'P' or chain[i+2].type == 'H') and chain[i+1].type == 'C' and len(piece) > subchain_length - 3 and len(piece) <= subchain_length + 1:
+        # The piece will end if there's a P after a C (if cysteine is added) or H,
+        # and if the piece length is still managable
+        if (chain[i+2].type == 'P' or chain[i+2].type == 'H') and chain[i+1].type == 'C' and \
+             len(piece) > subchain_length - 3 and len(piece) <= subchain_length + 1:
             piece_list.append(piece)
             piece = []
 
-        elif chain[i+2].type == 'P' and chain[i+1].type == 'H' and len(piece) > subchain_length - 3 and len(piece) <= subchain_length + 1:
+        elif chain[i+2].type == 'P' and chain[i+1].type == 'H' and \
+              len(piece) > subchain_length - 3 and len(piece) <= subchain_length + 1:
             piece_list.append(piece)
             piece = []
 
@@ -129,7 +133,7 @@ def ehaplus(lattice, moves, subchain_length):
                         break
 
                 # If the coords aren't yet occupied, set element there
-                if occupied == False:
+                if not occupied:
                     element.set_coordinates(future_x, future_y, future_z)
                     elements_coords.append([future_x, future_y, future_z])
 
@@ -139,7 +143,7 @@ def ehaplus(lattice, moves, subchain_length):
                     break
 
             # If check score is False, don't check the stability
-            if check_score == False:
+            if not check_score:
                 continue
 
             # Calculate stability at end of moveset
