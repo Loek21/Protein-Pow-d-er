@@ -1,3 +1,2 @@
-numpy
-XlsxWriter
+Python3
 matplotlib
