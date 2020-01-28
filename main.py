@@ -72,11 +72,8 @@ if __name__ == '__main__':
         print("You must choose '2' for 2D or '3' for 3D.")
         sys.exit(1)
 
-    # Sets up list, dictionary and matrix for given protein string
+    # Sets up lattice with its element list
     test_lattice = lattice.Lattice(protein_string)
-    test_lattice.load_dict()
-    test_lattice.load_matrix()
-    test_lattice.load_TwoD_matrix()
     test_lattice.load_list()
 
     state_list = []
