@@ -207,5 +207,5 @@ if __name__ == '__main__':
 
     # If y or yes is selected the user will get a list and graph of the best found solution
     if want_list_graph == "y" or want_list_graph == "yes":
-        print(best_state)
+        print(f"Best State: {best_state}")
         visualise.chain_list_3Dplot(best_state, best_stability)

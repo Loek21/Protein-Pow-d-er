@@ -193,7 +193,7 @@ def deepcopy_generator(protein_state, stability_state, P_state):
     return protein_child, stability_child, P_child
 
 def setting_element_location(P, H, C, element, protein_child, new_x_coord, new_y_coord, new_z_coord, move):
-    """Sets new element according to the protein string and then adds it's location and direction"""
+    """ Sets new element according to the protein string and then adds it's location and direction"""
     protein_child.append(amino_selector(P, H, C, element))
     protein_child[len(protein_child) - 1].set_coordinates(new_x_coord, new_y_coord, new_z_coord)
     protein_child[len(protein_child) - 2].set_direction(move)
@@ -201,7 +201,7 @@ def setting_element_location(P, H, C, element, protein_child, new_x_coord, new_y
     return protein_child
 
 def queue_save(stability_child, protein_child, P_child, lattice_queue, stability, P_counter):
-    """Saves a new state in the queue"""
+    """ Saves a new state in the queue """
     stability_child_copy = copy.deepcopy(stability_child)
     protein_child_copy = copy.deepcopy(protein_child)
     P_child_copy = copy.deepcopy(P_child)
