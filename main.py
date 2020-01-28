@@ -12,6 +12,7 @@ import numpy as np
 from code.algorithms import twist, randomize, greedy, breadthfirst, eha, ehaplus, hillclimb, generalfunctions
 from code.classes import lattice, element
 from code.visualisation import visualise
+from code.generalfunctions import generalfunctions
 
 if __name__ == '__main__':
     TwoD_moves = [1, -1, 2, -2]
