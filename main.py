@@ -13,11 +13,11 @@ if __name__ == '__main__':
     TwoD_moves = [1, -1, 2, -2]
     ThreeD_moves = [1, -1, 2, -2, 3, -3]
     protein_string_list = ["HHPHHHPH", "HHPHHHPHPHHHPH", "HPHPPHHPHPPHPHHPPHPH", "PPPHHPPHHPPPPPHHHHHHHPPHHPPPPHHPPHPP",
-                            "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
-                            "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
-                            "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "CUSTOM", "HHPPHPPHPPHPPHPPHPPHPPHH",
-                            "PPHHHPHHHPPPHPHHPHHPPHPHHHHPHPPHHHHHPHPHHPPHHP", "PPHPPHHPPHHPPPPPHHHHHHHHHHPPPPPPHHPPHHPPHPPHHHHH",
-                            "PPHHHPHHHHHHHHPPPHHHHHHHHHHPHPPPHHHHHHHHHHHHPPPPHHHHHHPHHPHP"]
+                           "HHPHPHPHPHHHHPHPPPHPPPHPPPPHPPPHPPPHPHHHHPHPHPHPHH", "PPCHHPPCHPPPPCHHHHCHHPPHHPPPPHHPPHPP",
+                           "CPPCHPPCHPPCPPHHHHHHCCPCHPPCPCHPPHPC", "HCPHPCPHPCHCHPHPPPHPPPHPPPPHPCPHPPPHPHHHCCHCHCHCHH",
+                           "HCPHPHPHCHHHHPCCPPHPPPHPPPPCPPPHPPPHPHHHHCHPHPHPHH", "CUSTOM", "HHPPHPPHPPHPPHPPHPPHPPHH",
+                           "PPHHHPHHHPPPHPHHPHHPPHPHHHHPHPPHHHHHPHPHHPPHHP", "PPHPPHHPPHHPPPPPHHHHHHHHHHPPPPPPHHPPHHPPHPPHHHHH",
+                           "PPHHHPHHHHHHHHPPPHHHHHHHHHHPHPPPHHHHHHHHHHHHPPPPHHHHHHPHHPHP"]
 
     # Checks if the correct number of arguments have been given
     if len(sys.argv) != 5:
@@ -26,9 +26,10 @@ if __name__ == '__main__':
         if len(sys.argv) == 2 and sys.argv[1] == "help":
             print("Select any of the following algorithms:\n'random', 'twist', 'greedy', 'breadth', 'pull' and 'eha'")
             print("Select any of the following string numbers:")
-            for i in range(len(protein_string_list)):
+            for i in enumerate(protein_string_list):
                 print(f"{i}: {protein_string_list[i]}")
-            print("Number of iterations:\nAny number higher than 0 will work.\nWhen you select 1 or higher some statistical results will be displayed.")
+            print("Number of iterations:\nAny number higher than 0 will work.\n\
+                  When you select 1 or higher some statistical results will be displayed.")
             print("Dimension:\nType '2' for 2D and '3' for 3D.")
         else:
             print("usage: python main.py algorithm string_nr iterations dimension\nFor more information type 'python main.py help'")
@@ -78,7 +79,7 @@ if __name__ == '__main__':
             model = str(input("Which elements should the protein contain? Choose either HP or HPC.\n")).upper()
 
             if model != ('HP' and 'HPC'):
-                sys.exit()
+                sys.exit(1)
 
             protein_string = generalfunctions.stringmaker(protein_length, model)
 
@@ -106,7 +107,7 @@ if __name__ == '__main__':
             chain, stability = twist.twist(test_lattice, moves, border_size)
 
             # Save solution if it's not a 'stuck' configuration
-            if stability != None:
+            if stability is not None:
                 stability_list.append(stability)
                 state_list.append(chain)
 
@@ -121,7 +122,7 @@ if __name__ == '__main__':
             random_list, stability = randomize.sarw_dict(test_lattice, moves)
 
             # Save solution if not a 'stuck' config
-            if stability != None:
+            if stability is not None:
                 state_list.append(random_list)
                 stability_list.append(stability)
 
@@ -138,12 +139,14 @@ if __name__ == '__main__':
         element_C = element.Element("C")
 
         # Asks user to enter a number to determine after how many consecutive P elements the random pruning will start
-        P_number = int(input("Enter a number between 2 and 5 to indicate after how many consecutive P's in the protein string the random\npruning will start. The higher the number the longer the algorithm will need to run.\n"))
+        P_number = int(input("Enter a number between 2 and 5 to indicate after how many consecutive P's in the \
+                             protein string the random\npruning will start. The higher the number the longer \
+                             the algorithm will need to run.\n"))
 
         # If user entered an invalid number random pruning will start after 2 consecutive P's
         if P_number < 2 or P_number > 5:
             print("You have entered an invalid number, the random pruning will start after 2 consecutive P's.")
-            P_number =  2
+            P_number = 2
 
         # Runs the algorithm a predetermined number of times and saves the best solutions in a list
         for i in range(iterations):
@@ -155,13 +158,13 @@ if __name__ == '__main__':
             test_lattice_breadth = lattice.Lattice(protein_string)
 
     if algorithm == "greedy":
-        
+
         # Start iterations of greedy algorithm
         while len(stability_list) < iterations:
             greedy_state, stability = greedy.greedy(test_lattice, moves)
 
             # Append states and stability to lists
-            if stability != None:
+            if stability is not None:
                 state_list.append(greedy_state)
                 stability_list.append(stability)
 
@@ -172,7 +175,9 @@ if __name__ == '__main__':
     if algorithm == "eha":
 
         # Get subchain length from user
-        subchain_length = int(input("Enter subchain length between 5-8. This length is +/- 2 in the algorithm, so 6 means subchains of 4-8.\nRecommended length is 6, higher lengths result in much longer runtimes (up to hours).\n"))
+        subchain_length = int(input("Enter subchain length between 5-8. This length is +/- 2 in the algorithm,\
+                                     so 6 means subchains of 4-8.\nRecommended length is 6, higher lengths \
+                                     result in much longer runtimes (up to hours).\n"))
 
         # If subchain length not within boundaries, set to 6
         if (subchain_length < 5) or (subchain_length > 8):
