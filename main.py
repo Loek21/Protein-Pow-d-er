@@ -103,8 +103,9 @@ if __name__ == '__main__':
     if algorithm == "random":
         for i in range(iterations):
             random_list, stability = randomize.sarw_dict(test_lattice, moves)
-            state_list.append(random_list)
-            stability_list.append(stability)
+            if stability != None:
+                state_list.append(random_list)
+                stability_list.append(stability)
 
             # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)
@@ -132,8 +133,9 @@ if __name__ == '__main__':
             greedy_state, stability = greedy.greedy_dict(test_lattice, moves)
 
             # Append states and stability to lists
-            state_list.append(greedy_state)
-            stability_list.append(stability)
+            if stability != None:
+                state_list.append(greedy_state)
+                stability_list.append(stability)
 
             # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)

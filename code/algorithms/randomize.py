@@ -41,11 +41,11 @@ def sarw_dict(lattice, moves):
     """Performs self avoiding random walk on the given protein and determines the stability"""
     chain_list = lattice.get_list()
 
-    # Performs each random step returns stability 1 if the walk gets stuck
+    # Performs each random step returns stability None if the walk gets stuck
     for i in range(len(chain_list)):
         positions = move_no_backtrack(chain_list, i, moves)
         if positions == False:
-            return chain_list, 0
+            return chain_list, None
 
     # Counts the stability per element of the protein
     stability = stability_calculator(chain_list)

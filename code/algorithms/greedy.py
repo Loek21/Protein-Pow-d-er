@@ -96,11 +96,11 @@ def greedy_dict(lattice, moves):
     """Performs self avoiding random walk on the given protein and determines the stability"""
     list = lattice.get_list()
 
-    # performs each random step returns stability 1 if the walk gets stuck
+    # performs each random step returns stability None if the walk gets stuck
     for i in range(len(list)):
         positions = greedy_move_no_backtrack(list, i, moves)
         if positions == False:
-            return list, 1
+            return list, None
 
     # Counts the stability per element of the protein
     stability = stability_calculator(list)
