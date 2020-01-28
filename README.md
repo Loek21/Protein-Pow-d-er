@@ -31,10 +31,6 @@ One can select any of the algorithms mentioned in the next chapters. Choose "ran
 
 #### Protein string number
 One can select any of the following numbers with the respective protein string. Where the numbers 0 through 8 originate from the given assignment and the numbers 9 through 13 originate from available literature.
-<<<<<<< HEAD
-
-=======
->>>>>>> b8a453bc8c51f4b0e52d22bcc1d0fe88862b9827
 0: HHPHHHPH
 
 1: HHPHHHPHPHHHPH

@@ -33,3 +33,30 @@ Standaard dev uitrekenen.
 
 Runt algoritme tot 1000 keer, alle stabs sla je op in een lijst. (min, max, standaard dev, average, mean)
 
+
+
+[ ] Old files eruit
+[ ] Readme;s
+[ ] main.py alles in een for loop gooien
+[ ] Greedy, als vastzit, return none
+[ ] Alle algoritmen 2/3d nalopen.
+[ ] Alles uit Lattice en Element class wat we niet gebruiken.
+[ ] README main aanvullen
+[ ] Alle print statements en zinloze comment
+[ ] In main moet nog wat gecomment worden
+[ ] Greedy bug fix
+Functie excel bestandje eruit
+[ ] pycash moet eruit
+[ ] Doc file naam aanpassen
+[ ] Nodes crap kan weg
+[ ] ppp maken
+
+
+Notities Quinten meeting:
+[ ] functies maken
+[ ] cleanup
+[ ] namen doen
+[ ] help in readme knallen
+[ ] functies korter maken?
+[ ] 100 regels per functie is te lang. 50 regels is erg lang.
+[ ] 
