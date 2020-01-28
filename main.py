@@ -166,7 +166,7 @@ if __name__ == '__main__':
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
         
-        generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
+        #generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "pull":
 
