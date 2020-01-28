@@ -1,4 +1,4 @@
-from .generalfunctions import stability_calculator, make_move
+from ..generalfunctions.generalfunctions import stability_calculator, make_move
 import copy
 import random
 import math

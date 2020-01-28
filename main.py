@@ -9,7 +9,7 @@ import sys
 import copy
 import datetime
 import numpy as np
-from code.algorithms import twist, randomize, greedy, breadthfirst, eha, ehaplus, hillclimb, generalfunctions
+from code.algorithms import twist, randomize, greedy, breadthfirst, ehaplus, hillclimb
 from code.classes import lattice, element
 from code.visualisation import visualise
 from code.generalfunctions import generalfunctions

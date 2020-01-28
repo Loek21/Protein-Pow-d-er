@@ -1,5 +1,5 @@
 import random
-from .generalfunctions import stability_calculator, make_move
+from ..generalfunctions.generalfunctions import stability_calculator, make_move
 
 def move_no_backtrack(list, index, moves):
     """Performs random movement without backtracking"""

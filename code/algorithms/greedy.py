@@ -1,5 +1,5 @@
 import random
-from .generalfunctions import stability_calculator, make_move
+from ..generalfunctions.generalfunctions import stability_calculator, make_move
 
 def compare_stability(move, test_stab, best_stab, best_moves):
     """Compares the stability of a potential move against the up till now best stability and amends best_moves accordingly"""

@@ -1,7 +1,7 @@
 import queue
 import copy
 import random
-from .generalfunctions import stability_calculator, make_move
+from ..generalfunctions.generalfunctions import stability_calculator, make_move
 
 def bfs(lattice, P, H, C, moves):
     """

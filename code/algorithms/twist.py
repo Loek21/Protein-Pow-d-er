@@ -1,5 +1,5 @@
 import random
-from .generalfunctions import stability_calculator, make_move
+from ..generalfunctions.generalfunctions import stability_calculator, make_move
 
 def twist(lattice, moves, border_size):
     """Fills grid with elements randomly, but restricts their freedom of movement with a border"""

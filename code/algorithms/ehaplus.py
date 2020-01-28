@@ -1,7 +1,7 @@
 import itertools
 import copy
 import random
-from .generalfunctions import stability_calculator, make_move
+from ..generalfunctions.generalfunctions import stability_calculator, make_move
 
 def permutations_maker(moves, piece_length):
     """Makes all permutations for a chain and prunes some easy mistakes"""
