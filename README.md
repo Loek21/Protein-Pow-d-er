@@ -1,5 +1,7 @@
-# Protein-Pow(d)er
-Shire Peasants 3: Mark Dzoljic, Sebastiaan Kruize & Loek van Steijn
+# Programming Theory: Protein-Pow(d)er
+
+Team: Shire Peasants 3
+Authors: Mark Dzoljic, Sebastiaan Kruize & Loek van Steijn
 
 ## Introduction
 The aim of this project is to find the most stable form of HP(C) protein strings in a square (2D) or cubic (3D) lattice. The stability of the protein strings is based on the number of hydrogen bonds that can be formed between two elements within the protein string. hydrogen bonds can only form between two topological neighbours, two protein elements are considered to be topological neighbours if they are adjacent to each other but not in consecutive order within the protein string. For a P-P and P-C bond the stability decreases by -1 and for a C-C bond the stability decreases by -5. The state with the lowest stability is considered to be the most stable state.
@@ -23,7 +25,11 @@ The created algorithms can be found in the folder algorithms. A brief explanatio
 Contains functions that are used to visualise the folding of a certain protein string in a 3D plot. In the plot the red points are representing P elements, the blue points represent H and the green points represent C elements.
 
 ### Operation
-Before running any code it is important to update your python modules by installing requirements.txt found in the main folder.
+Before running any code it is important to update your python modules by installing requirements.txt found in the main folder. Ensure that you have Python and Pip installed. You can download Python [here](https://www.python.org/downloads/). You can install the neccessary Python modules by running:
+```command
+pip install -r requirements.txt
+```
+
 Every algorithm can be selected and run on any of the preselected protein strings from main.py. It works on the basis of command line arguments. The correct format for using command line arguments in calling a specific algorithm is:
 
 ```command
@@ -83,7 +89,7 @@ The stability is calculated at the end.
 This algorithm is built on the random algorithm, but has an extra heuristic built in. The moves chosen are still random, but freedom of movement is limited in the sense that there are borders which the protein string cannot pass; it is confined within a box. This extra heuristic results in better stabilities compared with the random algorithm, but they are still random in nature and therefore suboptimal when compared to the results of our other algorithms. 
 
 ### Greedy
-This is an incomplete, constructive algorithm that randomly chooses a move from a selected moveset that would result in the highest stability based on the next move. In essence, like random, each next protein element is attached to the previous protein element. The 
+This is an incomplete, constructive algorithm that randomly chooses a move from a selected moveset that would result in the highest stability based on the next move. In essence, like random, each next protein element is attached to the previous protein element. However, before placing the next protein, the algorithm 'looks 1 possibility ahead' and randomly chooses a move that results in the highest 
 
 ### Breadth First with Beam Search
 This is an incomplete, constructive algorithm based on Breadth First Search (BFS). The plain version of BFS will often carry too many permutations for it to be a viable option in tackling the preceding problem. To solve this a Beam Search was added. The algorithm will only save the permutations with the best stability. With this alone the algorithm is able to run but will still take up to several hours to complete one calculation. The main reason for this are the substrings with consecutive P elements (P's do not contribute to an improved stability) and therefore the Beam Search no longer prunes any permutations within these substrings. To overcome this a random feature was added with a decreasing acceptance probability based on the number of consecutive P's. Now each calculation can be completed within several minutes (for protein strings up to a length of 60). Produced results are in line with the best known results found in literature.
