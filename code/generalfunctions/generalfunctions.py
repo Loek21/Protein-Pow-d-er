@@ -7,7 +7,7 @@ import xlsxwriter
 # Stability calculator function, which takes the
 
 def make_move(move, x, y, z):
-    """takes a move and updates x, y, z coordinates based on move made"""
+    """Takes a move and updates x, y, z coordinates based on move made"""
 
     if move == 1:
         x += 1
@@ -30,7 +30,7 @@ def make_move(move, x, y, z):
     return x, y, z
 
 def stability_calculator(chain):
-    """takes a list of elements and calculates the stability of the configuration"""
+    """Takes a list of elements and calculates the stability of the configuration"""
     stability = 0
 
     # check for successive H's in chain itself and add 2 per pair found

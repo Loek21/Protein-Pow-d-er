@@ -70,7 +70,7 @@ def chain_divider(chain, subchain_length):
 
 def ehaplus(lattice, moves, subchain_length):
     """
-    Extended Heuristic Algorithm version.
+    Extended Heuristic Algorithm Plus.
     Cuts chain up in smaller pieces and goes
     through all permutations per chain to find
     optimal fold.

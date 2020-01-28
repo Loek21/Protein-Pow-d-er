@@ -131,9 +131,10 @@ if __name__ == '__main__':
         # generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "greedy":
+        
         # Start iterations of greedy algorithm
         while len(stability_list) < iterations:
-            greedy_state, stability = greedy.greedy_dict(test_lattice, moves)
+            greedy_state, stability = greedy.greedy_list(test_lattice, moves)
 
             # Append states and stability to lists
             if stability != None:
