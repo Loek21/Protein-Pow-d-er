@@ -8,7 +8,7 @@ The aim of this project is to find the most stable form of HP(C) protein strings
 
 This is a well-known NP-hard problem in bioinformatics, to achieve the aim of this project several algorithms based on different constructive and iterative methods were created. Each algorithm will be briefly explained in the following subchapters of this file along with a brief explanation on how to operate and navigate the algorithms.
 
-## Navigation & Operation
+## Navigation
 
 ### Code
 The following folders can be found in the folder code.
@@ -24,8 +24,9 @@ The created algorithms can be found in the folder algorithms. A brief explanatio
 #### Visualisation
 Contains functions that are used to visualise the folding of a certain protein string in a 3D plot. In the plot the red points are representing P elements, the blue points represent H and the green points represent C elements.
 
-### Operation
+## Operation
 Before running any code it is important to update your python modules by installing requirements.txt found in the main folder. Ensure that you have Python and Pip installed. You can download Python [here](https://www.python.org/downloads/). You can install the neccessary Python modules by running:
+
 ```command
 pip install -r requirements.txt
 ```
@@ -38,10 +39,10 @@ python main.py algorithm protein_string_nr iterations dimension
 
 In addition one will be prompted with the message if one wants to have a printed list of coordinates and a graph displaying the solution, this can be answered with a `y` or `yes` or a `n` or `no` depending on ones wishes. Lastly if one executes `python main.py help` an explanation will also be printed in the terminal itself.
 
-#### Algorithm
+### Algorithm
 One can select any of the algorithms mentioned in the next chapters. Choose "random", "twist", "greedy", "breadth", "eha" or "pull" to use any of the respective algorithms.
 
-#### Protein string number
+### Protein string number
 One can select any of the following numbers with the respective protein string. Where the numbers 0 through 8 originate from the given assignment and the numbers 9 through 13 originate from available literature.
 0: HHPHHHPH
 
@@ -71,10 +72,10 @@ One can select any of the following numbers with the respective protein string. 
 
 13: PPHHHPHHHHHHHHPPPHHHHHHHHHHPHPPPHHHHHHHHHHHHPPPPHHHHHHPHHPHP
 
-#### Iterations
+### Iterations
 One can select any number higher than 0. If one selects 2 or higher statistical information about the found stabilities will be printed in the terminal, this includes the total number of found solutions (N), the average, the median, the standard deviation, the best found stability and the worst found stability.
 
-#### Dimension
+### Dimension
 One can select either "2" for a 2D square lattice or "3" for a 3D cubic lattice.
 
 ## Algorithms
@@ -89,7 +90,7 @@ The stability is calculated at the end.
 This algorithm is built on the random algorithm, but has an extra heuristic built in. The moves chosen are still random, but freedom of movement is limited in the sense that there are borders which the protein string cannot pass; it is confined within a box. This extra heuristic results in better stabilities compared with the random algorithm, but they are still random in nature and therefore suboptimal when compared to the results of our other algorithms. 
 
 ### Greedy
-This is an incomplete, constructive algorithm that randomly chooses a move from a selected moveset that would result in the highest stability based on the next move. In essence, like random, each next protein element is attached to the previous protein element. However, before placing the next protein, the algorithm 'looks 1 possibility ahead' and randomly chooses a move that results in the highest 
+This is an incomplete, constructive algorithm that randomly chooses a move from a selected moveset that would result in the highest stability based on the next move. In essence, like random, each next protein element is attached to the previous protein element. However, before placing the next protein, the algorithm 'looks 1 possibility ahead' and creates a moveset that would result in the highest temporary stability. It then chooses a move randomly from that moveset. Like random, if no locations are open the algorithm will terminate. In short this algorithm is similar to random but with a greedy look-ahead element.
 
 ### Breadth First with Beam Search
 This is an incomplete, constructive algorithm based on Breadth First Search (BFS). The plain version of BFS will often carry too many permutations for it to be a viable option in tackling the preceding problem. To solve this a Beam Search was added. The algorithm will only save the permutations with the best stability. With this alone the algorithm is able to run but will still take up to several hours to complete one calculation. The main reason for this are the substrings with consecutive P elements (P's do not contribute to an improved stability) and therefore the Beam Search no longer prunes any permutations within these substrings. To overcome this a random feature was added with a decreasing acceptance probability based on the number of consecutive P's. Now each calculation can be completed within several minutes (for protein strings up to a length of 60). Produced results are in line with the best known results found in literature.
