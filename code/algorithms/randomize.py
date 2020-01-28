@@ -45,7 +45,7 @@ def sarw_dict(lattice, moves):
     for i in range(len(list)):
         positions = move_no_backtrack(list, i, moves)
         if positions == False:
-            return list, 1
+            return list, 0
 
     # Counts the stability per element of the protein
     stability = stability_calculator(list)

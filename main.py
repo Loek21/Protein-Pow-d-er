@@ -81,6 +81,7 @@ if __name__ == '__main__':
     state_list = []
     stability_list = []
 
+    ## -- Start algorithms --
     if algorithm == "twist":
         border_size = float(input("Enter a size restriction (in chain lengths) between 0-1. Default is 0.5\n"))
 
@@ -124,32 +125,17 @@ if __name__ == '__main__':
         # generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "greedy":
-        # Set up variables
-        # successful_iterations = 0
-        # best_stability = 0
-
         # Start iterations of greedy algorithm
         for i in range(iterations):
             greedy_state, stability = greedy.greedy_dict(test_lattice, moves)
-            #print(stability)
+
+            # append states and stability to lists
             state_list.append(greedy_state)
             stability_list.append(stability)
 
             # reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
-            # Modify best_stability if a higher stability was found.
-            #if stability < best_stability:
-            #    best_stability = stability
-            #    best_state = greedy_state
-            #successful_iterations += 1
-
-        # Print results
-        #print(f"Completed {successful_iterations} iterations")
-        #print(f"Best found stability: {best_stability}")
-        #print(generalfunctions.list_stats(stability_list, algorithm))
-        #visualise.chain_list_3Dplot(best_state, best_stability)
-        #exit()
 
     if algorithm == "eha":
         while len(stability_list) < iterations:
@@ -165,16 +151,16 @@ if __name__ == '__main__':
             # reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
-        
-        #generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
+
+        # generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "pull":
 
         # Gets random solution and stability
-        random_solution, random_stability = randomize.sarw_dict(test_lattice, moves)
+        twist_chain, twist_stability = twist.twist(test_lattice, moves, 0.15)
 
         for i in range(iterations):
-            solution, stability = hillclimb.pullmove(random_solution, random_stability)
+            solution, stability = hillclimb.pullmove(twist_chain, twist_stability)
             state_list.append(solution)
             stability_list.append(stability)
 
@@ -182,8 +168,6 @@ if __name__ == '__main__':
 
     # Calculates best found state and stability
     best_state, best_stability = generalfunctions.get_best_state(stability_list, state_list)
-    print(stability_list)
-    print(state_list)
 
     # If 2 or more iterations are selected, it will print stability statistics
     if iterations >= 2:

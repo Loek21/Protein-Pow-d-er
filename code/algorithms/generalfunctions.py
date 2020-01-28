@@ -86,7 +86,7 @@ def get_best_state(stability_list, state_list):
         if stability_list[i] < best_stability:
             best_stability = stability_list[i]
             best_state = state_list[i]
-            
+
     return best_state, best_stability
 
 
