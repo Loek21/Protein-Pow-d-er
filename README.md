@@ -24,7 +24,13 @@ Contains functions that are used to visualise the folding of a certain protein s
 
 ### Operation
 Before running any code it is important to update your python modules by installing requirements.txt found in the main folder.
-Every algorithm can be selected and run on any of the preselected protein strings from main.py. It works on the basis of command line arguments. The correct format for using command line arguments in calling a specific algorithm is: `python main.py algorithm protein_string_nr iterations dimension`. In addition one will be prompted with the message if one wants to have a printed list of coordinates and a graph displaying the solution, this can be answered with a `y` or `yes` or a `n` or `no` depending on ones wishes. Lastly if one executes `python main.py help` an explanation will also be printed in the terminal itself.
+Every algorithm can be selected and run on any of the preselected protein strings from main.py. It works on the basis of command line arguments. The correct format for using command line arguments in calling a specific algorithm is:
+
+```command
+python main.py algorithm protein_string_nr iterations dimension
+```
+
+In addition one will be prompted with the message if one wants to have a printed list of coordinates and a graph displaying the solution, this can be answered with a `y` or `yes` or a `n` or `no` depending on ones wishes. Lastly if one executes `python main.py help` an explanation will also be printed in the terminal itself.
 
 #### Algorithm
 One can select any of the algorithms mentioned in the next chapters. Choose "random", "twist", "greedy", "breadth", "eha" or "pull" to use any of the respective algorithms.
