@@ -84,14 +84,21 @@ if __name__ == '__main__':
 
     ## -- Start algorithms --
     if algorithm == "twist":
+
+        # Get border size from user
         border_size = float(input("Enter a size restriction (in chain lengths) between 0-1. Default is 0.5\n"))
 
+        # Set default to 0.5 if lower/higher than 0/1 are chosen
         if (border_size < 0) or (border_size > 1):
+            print("Border size not valid, setting to 0.5.")
             border_size = 0.5
 
-        for i in range(iterations):
-
+        while len(stability_list) < iterations:
+            
+            # Get solution from twist algorithm
             chain, stability = twist.twist(test_lattice, moves, border_size)
+
+            # Save solution if it's not a 'stuck' configuration
             if stability != None:
                 stability_list.append(stability)
                 state_list.append(chain)
@@ -101,8 +108,12 @@ if __name__ == '__main__':
             test_lattice.load_list()
 
     if algorithm == "random":
-        for i in range(iterations):
+        while len(stability_list) < iterations:
+
+            # Get random solution
             random_list, stability = randomize.sarw_dict(test_lattice, moves)
+
+            # Save solution if not a 'stuck' config
             if stability != None:
                 state_list.append(random_list)
                 stability_list.append(stability)
@@ -129,7 +140,7 @@ if __name__ == '__main__':
 
     if algorithm == "greedy":
         # Start iterations of greedy algorithm
-        for i in range(iterations):
+        while len(stability_list) < iterations:
             greedy_state, stability = greedy.greedy_dict(test_lattice, moves)
 
             # Append states and stability to lists
@@ -142,9 +153,12 @@ if __name__ == '__main__':
             test_lattice.load_list()
 
     if algorithm == "eha":
+
+        # Get subchain length from user
         subchain_length = int(input("Enter subchain length between 5-8. This length is +/- 2 in the algorithm, so 6 means subchains of 4-8.\n \
                                 Recommended length is 6, higher lengths result in much longer runtimes (up to hours)."))
 
+        # If subchain length not within boundaries, set to 6
         if (subchain_length < 5) or (subchain_length > 8):
             print("Subchain length chosen not valid, setting to default value of 6.")
             subchain_length = 6
