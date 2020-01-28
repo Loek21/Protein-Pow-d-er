@@ -4,11 +4,7 @@ main.py
 Made by Team Shire Peasants 3
 """
 
-import csv
 import sys
-import copy
-import datetime
-import numpy as np
 from code.algorithms import twist, randomize, greedy, breadthfirst, ehaplus, hillclimb
 from code.classes import lattice, element
 from code.visualisation import visualise
