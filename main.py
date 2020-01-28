@@ -86,7 +86,7 @@ if __name__ == '__main__':
             border_size = 0.5
 
         while len(stability_list) < iterations:
-            
+
             # Get solution from twist algorithm
             chain, stability = twist.twist(test_lattice, moves, border_size)
 
@@ -115,26 +115,35 @@ if __name__ == '__main__':
             test_lattice.load_list()
 
     if algorithm == "breadth":
+
+        # This algorithm requires an empty string to run and will add protein element objects as the algorithm progressses
         test_lattice_breadth = lattice.Lattice(protein_string)
         element_P = element.Element("P")
         element_H = element.Element("H")
         element_C = element.Element("C")
 
+        # Asks user to enter a number to determine after how many consecutive P elements the random pruning will start
+        P_number = int(input("Enter a number between 2 and 5 to indicate after how many consecutive P's in the protein string the random\npruning will start. The higher the number the longer the algorithm will need to run.\n"))
+
+        # If user entered an invalid number random pruning will start after 2 consecutive P's
+        if P_number < 2 or P_number > 5:
+            print("You have entered an invalid number, the random pruning will start after 2 consecutive P's.")
+            P_number =  2
+
+        # Runs the algorithm a predetermined number of times and saves the best solutions in a list
         for i in range(iterations):
-            result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, moves)
+            result_states, stabilities = breadthfirst.bfs(test_lattice_breadth, element_P, element_H, element_C, moves, P_number)
             if len(result_states) != 0:
                 best_state_iteration, best_stability_iteration = generalfunctions.get_best_state(stabilities, result_states)
                 state_list.append(best_state_iteration)
                 stability_list.append(best_stability_iteration)
             test_lattice_breadth = lattice.Lattice(protein_string)
 
-        # generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
-
     if algorithm == "greedy":
         
         # Start iterations of greedy algorithm
         while len(stability_list) < iterations:
-            greedy_state, stability = greedy.greedy_list(test_lattice, moves)
+            greedy_state, stability = greedy.greedy(test_lattice, moves)
 
             # Append states and stability to lists
             if stability != None:
@@ -181,7 +190,7 @@ if __name__ == '__main__':
     if algorithm == "pull":
 
         # Gets random solution and stability
-        twist_chain, twist_stability = twist.twist(test_lattice, moves, 0.15)
+        twist_chain, twist_stability = twist.twist(test_lattice, moves, 0.3)
 
         for i in range(iterations):
             solution, stability = hillclimb.pullmove(twist_chain, twist_stability)
