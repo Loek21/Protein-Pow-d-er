@@ -134,7 +134,7 @@ if __name__ == '__main__':
     if algorithm == "greedy":
         # Start iterations of greedy algorithm
         while len(stability_list) < iterations:
-            greedy_state, stability = greedy.greedy_list(test_lattice, moves)
+            greedy_state, stability = greedy.greedy(test_lattice, moves)
 
             # Append states and stability to lists
             if stability != None:

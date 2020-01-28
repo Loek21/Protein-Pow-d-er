@@ -1,36 +1,60 @@
-"""
-greedy.py
-This file performs a greedy algorithm on a chain_list of a protein. It imports the
-list via greedy_list and then iterates over each element to do a greedy_move_no_backtrack.
-greedy_move_no_backtrack uses function greedy_calc_move and compare_stability
-to calculate the next best move, which it returens to greedy_list.
-"""
-
 import random
 from ..generalfunctions.generalfunctions import stability_calculator, make_move
 
-def compare_stability(move, test_stab, best_stab, best_moves):
-    """
-    Compares the stability of a potential move against the up till now best stability and amends
-    best_moves accordingly
-    """
-    # If potential move has stability equal to up till now best stability, append move to best_moves
-    if test_stab == best_stab:
-        best_moves.append(move)
+def greedy(lattice, moves):
+    """Performs self avoiding Greedy walk on the given protein and determines the stability"""
+    chain_list = lattice.get_list()
 
-    # If potential move has higher stability then up till now best stability,
-    # amend up till now best calculated stability and moveset
-    elif test_stab < best_stab:
-        best_stab = test_stab
-        best_moves = []
-        best_moves.append(move)
+    # Performs each random step returns stability None if the walk gets stuck
+    for i in range(len(chain_list)):
+        positions = greedy_move_no_backtrack(chain_list, i, moves)
+        if not positions:
+            return chain_list, None
 
-    # If potential move has lower stability then up till now best stability of other
-    # potential moves, do not append to best_moves
+    # Counts the stability per element of the protein
+    stability = stability_calculator(chain_list)
+
+    return chain_list, stability
+
+def greedy_move_no_backtrack(chain_list, index, moves):
+    """ Performs greedy movement for 1 element with 1 lookahead without backtracking """
+    switch = True
+    tries_counter = 0
+    if index == 0:
+        x_coord = 0
+        y_coord = 0
+        z_coord = 0
+        chain_list[0].set_coordinates(0, 0, 0)
     else:
-        pass
+        x_coord, y_coord, z_coord = chain_list[index].get_location()
 
-    return best_moves, best_stab
+    # Tries finding the next valid position
+    while switch:
+        # Make new list of moves that return highest stability
+        greedy_moves = greedy_calc_move(chain_list, index, moves)
+
+        # Select move out of greedy_moves
+        direction = random.choice(greedy_moves)
+        new_x_coord, new_y_coord, new_z_coord = make_move(direction, x_coord, y_coord, z_coord)
+
+        occupied = False
+        for j in range(len(chain_list) - 1):
+            occupied_x, occupied_y, occupied_z = chain_list[j].get_location()
+            if (occupied_x, occupied_y, occupied_z) == (new_x_coord, new_y_coord, new_z_coord):
+                occupied = True
+
+        if not occupied:
+            chain_list[index].set_direction(direction)
+            if index + 1 != len(chain_list):
+                chain_list[index + 1].set_coordinates(new_x_coord, new_y_coord, new_z_coord)
+            switch = False
+
+        # If 50 attempts have been made to move and all failed the chain is stuck
+        if tries_counter == 50:
+            return False
+        tries_counter += 1
+
+    return True
 
 def greedy_calc_move(chain_list, index, moves):
     """ Returns stability of an assumed move """
@@ -71,57 +95,25 @@ def greedy_calc_move(chain_list, index, moves):
 
         return best_moves
 
-def greedy_move_no_backtrack(chain_list, index, moves):
-    """ Performs greedy movement with 1 lookahead without backtracking """
-    switch = True
-    tries_counter = 0
-    if index == 0:
-        x_coord = 0
-        y_coord = 0
-        z_coord = 0
-        chain_list[0].set_coordinates(0, 0, 0)
+def compare_stability(move, test_stab, best_stab, best_moves):
+    """
+    Compares the stability of a potential move against the up till now best stability and amends
+    best_moves accordingly
+    """
+    # If potential move has stability equal to up till now best stability, append move to best_moves
+    if test_stab == best_stab:
+        best_moves.append(move)
+
+    # If potential move has higher stability then up till now best stability,
+    # amend up till now best calculated stability and moveset
+    elif test_stab < best_stab:
+        best_stab = test_stab
+        best_moves = []
+        best_moves.append(move)
+
+    # If potential move has lower stability then up till now best stability of other
+    # potential moves, do not append to best_moves
     else:
-        x_coord, y_coord, z_coord = chain_list[index].get_location()
+        pass
 
-    # Tries finding the next valid position
-    while switch:
-        # Make new list of moves that return highest stability
-        greedy_moves = greedy_calc_move(chain_list, index, moves)
-
-        # Select move out of greedy_moves
-        direction = random.choice(greedy_moves)
-        new_x_coord, new_y_coord, new_z_coord = make_move(direction, x_coord, y_coord, z_coord)
-
-        occupied = False
-        for j in range(len(chain_list) - 1):
-            occupied_x, occupied_y, occupied_z = chain_list[j].get_location()
-            if (occupied_x, occupied_y, occupied_z) == (new_x_coord, new_y_coord, new_z_coord):
-                occupied = True
-
-        if not occupied:
-            chain_list[index].set_direction(direction)
-            if index + 1 != len(chain_list):
-                chain_list[index + 1].set_coordinates(new_x_coord, new_y_coord, new_z_coord)
-            switch = False
-
-        # If 50 attempts have been made to move and all failed the chain is stuck
-        if tries_counter == 50:
-            return False
-        tries_counter += 1
-
-    return True
-
-def greedy_list(lattice, moves):
-    """Performs self avoiding random walk on the given protein and determines the stability"""
-    chain_list = lattice.get_list()
-
-    # Performs each random step returns stability None if the walk gets stuck
-    for i in range(len(chain_list)):
-        positions = greedy_move_no_backtrack(chain_list, i, moves)
-        if not positions:
-            return chain_list, None
-
-    # Counts the stability per element of the protein
-    stability = stability_calculator(chain_list)
-
-    return chain_list, stability
+    return best_moves, best_stab
