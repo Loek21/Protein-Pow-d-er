@@ -77,9 +77,9 @@ if __name__ == '__main__':
             protein_length = int(input("What length should the protein be?\n"))
             model = str(input("Which elements should the protein contain? Choose either HP or HPC.\n")).upper()
 
-            if model != ('HP' or 'HPC'):
+            if model != ('HP' and 'HPC'):
                 sys.exit()
-                
+
             protein_string = generalfunctions.stringmaker(protein_length, model)
 
     # Sets up lattice with its element list
