@@ -28,8 +28,7 @@ if __name__ == '__main__':
             print("Select any of the following string numbers:")
             for i in enumerate(protein_string_list):
                 print(f"{i}: {protein_string_list[i]}")
-            print("Number of iterations:\nAny number higher than 0 will work.\n\
-                  When you select 1 or higher some statistical results will be displayed.")
+            print("Number of iterations:\nAny number higher than 0 will work.\n When you select 1 or higher some statistical results will be displayed.")
             print("Dimension:\nType '2' for 2D and '3' for 3D.")
         else:
             print("usage: python main.py algorithm string_nr iterations dimension\nFor more information type 'python main.py help'")
@@ -139,9 +138,7 @@ if __name__ == '__main__':
         element_C = element.Element("C")
 
         # Asks user to enter a number to determine after how many consecutive P elements the random pruning will start
-        P_number = int(input("Enter a number between 2 and 5 to indicate after how many consecutive P's in the \
-                             protein string the random\npruning will start. The higher the number the longer \
-                             the algorithm will need to run.\n"))
+        P_number = int(input("Enter a number between 2 and 5 to indicate after how many consecutive P's in the protein string the random\npruning will start. The higher the number the longer the algorithm will need to run.\n"))
 
         # If user entered an invalid number random pruning will start after 2 consecutive P's
         if P_number < 2 or P_number > 5:
@@ -175,9 +172,7 @@ if __name__ == '__main__':
     if algorithm == "eha":
 
         # Get subchain length from user
-        subchain_length = int(input("Enter subchain length between 5-8. This length is +/- 2 in the algorithm,\
-                                     so 6 means subchains of 4-8.\nRecommended length is 6, higher lengths \
-                                     result in much longer runtimes (up to hours).\n"))
+        subchain_length = int(input("Enter subchain length between 5-8. This length is +/- 2 in the algorithm, so 6 means subchains of 4-8.\nRecommended length is 6, higher lengths result in much longer runtimes (up to hours).\n"))
 
         # If subchain length not within boundaries, set to 6
         if (subchain_length < 5) or (subchain_length > 8):
