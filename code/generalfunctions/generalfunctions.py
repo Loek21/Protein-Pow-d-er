@@ -1,5 +1,6 @@
 import statistics
 import xlsxwriter
+import random
 
 # This file contains all the functions that have a function in all of the algorithms
 # It contains:
@@ -99,3 +100,21 @@ def list_stats(solutions_list, algorithm):
     worst_found = max(solutions_list)
 
     return f"STABILITY STATISTICS FOR {algorithm}\nN: {len(solutions_list)} \nMean: {mean} \nMedian: {median} \nStandard deviation: {stdev} \nBest result: {best_found} \nWorst result: {worst_found}"
+
+
+def stringmaker(protein_length, model, *args):
+    """Allows user to create their own random string"""
+    
+    protein = ''
+    elements = []
+
+    if model == 'HP':
+        elements = ['H', 'P']
+    
+    elif model == 'HPC':
+        elements = ['H', 'P', 'C']
+
+    for _ in range(protein_length):
+        protein += str(random.choice(elements))
+
+    return protein

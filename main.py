@@ -67,6 +67,17 @@ if __name__ == '__main__':
         print("You must choose '2' for 2D or '3' for 3D.")
         sys.exit(1)
 
+    # If string chosen is number 9, allow the user to create a custom or random string
+    if int(sys.argv[2]) == 9:
+        custom_prompt = input("Would you like to submit your own string? (y/n)\n")
+        if custom_prompt == 'y' or custom_prompt == 'yes':
+            custom_string = str(input("Submit your own string here. Make sure it contains only H, P, or C elements.\n"))
+            protein_string = custom_string.upper()
+        else:
+            protein_length = int(input("What length should the protein be?\n"))
+            model = str(input("Which elements should the protein contain? Choose either HP or HPC.\n")).upper()
+            protein_string = generalfunctions.stringmaker(protein_length, model)
+
     # Sets up lattice with its element list
     test_lattice = lattice.Lattice(protein_string)
     test_lattice.load_list()
@@ -178,13 +189,10 @@ if __name__ == '__main__':
             elif stability < min(stability_list) / 2:
                 stability_list.append(stability)
                 state_list.append(chain)
-            print(len(stability_list))
 
             # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
-
-        # generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "pull":
 
@@ -195,8 +203,6 @@ if __name__ == '__main__':
             solution, stability = hillclimb.pullmove(twist_chain, twist_stability)
             state_list.append(solution)
             stability_list.append(stability)
-
-        # generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     # Calculates best found state and stability
     best_state, best_stability = generalfunctions.get_best_state(stability_list, state_list)
