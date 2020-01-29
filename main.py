@@ -113,6 +113,7 @@ if __name__ == '__main__':
             # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
+        generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "random":
         while len(stability_list) < iterations:
@@ -168,6 +169,7 @@ if __name__ == '__main__':
             # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
+        generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "eha":
 
