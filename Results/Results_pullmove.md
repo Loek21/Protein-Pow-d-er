@@ -32,7 +32,12 @@ Worst result: 0.0
 
 
 ## String 4
-
+N: 100
+Mean: -11.82
+Median: -12.0
+Standard deviation: 2.38
+Best result: -18.0
+Worst result: -7.0
 
 ## String 5
 

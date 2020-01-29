@@ -205,7 +205,7 @@ if __name__ == '__main__':
         while len(stability_list) < iterations:
             print(len(stability_list))
             # Gets random solution and stability
-            twist_chain, twist_stability = twist.twist(test_lattice, moves, 1)
+            twist_chain, twist_stability = twist.twist(test_lattice, moves, 2)
 
             solution, stability = hillclimb.pullmove(twist_chain, twist_stability)
             if stability is not None:
