@@ -105,7 +105,7 @@ def stringmaker(protein_length, model, *args):
 
     if model == 'HP':
         elements = ['H', 'P']
-    
+
     elif model == 'HPC':
         elements = ['H', 'P', 'C']
 
