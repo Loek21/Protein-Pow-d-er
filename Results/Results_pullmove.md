@@ -43,7 +43,11 @@ Worst result: -7.0
 
 
 ## String 6
-
+Mean: -16.6
+Median: -16.0
+Standard deviation: 5.205
+Best result: -31.0
+Worst result: -4.0
 
 ## String 7
 
