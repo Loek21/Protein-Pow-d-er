@@ -1,5 +1,6 @@
 import statistics
 import random
+import xlsxwriter
 
 def make_move(move, x, y, z):
     """Takes a move and updates x, y, z coordinates based on move made"""
@@ -104,7 +105,7 @@ def stringmaker(protein_length, model, *args):
 
     if model == 'HP':
         elements = ['H', 'P']
-    
+
     elif model == 'HPC':
         elements = ['H', 'P', 'C']
 
