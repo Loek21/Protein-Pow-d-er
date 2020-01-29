@@ -113,3 +113,10 @@ def stringmaker(protein_length, model, *args):
         protein += str(random.choice(elements))
 
     return protein
+
+def write_to_worksheet(stability_list, string_nr, algorithm):
+    workbook = xlsxwriter.Workbook(f'Data/{algorithm}_{string_nr}.xlsx')
+    worksheet = workbook.add_worksheet()
+    for i in range(len(stability_list)):
+        worksheet.write(i, 0, stability_list[i])
+    workbook.close()

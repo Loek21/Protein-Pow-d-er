@@ -180,6 +180,7 @@ if __name__ == '__main__':
             subchain_length = 6
 
         while len(stability_list) < iterations:
+            print(len(stability_list))
 
             # Get solution from the ehaplus algorithm
             stability, chain = ehaplus.ehaplus(test_lattice, moves, subchain_length)
@@ -197,6 +198,7 @@ if __name__ == '__main__':
             # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
+        generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "pull":
 
@@ -207,6 +209,8 @@ if __name__ == '__main__':
             solution, stability = hillclimb.pullmove(twist_chain, twist_stability)
             state_list.append(solution)
             stability_list.append(stability)
+
+        generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     # Calculates best found state and stability
     best_state, best_stability = generalfunctions.get_best_state(stability_list, state_list)
