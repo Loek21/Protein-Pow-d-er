@@ -56,3 +56,9 @@ Worst result: 0.0
 
 
 ## String 13
+N: 100
+Mean: -29.75
+Median: -29.5
+Standard deviation: 3.418
+Best result: -41.0
+Worst result: -23.0

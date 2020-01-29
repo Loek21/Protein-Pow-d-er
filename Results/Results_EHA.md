@@ -48,6 +48,14 @@ Standard deviation: 1.304
 Best result: -32.0
 Worst result: -26.0
 
+## Chain length 48:
+N: 100
+Mean: -25.71
+Median: -26.0
+Standard deviation: 1.882
+Best result: -31.0
+Worst result: -22.0
+
 ## Chain length 50:
 N: 100
 Mean: -26.04
