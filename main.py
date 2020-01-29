@@ -198,7 +198,7 @@ if __name__ == '__main__':
             # Reset the lattice
             test_lattice = lattice.Lattice(protein_string)
             test_lattice.load_list()
-        generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
+        #generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     if algorithm == "pull":
 
@@ -212,7 +212,7 @@ if __name__ == '__main__':
                 state_list.append(solution)
                 stability_list.append(stability)
         
-        generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
+        #generalfunctions.write_to_worksheet(stability_list, int(sys.argv[2]), algorithm)
 
     # Calculates best found state and stability
     best_state, best_stability = generalfunctions.get_best_state(stability_list, state_list)
